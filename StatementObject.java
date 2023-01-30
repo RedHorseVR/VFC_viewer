@@ -149,7 +149,7 @@ public class StatementObject   {
 			}
 		w = FM.stringWidth( Statement );
 		h = font_h ;
-		if( Type.equals( "input" )  )
+		if( Type.equals( "input" ) || Type.equals( "event" )  )
 		{
 			h *=2;
 		} else  {
@@ -171,6 +171,8 @@ public class StatementObject   {
 		if( Type.equals( "input" )  )
 		{
 			calc_input( g, x, y, z) ;
+		} else if( Type.equals( "event" )  ) {
+			calc_event( g, x, y , z) ;
 		} else if( Type.equals( "set" )  ) {
 			calc_set( g, x, y , z) ;
 		} else if( Type.equals( "loop" )  ) {
@@ -199,6 +201,8 @@ public class StatementObject   {
 		if( Type.equals( "input" )  )
 		{
 			draw_input( g ) ;
+		} else if( Type.equals( "event" )  ) {
+			draw_event( g ) ;
 		} else if( Type.equals( "set" )  ) {
 			draw_set( g ) ;
 		} else if( Type.equals( "loop" )  ) {
@@ -435,6 +439,43 @@ public class StatementObject   {
 			
 			}
 		return width ; }
+	
+	private void calc_event( Graphics g, int x, int y, int z){
+		
+				
+			y1 = y  ;
+			y2 = y+margin + (h+margin);
+		
+			ymid = y2 - h/2 - margin ;
+			
+		int  texth = 4 ;
+		int  p = h/2 ;
+		xmin = x1 - p*2 ;
+		xmax = x2 + p*2 ;
+		xmin2 = xmin + p/2 ;
+		xmax2 = xmax - p/2;
+		
+		P.x = xmid;
+		P.y = y2 + Separation ;
+		}
+	private void draw_event( Graphics g ){
+		g.drawLine( x1 , y2 , x2 , y2 );
+		g.drawLine( x1 , y1 , x2 , y1 );
+		g.drawLine( x1, y1 , xmin , ymid  );
+		g.drawLine( x1, y2 , xmin , ymid  );
+		g.drawLine( x2 , y1 , xmax , ymid  );
+		g.drawLine( x2 , y2 , xmax , ymid  );
+		
+		
+		
+		
+		
+		g.drawString( Statement , x1+margin  , y1 + h - margin );
+		g.drawLine( xmid , y2 , xmid , P.y - h/2  -  margin/2  );
+		
+		g.drawLine( xmid - h/4 ,  P.y - h*3/4  -  margin/2 , xmid , P.y - h/2  -  margin/2  );
+		g.drawLine( xmid ,  P.y - h/2  -  margin/2 , xmid + h/4, P.y - h*3/4  -  margin/2  );
+		}
 	
 	private void calc_input( Graphics g, int x, int y, int z){
 		
@@ -782,5 +823,5 @@ public class StatementObject   {
 		
 	}
 
-//  Export  Date: 09:39:16 AM - 30:Jan:2023...
+//  Export  Date: 12:02:23 PM - 30:Jan:2023...
 

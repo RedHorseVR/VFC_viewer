@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : StatementObject.ins
-;  File Date : 09:39:16 AM - 30:Jan:2023
+;  File Date : 12:02:23 PM - 30:Jan:2023
 
 
 input(  /** Imports **/      );//// // <--- part of framework......
@@ -161,7 +161,7 @@ set(FM = g.getFontMetrics(););//
 bend( } );//
 set(w = FM.stringWidth( Statement ););//
 set(h = font_h ;);//h = (int)( FM.getHeight( ) ) ;
-branch(if( Type.equals( "input" )  ));//
+branch(if( Type.equals( "input" ) || Type.equals( "event" )  ));//
 path({ );// 
 set(h *=2;);//
 path(} else  {);//
@@ -184,6 +184,8 @@ bend();//
 branch(if( Type.equals( "input" )  ));//
 path({ );// 
 process(calc_input( g, x, y, z) ;);//z is zoom factor in % 
+path(} else if( Type.equals( "event" )  ) {);//
+process(calc_event( g, x, y , z) ;);//z is zoom factor in % 
 path(} else if( Type.equals( "set" )  ) {);//
 process(calc_set( g, x, y , z) ;);//z is zoom factor in % 
 path(} else if( Type.equals( "loop" )  ) {);//
@@ -214,6 +216,8 @@ bend( } );//
 branch(if( Type.equals( "input" )  ));//
 path({ );// 
 process(draw_input( g ) ;);///z is zoom factor in % //
+path(} else if( Type.equals( "event" )  ) {);//
+process(draw_event( g ) ;);///z is zoom factor in % //
 path(} else if( Type.equals( "set" )  ) {);//
 process(draw_set( g ) ;);///z is zoom factor in % //
 path(} else if( Type.equals( "loop" )  ) {);//
@@ -451,6 +455,46 @@ path( }else{ );//
 set();//return null;
 bend( } );//
 end(return width ; });//
+path();//
+
+input(  private void calc_event( Graphics g, int x, int y, int z){);///z is zoom factor in % //
+set();// y += Separation ;
+branch();//
+path();//
+set(y1 = y  ;);//
+set( y2 = y+margin + (h+margin););//
+path();//
+set( ymid = y2 - h/2 - margin ;);//int  ymid = y-(y2 - y1)/2 ;
+bend();//
+set(int  texth = 4 ;);//
+set(int  p = h/2 ;);//
+set( xmin = x1 - p*2 ;);//
+set( xmax = x2 + p*2 ;);//
+set(xmin2 = xmin + p/2 ;);//
+set(xmax2 = xmax - p/2;);//
+set();//
+set(P.x = xmid;);//  
+set(P.y = y2 + Separation ;);//  P.y = Bottom_y + margin;
+end(} );//  
+
+input(  private void draw_event( Graphics g ){);///z is zoom factor in % //
+generic(g.drawLine( x1 , y2 , x2 , y2 ););//  
+generic(g.drawLine( x1 , y1 , x2 , y1 ););//  
+generic(g.drawLine( x1, y1 , xmin , ymid  ););//  
+generic(g.drawLine( x1, y2 , xmin , ymid  ););//  
+generic(g.drawLine( x2 , y1 , xmax , ymid  ););//  
+generic(g.drawLine( x2 , y2 , xmax , ymid  ););//  
+generic(  );//g.drawLine( x1, y1 , xmin2 , ymid  );
+generic(  );//g.drawLine( x1, y2 , xmin2 , ymid  );
+generic(  );//g.drawLine( x2 , y1 , xmax2 , ymid  );
+generic(  );//g.drawLine( x2 , y2 , xmax2 , ymid  );
+generic();//  g.drawString( "input()" , x  , y  );
+generic(  g.drawString( Statement , x1+margin  , y1 + h - margin ););//  g.drawString( Comment , x1+margin  , y1 + h - margin );
+generic(g.drawLine( xmid , y2 , xmid , P.y - h/2  -  margin/2  ););//
+set();//Draw arrow head
+generic(g.drawLine( xmid - h/4 ,  P.y - h*3/4  -  margin/2 , xmid , P.y - h/2  -  margin/2  ););//
+generic(g.drawLine( xmid ,  P.y - h/2  -  margin/2 , xmid + h/4, P.y - h*3/4  -  margin/2  ););//g.drawLine( xmid ,  P.y - h/2  -  margin/2 , xmid + h/2, P.y - h  -  margin/2  );
+end(} );//  
 path();//
 
 input(  private void calc_input( Graphics g, int x, int y, int z){);///z is zoom factor in % //
@@ -820,4 +864,4 @@ end();//
 ;    StatementObject.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 1522 129 2048 1767 58 135   694   4294967164    java.key  0
+; 1078 154 2048 1767 470 135   4294954842   4294966680    java.key  0

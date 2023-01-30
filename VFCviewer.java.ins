@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : VFCviewer.java.ins
-;  File Date : 10:09:54 AM - 30:Jan:2023
+;  File Date : 11:38:42 AM - 30:Jan:2023
 
 generic(    );/////// // HYPER LINK TO HTML_VFCviewer ---> // FILE: HTML_VFCview.ins......//////
 generic(    );////  AUTO ...
@@ -97,12 +97,15 @@ generic(    );////  AUTO ...
 end(  );// AUTO 
 
 input(  public static void main(String[] args){);//
-set(  VFCviewer  f = new VFCviewer(  args[0] ););/////// //   create the object application ......//////
+output(////);//JOptionPane.showMessageDialog(null, args[0], " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE );
+set(String filename = args[0].replace( "vfc://", "" ););//
+output(////);//JOptionPane.showMessageDialog(null, filename, " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE );
+set(  VFCviewer  f = new VFCviewer(  filename ););/////// //   create the object application ......//////
 generic(f.setSize( 1000, 1000););// ////
 generic(f.setVisible(true););// ////
 generic(f.setLayout(new FlowLayout()););// ////
 generic(  //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj , "Main Window" ) ;...   // //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;......  );////setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;
-output(JOptionPane.showMessageDialog(null, "Use PageUP/Down to Zoom and Mouse Drag to move.\n   (Copyright http://redhorsevr.com/ 1999~2023) " ,  "VFC Viewer by RHVR (version 1.0)",  JOptionPane.WARNING_MESS);//////
+output(JOptionPane.showMessageDialog(null, "Use PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright http://redhorsevr.com/ 1999~2023) ","VFC Viewer by RHVR (v1.0)",  JOptionPane.WARNING_MESSAGE ););//////
 end(  }  );//
 generic(    );////  AUTO ...
 end(  );// AUTO 
@@ -147,4 +150,4 @@ end();//
 ;    VFCviewer.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 2353 147 1165 1634 93 169   574   4294963577    java.key  0
+; 1651 1009 1517 938 90 169   760   4294963829    java.key  0

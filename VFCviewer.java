@@ -85,12 +85,15 @@ public  VFCviewer( String VFCfile ){
 
 
 public static void main(String[] args){
-	VFCviewer  f = new VFCviewer(  args[0] );
+	////
+	String filename = args[0].replace( "vfc://", "" );
+	////
+	VFCviewer  f = new VFCviewer(  filename );
 	f.setSize( 1000, 1000);
 	f.setVisible(true);
 	f.setLayout(new FlowLayout());
 	//setup frame using MAIN controls // Obj.Res.initMAINframe( Obj , "Main Window" ) ;...   // //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;......
-	JOptionPane.showMessageDialog(null, "Use PageUP/Down to Zoom and Mouse Drag to move.\n   (Copyright http://redhorsevr.com/ 1999~2023) " ,  "VFC Viewer by RHVR (version 1.0)",  JOptionPane.WARNING_MESSAGE )  ;
+	JOptionPane.showMessageDialog(null, "Use PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright http://redhorsevr.com/ 1999~2023) ","VFC Viewer by RHVR (v1.0)",  JOptionPane.WARNING_MESSAGE );
 	}
 
 
@@ -125,5 +128,5 @@ public boolean handleEvent(Event e){
 	return false; }
 }       /** end of class definition **/
 
-//  Export  Date: 10:09:54 AM - 30:Jan:2023...
+//  Export  Date: 11:38:42 AM - 30:Jan:2023...
 
