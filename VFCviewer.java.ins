@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : VFCviewer.java.ins
-;  File Date : 11:38:42 AM - 30:Jan:2023
+;  File Date : 04:45:17 PM - 30:Jan:2023
 
 generic(    );/////// // HYPER LINK TO HTML_VFCviewer ---> // FILE: HTML_VFCview.ins......//////
 generic(    );////  AUTO ...
@@ -99,13 +99,16 @@ end(  );// AUTO
 input(  public static void main(String[] args){);//
 output(////);//JOptionPane.showMessageDialog(null, args[0], " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE );
 set(String filename = args[0].replace( "vfc://", "" ););//
-output(////);//JOptionPane.showMessageDialog(null, filename, " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE );
+set(filename = filename.replace( "\\", "/" ););//
+set(filename = filename.replace( "%5C", "/" ););//
+set(filename = filename.replace( "//", "/" ););//
+output(JOptionPane.showMessageDialog(null, filename, " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE ););//////
 set(  VFCviewer  f = new VFCviewer(  filename ););/////// //   create the object application ......//////
 generic(f.setSize( 1000, 1000););// ////
 generic(f.setVisible(true););// ////
 generic(f.setLayout(new FlowLayout()););// ////
 generic(  //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj , "Main Window" ) ;...   // //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;......  );////setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;
-output(JOptionPane.showMessageDialog(null, "Use PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright http://redhorsevr.com/ 1999~2023) ","VFC Viewer by RHVR (v1.0)",  JOptionPane.WARNING_MESSAGE ););//////
+output(////);//JOptionPane.showMessageDialog(null, "Use PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright http://redhorsevr.com/ 1999~2023) ","VFC Viewer by RHVR (v1.0)",  JOptionPane.WARNING_MESSAGE );
 end(  }  );//
 generic(    );////  AUTO ...
 end(  );// AUTO 
@@ -150,4 +153,4 @@ end();//
 ;    VFCviewer.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 1651 1009 1517 938 90 169   760   4294963829    java.key  0
+; 232 181 1757 1246 90 169   634   4294963730    java.key  0
