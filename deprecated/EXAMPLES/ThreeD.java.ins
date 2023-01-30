@@ -1,0 +1,548 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : ThreeD.java.ins
+;  File Date : 10:01:20 PM - 21:Aug:1999
+
+
+input( /**  C:\jdk1.1\demo\WireFrame\ThreeD.java  **/  );//  FILE:C:\jdk1.1\demo\WireFrame\ThreeD.java
+generic();// /* 
+generic();//  * @(#)ThreeD.java 1.5 97/02/05 
+generic();//  * 
+generic();//  * Copyright (c) 1994-1997 Sun Microsystems, Inc. All Rights Reserved. 
+generic();//  * 
+generic();//  * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use, 
+generic();//  * modify and redistribute this software in source and binary code form, 
+generic();//  * provided that i) this copyright notice and license appear on all copies of 
+generic();//  * the software; and ii) Licensee does not utilize the software in a manner 
+generic();//  * which is disparaging to Sun. 
+generic();//  * 
+generic();//  * This software is provided "AS IS," without a warranty of any kind. ALL 
+generic();//  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY 
+generic();//  * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR 
+generic();//  * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE 
+generic();//  * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING 
+generic();//  * OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS 
+generic();//  * LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, 
+generic();//  * INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER 
+generic();//  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF 
+generic();//  * OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE 
+generic();//  * POSSIBILITY OF SUCH DAMAGES. 
+generic();//  * 
+generic();//  * This software is not designed or intended for use in on-line control of 
+generic();//  * aircraft, air traffic, aircraft navigation or aircraft communications; or in 
+generic();//  * the design, construction, operation or maintenance of any nuclear 
+generic();//  * facility. Licensee represents and warrants that it will not use or 
+generic();//  * redistribute the Software for such purposes. 
+generic();//  */
+generic();// /* A set of classes to parse, represent and display 3D wireframe models 
+generic();//    represented in Wavefront .obj format. */
+
+input(/** imports **/ );//
+set( import java.applet.Applet; );// 
+set( import java.awt.Graphics; );// 
+set( import java.awt.Color; );// 
+set( import java.awt.event.MouseEvent; );// 
+set( import java.awt.event.MouseListener; );// 
+set( import java.awt.event.MouseMotionListener; );// 
+generic(  import java.io.*;);//
+set( import java.net.*;);// 
+event( class FileFormatException extends Exception { );// 
+
+input( public FileFormatException(String s) );// 
+set( { );// 
+set(   super(s); );// 
+end( } );// 
+generic();// /** The representation of a 3D model */
+set( }  );// 
+event(   class Model3D { );// 
+set( float vert[]; );// 
+set( int tvert[]; );// 
+set( int nvert, maxvert; );// 
+set( int con[]; );// 
+set( int ncon, maxcon; );// 
+set( boolean transformed; );// 
+set( Matrix3D mat; );// 
+set( float xmin, xmax, ymin, ymax, zmin, zmax; );// 
+
+input( Model3D () );// 
+set( { );// 
+set(   mat =new Matrix3D (); );// 
+set( mat.xrot(20); );// 
+set( mat.yrot(30); );// 
+end( } );// 
+generic();// /** Create a 3D model by parsing an input stream */
+
+input( Model3D (InputStream is)throws IOException, FileFormatException );// 
+set( { );// 
+set(   this(); );// 
+set( StreamTokenizer st =new StreamTokenizer(is); );// 
+set( st.eolIsSignificant(true); );// 
+set( st.commentChar('#'); );// 
+branch();// 
+path( scan: );// 
+loop( while (true) { );// 
+branch( switch (st.nextToken()) { );// 
+path( default: );// 
+end( break scan; );// 
+set();// 
+path( case StreamTokenizer.TT_EOL: );// 
+end( break; );// 
+set();// 
+path( case StreamTokenizer.TT_WORD: );// 
+branch( if ("v".equals(st.sval)) );// 
+path( { );// 
+set(   double x =0, y =0, z =0; );// 
+branch( if (st.nextToken() == StreamTokenizer.TT_NUMBER) );// 
+path( { );// 
+set(   x =st.nval; );// 
+branch( if (st.nextToken() == StreamTokenizer.TT_NUMBER) );// 
+path( { );// 
+set(   y =st.nval; );// 
+branch( if (st.nextToken() == StreamTokenizer.TT_NUMBER) );// 
+path();//
+set( z =st.nval; );// 
+bend();// 
+bend();// 
+bend();// 
+set( } } addVert((float) x, (float) y, (float) z); );// 
+loop( while (st.ttype != StreamTokenizer.TT_EOL && st.ttype != StreamTokenizer.TT_EOF) st.nextToken() );// 
+lend( ; );// 
+set( } );// 
+path(   else );// 
+branch( if ("f".equals(st.sval) || "fo".equals(st.sval) || "l".equals(st.sval)) );// 
+path( { );// 
+set(   int start =-1; );// 
+set( int prev =-1; );// 
+set( int n =-1; );// 
+loop( while (true) if );// 
+branch( (st.nextToken() == StreamTokenizer.TT_NUMBER) );// 
+path( { );// 
+set(   n =(int) st.nval; );// 
+branch( if (prev >= 0) );// 
+path();//
+set( add(prev - 1, n - 1); );// 
+bend();// 
+branch( if (start < 0) );// 
+path();//
+set( start =n; );// 
+bend();// 
+set( prev =n; );// 
+set( } );// 
+path(   else );// 
+branch( if (st.ttype == '/') );// 
+path();//
+set( st.nextToken(); );// 
+path( else );// 
+end( break; );// 
+set();// 
+bend();// 
+bend();// 
+branch( if (start >= 0) );// 
+path();//
+set( add(start - 1, prev - 1); );// 
+bend();// 
+branch( if (st.ttype != StreamTokenizer.TT_EOL) );// 
+path();//
+end( break scan; );// 
+set();// 
+bend();// 
+set( } );// 
+path(   else );// 
+set( { );// 
+loop(   while (st.nextToken() != StreamTokenizer.TT_EOL && st.ttype != StreamTokenizer.TT_EOF); );// 
+bend();// 
+bend();// 
+bend( } );// 
+set();// 
+lend( } );// 
+set();// 
+set( } is.close(); );// 
+branch( if (st.ttype != StreamTokenizer.TT_EOF) );// 
+path();//
+set( throw new FileFormatException(st.toString()); );// 
+bend();// 
+bend();// 
+end( } );// 
+generic();// /** Add a vertex to this model */
+
+input( int addVert(float x, float y, float z) );// 
+set( { );// 
+set(   int i =nvert; );// 
+branch( if (i >= maxvert) );// 
+path();//
+branch( if (vert == null) );// 
+path( { );// 
+set(   maxvert =100; );// 
+set( vert =new float[maxvert * 3]; );// 
+set( } );// 
+path(   else );// 
+set( { );// 
+set(   maxvert *=2; );// 
+set( float nv[] =new float[maxvert * 3]; );// 
+set( System.arraycopy(vert, 0, nv, 0, vert.length); );// 
+set( vert =nv; );// 
+bend();// 
+bend();// 
+set( } i *=3; );// 
+set( vert[i] =x; );// 
+set( vert[i + 1] =y; );// 
+set( vert[i + 2] =z; );// 
+end( return nvert++; );// 
+end( } );// 
+generic();// /** Add a line from vertex p1 to vertex p2 */
+
+input( void add(int p1, int p2) );// 
+set( { );// 
+set(   int i =ncon; );// 
+branch( if (p1 >= nvert || p2 >= nvert) );// 
+path();//
+end( return; );// 
+set();// 
+bend();// 
+branch( if (i >= maxcon) );// 
+path();//
+branch( if (con == null) );// 
+path( { );// 
+set(   maxcon =100; );// 
+set( con =new int[maxcon]; );// 
+set( } );// 
+path(   else );// 
+set( { );// 
+set(   maxcon *=2; );// 
+set( int nv[] =new int[maxcon]; );// 
+set( System.arraycopy(con, 0, nv, 0, con.length); );// 
+set( con =nv; );// 
+bend();// 
+bend();// 
+set( } );// 
+branch(   if (p1 > p2) );// 
+path( { );// 
+set(   int t =p1; );// 
+set( p1 =p2; );// 
+set( p2 =t; );// 
+bend();// 
+set( } con[i] =(p1 << 16) | p2; );// 
+set( ncon =i + 1; );// 
+end( } );// 
+generic();// /** Transform all the points in this model */
+
+input( void transform() );// 
+set( { );// 
+branch(   if (transformed || nvert <= 0) );// 
+path();//
+end( return; );// 
+set();// 
+bend();// 
+branch( if (tvert == null || tvert.length < nvert * 3) );// 
+path();//
+set( tvert =new int[nvert*3]; );// 
+bend();// 
+set( mat.transform(vert, tvert, nvert); );// 
+set( transformed =true; );// 
+end( } );// 
+generic();// /* Quick Sort implementation 
+generic();//     */
+
+input( private void quickSort(int a[], int left, int right) );// 
+set( { );// 
+set(   int leftIndex =left; );// 
+set( int rightIndex =right; );// 
+set( int partionElement; );// 
+branch( if ( right > left) );// 
+path();//
+generic();// /* Arbitrarily establishing partition element as the midpoint of 
+generic();//           * the array. 
+generic();//           */
+set( { );// 
+set(   partionElement =a[ ( left + right ) / 2 ]; );// 
+generic();// // loop through the array until indices cross
+loop( while( leftIndex <= rightIndex ) { );// 
+generic();// /* find the first element that is greater than or equal to  
+generic();//              * the partionElement starting from the leftIndex. 
+generic();//              */
+loop( while( ( leftIndex < right ) && ( a[leftIndex] < partionElement ) ) ++leftIndex; );// 
+generic();// /* find an element that is smaller than or equal to  
+generic();//              * the partionElement starting from the rightIndex. 
+generic();//              */
+loop( while( ( rightIndex > left ) && ( a[rightIndex] > partionElement ) ) --rightIndex; );// 
+generic();// // if the indexes have not crossed, swap
+branch( if( leftIndex <= rightIndex ) );// 
+path( { );// 
+set(   swap(a, leftIndex, rightIndex); );// 
+set( ++leftIndex; );// 
+set( --rightIndex; );// 
+bend();// 
+lend( } );// 
+set();// 
+generic();// /* If the right index has not reached the left side of array 
+generic();//           * must now sort the left partition. 
+generic();//           */
+set( } );// 
+branch(   if( left < rightIndex ) );// 
+path();//
+set( quickSort( a, left, rightIndex ); );// 
+generic();// /* If the left index has not reached the right side of array 
+generic();//           * must now sort the right partition. 
+generic();//           */
+bend();// 
+branch( if( leftIndex < right ) );// 
+path();//
+set( quickSort( a, leftIndex, right ); );// 
+bend();// 
+bend();// 
+end( } } );// 
+
+input( private void swap(int a[], int i, int j) );// 
+set( { );// 
+set(   int T; );// 
+set( T =a[i]; );// 
+set( a[i] =a[j]; );// 
+set( a[j] =T; );// 
+end( } );// 
+generic();// /** eliminate duplicate lines */
+
+input( void compress() );// 
+set( { );// 
+set(   int limit =ncon; );// 
+set( int c[] =con; );// 
+set( quickSort(con, 0, ncon - 1); );// 
+set( int d =0; );// 
+set( int pp1 =-1; );// 
+loop( for (int i = 0; i < limit; i++) { );// 
+set( int p1 =c[i]; );// 
+branch( if (pp1 != p1) );// 
+path( { );// 
+set(   c[d] =p1; );// 
+set( d++; );// 
+bend();// 
+set( } pp1 =p1; );// 
+lend( } );// 
+set( ncon =d; );// 
+end( } );// 
+set( static Color gr[]; );// 
+generic();// /** Paint this model to a graphics context.  It uses the matrix associated 
+generic();//  with this model to map from model space to screen space. 
+generic();//  The next version of the browser should have double buffering, 
+generic();//  which will make this *much* nicer */
+
+input( void paint(Graphics g) );// 
+set( { );// 
+branch(   if (vert == null || nvert <= 0) );// 
+path();//
+end( return; );// 
+set();// 
+bend();// 
+set( transform(); );// 
+branch( if (gr == null) );// 
+path( { );// 
+set(   gr =new Color[16]; );// 
+loop( for (int i = 0; i < 16; i++) { );// 
+set( int grey =(int) (170*(1-Math.pow(i/15.0, 2.3))); );// 
+set( gr[i] =new Color(grey, grey, grey); );// 
+lend( } );// 
+set();// 
+bend();// 
+set( } int lg =0; );// 
+set( int lim =ncon; );// 
+set( int c[] =con; );// 
+set( int v[] =tvert; );// 
+branch( if (lim <= 0 || nvert <= 0) );// 
+path();//
+end( return; );// 
+set();// 
+bend();// 
+loop( for (int i = 0; i < lim; i++) { );// 
+set( int T =c[i]; );// 
+set( int p1 =((T >> 16) & 0xFFFF) * 3; );// 
+set( int p2 =(T & 0xFFFF) * 3; );// 
+set( int grey =v[p1 + 2] + v[p2 + 2]; );// 
+branch( if (grey < 0) );// 
+path();//
+set( grey =0; );// 
+bend();// 
+branch( if (grey > 15) );// 
+path();//
+set( grey =15; );// 
+bend();// 
+branch( if (grey != lg) );// 
+path( { );// 
+set(   lg =grey; );// 
+set( g.setColor(gr[grey]); );// 
+bend();// 
+set( } g.drawLine(v[p1], v[p1 + 1], v[p2], v[p2 + 1]); );// 
+lend( } );// 
+end( } );// 
+generic();// /** Find the bounding box of this model */
+
+input( void findBB() );// 
+set( { );// 
+branch(   if (nvert <= 0) );// 
+path();//
+end( return; );// 
+set();// 
+bend();// 
+set( float v[] =vert; );// 
+set( float xmin =v[0], xmax =xmin; );// 
+set( float ymin =v[1], ymax =ymin; );// 
+set( float zmin =v[2], zmax =zmin; );// 
+loop( for (int i = nvert * 3; (i -= 3) > 0;) { );// 
+set( float x =v[i]; );// 
+branch( if (x < xmin) );// 
+path();//
+set( xmin =x; );// 
+bend();// 
+branch( if (x > xmax) );// 
+path();//
+set( xmax =x; );// 
+bend();// 
+set( float y =v[i + 1]; );// 
+branch( if (y < ymin) );// 
+path();//
+set( ymin =y; );// 
+bend();// 
+branch( if (y > ymax) );// 
+path();//
+set( ymax =y; );// 
+bend();// 
+set( float z =v[i + 2]; );// 
+branch( if (z < zmin) );// 
+path();//
+set( zmin =z; );// 
+bend();// 
+branch( if (z > zmax) );// 
+path();//
+set( zmax =z; );// 
+bend();// 
+lend( } );// 
+set( this.xmax =xmax; );// 
+set( this.xmin =xmin; );// 
+set( this.ymax =ymax; );// 
+set( this.ymin =ymin; );// 
+set( this.zmax =zmax; );// 
+set( this.zmin =zmin; );// 
+end( } );// 
+generic();// /** An applet to put a 3D model into a page */
+end( } );// 
+event(   public class ThreeD extends Applet implements Runnable {);// 
+set( Model3D md; );// 
+set( boolean painted =true; );// 
+set( float xfac; );// 
+set( int prevx, prevy; );// 
+set( float xtheta, ytheta; );// 
+set( float scalefudge =1; );// 
+set( Matrix3D amat =new Matrix3D(), tmat = new Matrix3D(); String mdname = null; String message = null; public void init() );// 
+end();//
+
+input(public void init() {  );//
+set( mdname =getParameter("model"); );// 
+branch( try { );// 
+path();//
+set( scalefudge =Float.valueOf(getParameter("scale")).floatValue(); );// 
+set( } );// 
+path(  catch(Exception e){ );// 
+bend( } );// 
+set( ; );// 
+set( amat.yrot(20); );// 
+set( amat.xrot(20); );// 
+branch( if (mdname == null) );// 
+path();//
+set( mdname ="model.obj"; );// 
+bend();// 
+set( resize(getSize().width <= 20 ? 400 : getSize().width, getSize().height <= 20 ? 400 : getSize().height); );// 
+end( } );// 
+
+input( public void run() );// 
+set( { );// 
+set(   InputStream in =null;);// 
+set(String  fname = new String( "test.ins" ););//
+branch( try { );// 
+path();//
+set( );// Thread.currentThread().setPriority(Thread.MIN_PRIORITY); 
+set( in =new URL(getDocumentBase(),fname).openStream(););// 
+branch(try );//
+path( {  );//
+set();//InputStream  in  = new InputStream("test.ins");
+set(byte buff[] = new byte[64];;);//
+loop(while( in.read( buff , 0 , 64 ) != -1 ) {);//
+set(String  s = new String( buff , 0 );;);//
+set();//SO.addElement( track_stack_links(  new StatementObject( s ) )  ) ;
+process(System.out.println(">>>" + s + "<<<\n" ););//
+lend(} // end while );//
+path( }catch( Exception e ){);//
+process(System.out.println("Exception <LineNumber>! " +   e.getMessage() + "\n"  ););//
+bend( } );//
+set( } );// 
+path(   catch(Exception e) { );// 
+process(System.out.println("Exception!"););//
+set( md =null; );// 
+set( message =e.toString(); );// 
+bend( } );// 
+branch( try { );// 
+path();//
+branch( if (in != null));// 
+path();//
+set( in.close(););// 
+bend();// 
+set( } );// 
+path(   catch(Exception e) { );// 
+bend( } );// 
+set( repaint(); );// 
+end( } );// 
+
+input( public void start() );// 
+set( { );// 
+branch(   if (md == null && message == null) );// 
+path();//
+set( new Thread(this).start(); );// 
+bend();// 
+end( } );// 
+
+input( public void stop() );// 
+set( { );// 
+end(   } );// 
+
+input( public void paint(Graphics g) );// 
+set( { );// 
+branch(   if (md != null) );// 
+path( { );// 
+set(   md.mat.unit(); );// 
+set( md.mat.translate(-(md.xmin + md.xmax) / 2, -(md.ymin + md.ymax) / 2, -(md.zmin + md.zmax) / 2); );// 
+set( md.mat.mult(amat); );// 
+generic();// //     md.mat.scale(xfac, -xfac, 8 * xfac / getSize().width);
+set( md.mat.scale(xfac, -xfac, 16 * xfac / getSize().width); );// 
+set( md.mat.translate(getSize().width / 2, getSize().height / 2, 8); );// 
+set( md.transformed =false; );// 
+set( md.paint(g); );// 
+set( setPainted(); );// 
+set( } );// 
+path(   else );// 
+branch( if (message != null) );// 
+path( { );// 
+set(   g.drawString("Error in model:", 3, 20); );// 
+set( g.drawString(message, 10, 40); );// 
+bend();// 
+bend();// 
+end( } } );// 
+
+input( private synchronized void setPainted() );// 
+set( { );// 
+set(   painted =true; );// 
+set( notifyAll(); );// 
+end( } );// 
+generic();// //    private synchronized void waitPainted() {
+generic();// // while (!painted)
+generic();// //     wait();
+generic();// // painted = false;
+generic();// //    }
+end( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    ThreeD.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 28 178 791 485 416 85   375   4294957897    java.key  0

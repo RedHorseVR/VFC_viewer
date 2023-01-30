@@ -1,0 +1,352 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : MyTestApp.ins
+;  File Date : 06:28:10 AM - 29:Aug:1999
+
+
+input(/** recipe log **/);//<--- part of framework
+process(/**<TIME_STAMP> added Cross Hairs segments using: 'CrossHair.sg'  **/);//
+process(/** <TIME_STAMP>  added a creation call class Dialog1 using frame: 'Call Dialog.fm' and button event name Dialog **/);//
+process(/** <TIME_STAMP> LANGUAGE: Java ;   started Applet / Application  MyTestApp.class   using frame: 'Basic Applet.fm'   **/);//
+end();//
+
+input(/** Imports **/);//<--- part of framework
+generic(import java.awt.*;);//  
+generic(import java.applet.*;);//  
+generic(  import java.net.*;  );//
+set(import Dialog1; );//
+generic(  import  jcx.*;  );//
+set( import java.awt.event.*; );// 
+end(/*------------*/);//
+
+input(public class MyTestApp  extends Applet {);//  <----- start of class definition  has drawing vars for lines
+
+input(/** class data **/);//<--- used in framework
+generic(FCnavigate  NavTool ;);//Res.IDC_LIST1.addItem(" test " );
+generic(  URL CodeBase;  );//
+generic(int KeyHit = 'X';);//// // Resource Res;......
+generic(String KeyHit_Object;);//// // Resource Res;......
+set(int oldx = 0 , oldy = 0;);//
+set(int dx = 0 , dy = 0 ;);//
+set(  int CrossSize =  200;  );//
+set(  int CrossXPos = 10;  );//
+set(  int CrossYPos = 10;  );//
+output(  /**@shapeType AggregationLink*/  );//
+generic(  private FCview lnkView;);//
+generic(  /** end variables **/  );//
+generic(  /** methods **/      );//// // <--- used in framework......
+set(Resource Res;);//
+end(/** end variables **/ );//
+
+input(/** events **/);//<--- used in framework
+set( Command searchCmd =new Command(Command.SEARCH ););// 
+set( Command sortCmd =new Command(Command.SORT ););// 
+end();//
+event(public boolean keyDown( Event e , int key ) {);//
+set(KeyHit = key;);//
+set(int  DELTA=70;);//
+branch(switch( key  ){);//
+path( case 1000 :);//home
+process(lnkView.Zoom=15;);//lnkView.zoom( g , ZoomScale );
+set(CrossXPos = 0 ;);//oldx = 0;
+set(CrossYPos = 0 ;);//oldy = 0;
+process(  repaint();  );//
+process();//  repaint();  
+end(break; );//
+path( case 'Z' :);//
+set(case 1002 :);//PageUP
+process(lnkView.Zoom+=5;);//lnkView.zoom( g , ZoomScale );
+process(  repaint();  );//
+end(break; );//
+path( case 'z' :);//
+set(case 1003 :);//PageDOWN
+process(lnkView.Zoom-=5;);//lnkView.zoom( g , ZoomScale );
+process(  repaint();  );//
+end(break; );//
+path( case 1004:);// UP :
+set(  CrossYPos -=DELTA;);////  CrossYPos +=  dy;////
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+end(break; );//
+path( case 1005 :);// DOWN :
+set(  CrossYPos +=DELTA;);////  CrossYPos +=  dy;////
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+end(break; );//
+path( case 1006:);// LEFT :
+set(  CrossXPos -=DELTA ;);////  CrossXPos+= dx;////
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+end(break; );//
+path( case 1007:);// RIGHT :
+set(  CrossXPos +=DELTA ;);////  CrossXPos+= dx;////
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+end(break; );//
+path( default: );//
+process(  repaint();  );//
+end(return false; );//
+bend( } );//
+end(return true;  });//
+
+input(public TreePanel  initTree() {);//
+generic(  TreeNode root;);//
+generic(TreePanel treePane;);//
+process(treePane = new TreePanel(););//Scontainer.add ( treePane = new TreePanel());
+generic(  treePane.showPreIcons ( false ););//  treePane.showPreIcons (true);  
+generic(  treePane.setFont ( new Font( "Areal" , Font.PLAIN , 10) ););//
+generic(  treePane.setUrlFont ( new Font( "Areal" , Font.PLAIN , 10) ););//
+generic();//  treePane.setFont (f);  
+generic();//  treePane.setUrlFont (uf);  
+generic();//  treePane.addNotify();
+generic(  URL[] imgUrls = null;);//
+branch(  try {  );//
+path();//
+set(  imgUrls = new URL [10];  );//
+set(  imgUrls [0] = new URL (CodeBase,  "iconpics/ylnode.gif");  );//
+set(  imgUrls [1] = new URL (CodeBase,  "iconpics/grnode.gif");  );//
+set(  imgUrls [2] = new URL (CodeBase,  "iconpics/phone.gif");  );//
+set(  imgUrls [3] = new URL (CodeBase,  "iconpics/ppen.gif");  );//
+set(  imgUrls [4] = new URL (CodeBase,  "iconpics/dblptr.gif");  );//
+set(  imgUrls [5] = new URL (CodeBase,  "iconpics/file.gif");  );//
+set(  imgUrls [6] = new URL (CodeBase,  "iconpics/excl.gif");  );//
+set(  imgUrls [7] = new URL (CodeBase,  "iconpics/yes.gif");  );//
+set(  imgUrls [8] = new URL (CodeBase,  "iconpics/no.gif");  );//
+set(  imgUrls [9] = new URL (CodeBase,  "iconpics/url.gif");  );//
+set(  }  );//
+path(  catch (MalformedURLException e) {  );//
+generic(    );//// // do error recovery ......
+bend(  }  );//
+set(  root = treePane.getRoot ();  );//
+generic(  root.setIconURL (imgUrls [0]);  );//
+generic(  root.setName  ("Inputs"););//
+generic(  root.select();  );//
+set(  TreeNode t0 = root.addChild (new TreeNode(null, "Child with two Icon states", imgUrls [7], imgUrls [6]));  );//
+generic(  t0.setCloseIconURL (imgUrls [8]);  );//
+set(  TreeNode t00 = t0.addChild (new TreeNode(null, "Expand me to See the scroll bars", null, null));  );//
+loop(  for (int i=0; i<50; i++)  );//
+lend(  t00.addChild (new TreeNode(null, "Child with file icon "+Integer.toString(i), imgUrls [5], imgUrls [5]));  );//
+generic(  t00.collapse();  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre Yes + Pen icon", imgUrls [3], imgUrls [7]));  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre No + Phone icon", imgUrls [2], imgUrls [8]));  );//
+set(  TreeNode t1 = root.addChild (new TreeNode(null, "Child with grey icon", imgUrls [1], null));  );//
+set(  TreeNode t10 = t1.addChild (new TreeNode(null, "Child with yellow icon", imgUrls [0], null));  );//
+generic(  t10.addChild (new TreeNode(null, "Child No icon", null, null));  );//
+set(  TreeNode x = t10.addChild (new TreeNode(null, "x", imgUrls [0], null));  );//
+set(  TreeNode y = x.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+set(  TreeNode z = y.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+generic(  z.addChild (new TreeNode(null, "Child with a pre Yes +file icon", imgUrls [5], imgUrls [7]));  );//
+generic(  t1.addChild (new TreeNode(null, "Child 2 With Pre No + Exclamation icon", imgUrls [6], imgUrls [8]));  );//
+generic(  root.addChild (new TreeNode(null, "Child withFile icon", imgUrls [5], null));  );//
+end(return treePane ;    });//
+output(// init method);//
+set(TreePanel TreeView;);//
+set(TreeTool  Tool;);//
+
+input(public void init(){);//  
+set(  CodeBase = getCodeBase();  );//
+set(Res  = new Resource( this , CodeBase ););//
+process(add(  Tool = new TreeTool( CodeBase , 10 , 100 , 200 , 300  )  ););//add(  Tool = new TreeTool( CodeBase )  );
+process(Tool.show(););//
+set(Tool.addActionListener(searchCmd););// 
+branch(try );//
+path( {  );//
+set(String  vfcname =getParameter("flowfile"););// 
+generic(lnkView = new FCview( getDocumentBase() , vfcname  ););//// // Res  = new Resource( this , CodeBase );......
+generic( NavTool = new FCnavigate( Res.IDC_LIST1 , getDocumentBase() , vfcname  ););//Res.IDC_LIST1.addItem(" test " );
+set(Res.IDC_COMBO2.removeAll( ););//
+set(Res.IDC_COMBO2.addItem( "input" ););//
+set(Res.IDC_COMBO2.addItem( "event" ););//
+set(Res.IDC_COMBO2.addItem( "process" ););//
+set(Res.IDC_COMBO2.addItem( "set" ););//
+set(Res.IDC_COMBO2.addItem( "output" ););// 
+set(Res.IDC_COMBO2.addItem( "loop" ););// 
+set(Res.IDC_COMBO2.addItem( "lend" ););// 
+set(Res.IDC_COMBO2.addItem( "branch" ););// 
+set(Res.IDC_COMBO2.addItem( "bend" ););// 
+set(Res.IDC_COMBO2.addItem( "path" ););// 
+set(Res.IDC_COMBO2.addItem( "end" ););// 
+set(Res.IDC_COMBO2.addItem( "all" ););// 
+process(  repaint();  );//
+path( }catch( Exception e ){);//
+process(System.out.println("Exception <LineNumber>! " +   e.getMessage() + "\n"  ););//
+bend( } );//
+end(  }  );//
+
+input(public static void main(String args[])  {);//  
+generic(MyTestApp  Obj = new MyTestApp(););//  create the object application 
+set(//  load the resources ignoring MAIN);//Obj.Res = new Resource( Obj , getCodeBase() );
+set();//Obj.CodeBase = Obj.getCodeBase();
+set(Obj.Res  = new Resource( ););//Obj.Res  = new Resource( Obj , Obj.getCodeBase()  );
+process(Obj.Res.initMAINframe( Obj , "Main Window" ) ;);//setup frame using MAIN controls
+branch(try );//
+path( {  );//
+branch(try );//
+path( {  );//
+generic(Obj.lnkView = new FCview( Obj.getCodeBase() , "test.ins" ););//// // Res  = new Resource( this , CodeBase );......
+path( }catch( Exception e ){);//
+process(System.out.println("Exception <LineNumber>! " +   e.getMessage() + "\n"  ););//
+bend( } );//
+path( }catch( Exception   e ){);//
+process(System.out.println("Hit e:" ););//
+bend( } );//
+end(} );//  
+
+input(  public void paint(Graphics g){  );//
+generic();//  drawCrossHair( g, CrossXPos, CrossYPos, CrossSize );  
+generic(  g.drawString( "KeyHit Code =" + KeyHit , 250 , 20 ););//
+generic(  g.drawString( "KeyHit Object =" + KeyHit_Object  , 250 , 40 ););//
+process(lnkView.draw(g , CrossXPos + 20, CrossYPos + 20 , 25););//
+end(  }  );//
+
+input(  boolean processButtons( Event e ){);//
+set(int  DZ = 4;);//
+branch(if( "Tree View".equals(e.arg) ));//
+path({ );// 
+set(Dialog1 D = new Dialog1(););//
+generic(Frame DialogF  = Res.initIDD_DIALOG1(  D , new TreeTool( CodeBase , 40 , 60 , 150 , 300 ) ););//Frame DialogF  = Res.initIDD_DIALOG1(   D  );
+path(} else if( "Home".equals( e.arg ) ) {);//
+process(lnkView.Zoom=10;);//lnkView.zoom( g , ZoomScale );
+set(CrossXPos = 200 ;);//oldx = 0;
+set(CrossYPos = 0 ;);//oldy = 0;
+process(  repaint();  );//
+process(  repaint();  );//
+path(} else if( "Zoom In".equals( e.arg ) ) {);//
+branch(if(  lnkView.Zoom > 5 ));//
+path( { );//
+process(lnkView.Zoom+=DZ ;);//lnkView.zoom( g , ZoomScale );
+path( }else{ );//
+process(lnkView.Zoom+=1 ;);//lnkView.zoom( g , ZoomScale );
+bend( } );//
+process(  repaint();  );//
+path(} else if( "Zoom Out".equals( e.arg ) ) {);//
+branch(if(  lnkView.Zoom > 5 ));//
+path( { );//
+process(lnkView.Zoom-=DZ;);//lnkView.zoom( g , ZoomScale );
+path( }else{ );//
+process(lnkView.Zoom-=1 ;);//lnkView.zoom( g , ZoomScale );
+bend( } );//
+process(  repaint();  );//
+path(}else{ );//
+branch(  switch (e.id){  );//
+path(  case Event.MOUSE_DOWN:  );//
+set(  CrossXPos = e.x;);//  CrossXPos+= dx;
+set(  CrossYPos = e.y;);//  CrossYPos +=  dy;
+branch(if(  oldx != CrossXPos || oldy != CrossYPos   ));//
+path( { );//
+set(dx =   CrossXPos - oldx ;);//dx =  0 ;
+set( dy = CrossYPos - oldy;);//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+path( }else{ );//
+bend( } );//
+path(  case Event.MOUSE_DRAG:  );//
+set({);//
+set(  CrossXPos = e.x - dx;);//  CrossXPos+= dx;
+set(  CrossYPos = e.y  - dy;);//  CrossYPos +=  dy;
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+set(});//
+path(default:   );//
+end(return false; );//
+bend(  }  );//
+bend(} );// 
+end(  return true ;});//
+
+input(  public boolean handleEvent(Event e){  );//
+process(System.out.println("handleEvent() called ..."+ e.arg + "\n"););//
+process(  System.out.println( "Tree  Section is ..." + Tool.getSelection() +"\n"););//  System.out.println( "Tree  Section is ..." + buff +"\n");
+branch(  if( processButtons( e ) ));//
+path();//
+generic(  {  );//
+end(  return true;  );//
+path(}else{ );//
+branch(  switch (e.id){  );//
+path(  case Event.ACTION_EVENT:  );//
+branch(  if(  "X".equals(e.arg) ||  "OK".equals(e.arg) || "CLOSE".equals(e.arg)  ));//
+path();//
+generic(  {  );//
+generic(  System.exit(0);      );//// //  THIS LOGIC CALL CAUSES A SECURITY EXCEPTION WHEN USED IN APPLET MODE......
+end(  return true;  );//
+bend(  }  );//
+end(  break;  );//
+path(  case Event.WINDOW_DESTROY:  );//
+generic(  System.exit(0);      );//// //   THIS FAILS TO FIRE IN APPLICATION MODE......
+end(  return true;  );//
+path(default:   );//
+branch(  if (e.id == Event.WINDOW_DESTROY) {);//
+path();//
+bend(  }  );//
+bend(  }  );//
+bend(  }  );//
+end(  return super.handleEvent( e ) ; });//  return false; }  
+
+input(// action method);//
+set(Toolkit T;);//
+set(String  buff; );//
+
+input(public boolean action( Event e , Object what ) {);//
+process(System.out.println("action() called ...\n"););//
+process(buff = TreeTool.getSelection() ;);//
+process(  System.out.println( "Tree  Section is ..." + buff +"\n"););//
+set(KeyHit =  NavTool.GoTo( what.toString() ););// KeyHit =  -10;
+set(KeyHit_Object  = what.toString(););//lnkView.DrawComments =((Checkbox) what).getState();
+branch(  if(  "true".equals(KeyHit_Object) ||  "false".equals(KeyHit_Object)  ));//
+path(  {  );//
+set(lnkView.DrawComments = KeyHit_Object.equals( "true" ););//
+process(  repaint();  );//
+path(} else if( KeyHit > 0 ) {);//
+process(  repaint();  );//
+path(}else{ );//
+branch(  if (e.target instanceof TreePanel ));//
+path({ );//
+process(System.out.println("Hello world!");  );//
+bend(} );//
+end(  return false;);//
+bend(  }  );//
+end(return true ;  });//  return false; }  
+
+input(}       /** end of class definition **/);// <------------ end of class definition
+
+input(// listener method);//
+event(   class Command implements ActionListener { );// 
+set( static final int SEARCH =0; );// 
+set( static final int SORT =1; );// 
+set( int id; );// 
+branch();//
+path();//
+
+input( public Command(int id ));// 
+set( { );// 
+set(   this.id =id; );// 
+end( } );// 
+path();//
+
+input( public void actionPerformed(ActionEvent e) );// 
+set( { );// 
+branch(   switch(id) { );// 
+path( case SEARCH: );// 
+set(   System.out.println("Searching..."); );// 
+end( break; );// 
+path( case SORT: );// 
+set(   System.out.println("Sorting...."); );// 
+end( break; );// 
+bend( } );// 
+end( } );// 
+bend( }  );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 0 13158600 0 0 13158600 65280 16777215 0 0 0 0 0 33023
+;    MyTestApp.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 526 5 1004 676 270 108   561   4294962293    java.key  0

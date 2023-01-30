@@ -1,0 +1,19 @@
+<title>HYPER LINK TO TreeApplet</title>  
+<h1>  
+<i>  
+TreeApplet Applet Page  
+</i>  
+</h1>  
+<hr>  
+<applet code=TreeTool.class width=400 height=400>
+</applet>  
+<hr>  
+<a href="TreeApplet.java"> Export source code from TreeApplet.ins </a>  
+<!-  FlowCode File: HTML_TreeApplet.ins-->  
+<!-  Export  File: TreeApplet.html-->  
+<!-  Export  Date: 09:27:16 AM - 27:Aug:1999-->  
+
+//  FlowCode File: HTML Tree.html.ins...
+//  Export  File: _vfc_export.txt...
+//  Export  Date: 10:39:57 AM - 27:Aug:1999...
+

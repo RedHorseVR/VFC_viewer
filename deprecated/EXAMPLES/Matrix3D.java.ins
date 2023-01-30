@@ -1,0 +1,247 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : Matrix3D.java.ins
+;  File Date : 05:48:38 PM - 21:Aug:1999
+
+
+input( /**  C:\jdk1.1\demo\WireFrame\Matrix3D.java  **/  );//  FILE:C:\jdk1.1\demo\WireFrame\Matrix3D.java
+generic();// /* 
+generic();//  * @(#)Matrix3D.java 1.2 96/12/06 
+generic();//  * 
+generic();//  * Copyright (c) 1994-1996 Sun Microsystems, Inc. All Rights Reserved. 
+generic();//  * 
+generic();//  * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use, 
+generic();//  * modify and redistribute this software in source and binary code form, 
+generic();//  * provided that i) this copyright notice and license appear on all copies of 
+generic();//  * the software; and ii) Licensee does not utilize the software in a manner 
+generic();//  * which is disparaging to Sun. 
+generic();//  * 
+generic();//  * This software is provided "AS IS," without a warranty of any kind. ALL 
+generic();//  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY 
+generic();//  * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR 
+generic();//  * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE 
+generic();//  * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING 
+generic();//  * OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS 
+generic();//  * LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, 
+generic();//  * INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER 
+generic();//  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF 
+generic();//  * OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE 
+generic();//  * POSSIBILITY OF SUCH DAMAGES. 
+generic();//  * 
+generic();//  * This software is not designed or intended for use in on-line control of 
+generic();//  * aircraft, air traffic, aircraft navigation or aircraft communications; or in 
+generic();//  * the design, construction, operation or maintenance of any nuclear 
+generic();//  * facility. Licensee represents and warrants that it will not use or 
+generic();//  * redistribute the Software for such purposes. 
+generic();//  */
+generic();// /** A fairly conventional 3D matrix object that can transform sets of 
+generic();//     3D points and perform a variety of manipulations on the transform */
+event( class Matrix3D { );// 
+set( float xx, xy, xz, xo; );// 
+set( float yx, yy, yz, yo; );// 
+set( float zx, zy, zz, zo; );// 
+set( static final double pi =3.14159265; );// 
+generic();// /** Create a new unit matrix */
+
+input( Matrix3D () );// 
+set( { );// 
+set(   xx =1.0f; );// 
+set( yy =1.0f; );// 
+set( zz =1.0f; );// 
+end( } );// 
+generic();// /** Scale by f in all dimensions */
+
+input( void scale(float f) );// 
+set( { );// 
+set(   xx *=f; );// 
+set( xy *=f; );// 
+set( xz *=f; );// 
+set( xo *=f; );// 
+set( yx *=f; );// 
+set( yy *=f; );// 
+set( yz *=f; );// 
+set( yo *=f; );// 
+set( zx *=f; );// 
+set( zy *=f; );// 
+set( zz *=f; );// 
+set( zo *=f; );// 
+end( } );// 
+generic();// /** Scale along each axis independently */
+
+input( void scale(float xf, float yf, float zf) );// 
+set( { );// 
+set(   xx *=xf; );// 
+set( xy *=xf; );// 
+set( xz *=xf; );// 
+set( xo *=xf; );// 
+set( yx *=yf; );// 
+set( yy *=yf; );// 
+set( yz *=yf; );// 
+set( yo *=yf; );// 
+set( zx *=zf; );// 
+set( zy *=zf; );// 
+set( zz *=zf; );// 
+set( zo *=zf; );// 
+end( } );// 
+generic();// /** Translate the origin */
+
+input( void translate(float x, float y, float z) );// 
+set( { );// 
+set(   xo +=x; );// 
+set( yo +=y; );// 
+set( zo +=z; );// 
+end( } );// 
+generic();// /** rotate theta degrees about the y axis */
+
+input( void yrot(double theta) );// 
+set( { );// 
+set(   theta *=(pi / 180); );// 
+set( double ct =Math.cos(theta); );// 
+set( double st =Math.sin(theta); );// 
+set( float Nxx =(float) (xx * ct + zx * st); );// 
+set( float Nxy =(float) (xy * ct + zy * st); );// 
+set( float Nxz =(float) (xz * ct + zz * st); );// 
+set( float Nxo =(float) (xo * ct + zo * st); );// 
+set( float Nzx =(float) (zx * ct - xx * st); );// 
+set( float Nzy =(float) (zy * ct - xy * st); );// 
+set( float Nzz =(float) (zz * ct - xz * st); );// 
+set( float Nzo =(float) (zo * ct - xo * st); );// 
+set( xo =Nxo; );// 
+set( xx =Nxx; );// 
+set( xy =Nxy; );// 
+set( xz =Nxz; );// 
+set( zo =Nzo; );// 
+set( zx =Nzx; );// 
+set( zy =Nzy; );// 
+set( zz =Nzz; );// 
+end( } );// 
+generic();// /** rotate theta degrees about the x axis */
+
+input( void xrot(double theta) );// 
+set( { );// 
+set(   theta *=(pi / 180); );// 
+set( double ct =Math.cos(theta); );// 
+set( double st =Math.sin(theta); );// 
+set( float Nyx =(float) (yx * ct + zx * st); );// 
+set( float Nyy =(float) (yy * ct + zy * st); );// 
+set( float Nyz =(float) (yz * ct + zz * st); );// 
+set( float Nyo =(float) (yo * ct + zo * st); );// 
+set( float Nzx =(float) (zx * ct - yx * st); );// 
+set( float Nzy =(float) (zy * ct - yy * st); );// 
+set( float Nzz =(float) (zz * ct - yz * st); );// 
+set( float Nzo =(float) (zo * ct - yo * st); );// 
+set( yo =Nyo; );// 
+set( yx =Nyx; );// 
+set( yy =Nyy; );// 
+set( yz =Nyz; );// 
+set( zo =Nzo; );// 
+set( zx =Nzx; );// 
+set( zy =Nzy; );// 
+set( zz =Nzz; );// 
+end( } );// 
+generic();// /** rotate theta degrees about the z axis */
+
+input( void zrot(double theta) );// 
+set( { );// 
+set(   theta *=(pi / 180); );// 
+set( double ct =Math.cos(theta); );// 
+set( double st =Math.sin(theta); );// 
+set( float Nyx =(float) (yx * ct + xx * st); );// 
+set( float Nyy =(float) (yy * ct + xy * st); );// 
+set( float Nyz =(float) (yz * ct + xz * st); );// 
+set( float Nyo =(float) (yo * ct + xo * st); );// 
+set( float Nxx =(float) (xx * ct - yx * st); );// 
+set( float Nxy =(float) (xy * ct - yy * st); );// 
+set( float Nxz =(float) (xz * ct - yz * st); );// 
+set( float Nxo =(float) (xo * ct - yo * st); );// 
+set( yo =Nyo; );// 
+set( yx =Nyx; );// 
+set( yy =Nyy; );// 
+set( yz =Nyz; );// 
+set( xo =Nxo; );// 
+set( xx =Nxx; );// 
+set( xy =Nxy; );// 
+set( xz =Nxz; );// 
+end( } );// 
+generic();// /** Multiply this matrix by a second: M = M*R */
+
+input( void mult(Matrix3D rhs) );// 
+set( { );// 
+set(   float lxx =xx * rhs.xx + yx * rhs.xy + zx * rhs.xz; );// 
+set( float lxy =xy * rhs.xx + yy * rhs.xy + zy * rhs.xz; );// 
+set( float lxz =xz * rhs.xx + yz * rhs.xy + zz * rhs.xz; );// 
+set( float lxo =xo * rhs.xx + yo * rhs.xy + zo * rhs.xz + rhs.xo; );// 
+set( float lyx =xx * rhs.yx + yx * rhs.yy + zx * rhs.yz; );// 
+set( float lyy =xy * rhs.yx + yy * rhs.yy + zy * rhs.yz; );// 
+set( float lyz =xz * rhs.yx + yz * rhs.yy + zz * rhs.yz; );// 
+set( float lyo =xo * rhs.yx + yo * rhs.yy + zo * rhs.yz + rhs.yo; );// 
+set( float lzx =xx * rhs.zx + yx * rhs.zy + zx * rhs.zz; );// 
+set( float lzy =xy * rhs.zx + yy * rhs.zy + zy * rhs.zz; );// 
+set( float lzz =xz * rhs.zx + yz * rhs.zy + zz * rhs.zz; );// 
+set( float lzo =xo * rhs.zx + yo * rhs.zy + zo * rhs.zz + rhs.zo; );// 
+set( xx =lxx; );// 
+set( xy =lxy; );// 
+set( xz =lxz; );// 
+set( xo =lxo; );// 
+set( yx =lyx; );// 
+set( yy =lyy; );// 
+set( yz =lyz; );// 
+set( yo =lyo; );// 
+set( zx =lzx; );// 
+set( zy =lzy; );// 
+set( zz =lzz; );// 
+set( zo =lzo; );// 
+end( } );// 
+generic();// /** Reinitialize to the unit matrix */
+
+input( void unit() );// 
+set( { );// 
+set(   xo =0; );// 
+set( xx =1; );// 
+set( xy =0; );// 
+set( xz =0; );// 
+set( yo =0; );// 
+set( yx =0; );// 
+set( yy =1; );// 
+set( yz =0; );// 
+set( zo =0; );// 
+set( zx =0; );// 
+set( zy =0; );// 
+set( zz =1; );// 
+end( } );// 
+generic();// /** Transform nvert points from v into tv.  v contains the input 
+generic();//         coordinates in floating point.  Three successive entries in 
+generic();//  the array constitute a point.  tv ends up holding the transformed 
+generic();//  points as integers; three successive entries per point */
+
+input( void transform(float v[], int tv[], int nvert) );// 
+set( { );// 
+set(   float lxx =xx, lxy =xy, lxz =xz, lxo =xo; );// 
+set( float lyx =yx, lyy =yy, lyz =yz, lyo =yo; );// 
+set( float lzx =zx, lzy =zy, lzz =zz, lzo =zo; );// 
+loop( for (int i = nvert * 3; (i -= 3) >= 0;) { );// 
+set( float x =v[i]; );// 
+set( float y =v[i + 1]; );// 
+set( float z =v[i + 2]; );// 
+set( tv[i ] =(int) (x * lxx + y * lxy + z * lxz + lxo); );// 
+set( tv[i + 1] =(int) (x * lyx + y * lyy + z * lyz + lyo); );// 
+set( tv[i + 2] =(int) (x * lzx + y * lzy + z * lzz + lzo); );// 
+lend( } );// 
+end( } );// 
+
+input( public String toString() );// 
+set( { );// 
+end(   return ("[" + xo + "," + xx + "," + xy + "," + xz + ";" + yo + "," + yx + "," + yy + "," + yz + ";" + zo + "," + zx + "," + zy + "," + zz + "]"); );// 
+end( } );// 
+end( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    Matrix3D.java   //   ;
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 60 146 625 511 1 95   219   58    VJ6.key  0

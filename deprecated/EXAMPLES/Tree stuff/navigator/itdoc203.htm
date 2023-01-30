@@ -1,0 +1,189 @@
+
+
+<HTML>
+
+<HEAD>
+<meta name=description content="Image Intelligence Ltd.  Java solutions for website navigation. Professional and free menu applets.">
+<meta name=keywords content="java,applet,menu,tree,index,database,navigation,applets,design,website,intranet">
+<title>iTree menu systems</title>
+<script language="javascript" src="../elements/header.js"></script>
+</head>
+<BODY marginheight=0 marginwidth=0 leftmargin="0" topmargin="0" bgcolor="#ffffff">
+
+
+<script language="javascript">dispHead();</script>
+<IMG SRC="../images/itmenus.gif" WIDTH=360 HEIGHT=50 BORDER=0 ALT="iTree Menu Systems">
+<FONT SIZE=2 FACE="VERDANA,ARIAL,HELVETICA"><STRONG>iTree Mini Documentation</STRONG></FONT>
+
+
+<script language="javascript">dispMid();</script>
+<FONT SIZE=2 FACE="VERDANA,ARIAL,HELVETICA">
+This page covers everything about using the free version of iTree Mini; it also
+describes the basics for all the other versions of iTree. The links below only
+contain additional documentation for the more advanced versions - they do not
+repeat the information on this page.
+
+
+<FONT SIZE=1 FACE="VERDANA,ARIAL,HELVETICA"><dir>
+<li><A HREF="itdoc205.htm">Additional documentation for iTree Mini (commercial version)</A>
+<li><A HREF="itdoc206.htm">Additional documentation for iTree Express</A>
+<li><A HREF="itdoc207.htm">Additional documentation for iTree Pro</A>
+</dir></FONT>
+
+
+<STRONG>1. Inserting the applet in your HTML page.</STRONG>
+
+<BR>&nbsp;<BR>
+When putting applets into web pages, it's best to use a
+direct HTML code editor that allows you to view and edit
+the HTML directly. Frontpage is not a good idea. A Windows
+notepad is better than Frontpage.
+<BR>&nbsp;<BR>
+Start off by copying and pasting the following into 
+your HTML at the point where you want the applet to display.
+<BR>&nbsp;<BR>
+<FONT SIZE=2 COLOR="#0000FF" FACE="VERDANA,ARIAL,HELVETICA">
+&lt;applet code="it3free.class" width=140 height=200&gt;<BR>
+&lt;param name=copyright value="Image Intelligence Ltd. 1998 (www.imint.com)"&gt;<BR>
+&lt;param name=colourscheme value=7&gt;<BR>
+&lt;param name=escapepage value="non_java_menu.htm"&gt;<BR>
+&lt;/applet &gt;</FONT>
+
+<BR>&nbsp;<BR>
+You can enter whatever height and width you wish. If you have
+a commercial version not called "it3free.class", change the file
+name of the applet as appropriate.
+The copyright information
+must be entered exactly as above - otherwise the applet won't work.
+In the free version there are just two further parameters.
+The <EM>colourscheme</EM> parameter 
+takes values from 0 to 7, where 0 to 6 are pre-defined
+colour schemes and 7 is a random selection from schemes
+1 to 6. The same colour schemes can be seen if you click
+on the colour button in the top right-hand corner of the
+applet.
+The <EM>escapepage</EM> parameter must be given the name
+of your non-java menu.
+There are no further ways to change the appearance of the
+free version of this applet, and the commercial versions
+permit only additional colour and scroll width changes. If
+you want to have greater control over applet appearance,
+you need an <A HREF="../islide/g5doc0.htm">iSlide</A> menu system.
+<BR>&nbsp;<BR>
+<STRONG>2. Writing your own menu</STRONG>
+<BR>&nbsp;<BR>
+The menu content is kept in a separate text file called
+"menu.txt". This file must be in the same directory as
+the applet files. The format of the file is a standard
+format used by almost all our applets and you can read
+about it here: <A HREF="../gen5/g5_0.htm">5th Generation Index Systems</A>. We wrote a special
+<EM>free</EM> tool for automatically creating and editing such files -
+You can <A HREF="http://www.i-mint.com/downloads/index01.zip">downloaded it free of
+charge</A> from our website. Additional free tools may also be made available -
+see under <A HREF="../gen5/g5_0.htm">5th Generation Index Systems</A>.
+If you like, however, you can also
+just write the file with a text editor. You can take a look
+at an existing menu file <A HREF="menu.txt">here</A>, or use
+the following description.
+<BR>&nbsp;<BR>
+The index file consists of one line for each entry
+in the menu. Empty lines are ignored; comments can be
+inserted after // (double slash) which the applet ignores.
+A valid line must have the following format:
+<BR>&nbsp;<BR>
+<FONT SIZE=2 COLOR="#0000FF" FACE="VERDANA,ARIAL,HELVETICA">
+"TEXT:My Text" "1" "" "LINK:myfile.htm,myFrame" "[Message]"
+</FONT>
+<BR>&nbsp;<BR>
+This would be the equivalent of the HTML:<BR>
+<FONT SIZE=2 COLOR="#0000FF" FACE="VERDANA,ARIAL,HELVETICA">
+&lt;A HREF="myfile.htm" TARGET="myFrame"&gt;My Text&lt;/A&gt;
+</FONT><BR>
+In other words, it displays the text "My Text", hyperlinks it
+to "myfile.htm", and loads the page into a frame called
+"myFrame" when clicked. In addition, a message to appear in the
+browser status bar can be entered between the final set of
+inverted commas. If you want to know more about what kind of
+links can be entered, <A HREF="../gen5/g5_14.htm">this page</A>
+contains a lot of information.
+<BR>&nbsp;<BR>
+Following <FONT SIZE=2 COLOR="#0000FF" FACE="VERDANA,ARIAL,HELVETICA">"TEXT:My Text"</FONT>
+in the example above, there are two further entries reading
+<FONT SIZE=2 COLOR="#0000FF" FACE="VERDANA,ARIAL,HELVETICA">"1" ""</FONT>.
+The first of these is the hierarchy marker, and tells the applet how deeply
+to indent the entry. Creating a sub-menu
+is easy - you just put all the sub-menu contents after the folder
+entry line in the index file, and make sure their hierarchy marker
+is 1 greater than the hierarchy marker of the folder entry.
+Following the hierarchy marker are a couple of "". In
+this applet these markers have no function, but they MUST be entered or
+the applet will not work. They are there because these index files must be
+compatible with all our other menu applets.
+<BR>&nbsp;<BR>
+When writing an index manually, the most frequent mistake is
+to put the wrong number of ". Count them, or use the editing tool
+mentioned above.
+<BR>&nbsp;<BR>
+And finally: remember that the free applet won't take more than
+about 50 items in the index; the commercial version  (<EM>iTree Mini Menu</EM>) will do up
+about 100; if you want a menu that does
+big sites, <EM>iTree Express</EM> handles infinitely sized index systems.
+<BR>&nbsp;<BR>
+
+<STRONG>3. Line wrapping</STRONG>
+<BR>&nbsp;<BR>
+This applet will automatically wrap long entries
+over as many lines as needed. If you want to force
+a line-break at a particular point, you can do this
+by inserting a " § " (space - paragraph symbol - space)
+into the entry text.
+
+<BR>&nbsp;<BR>
+
+<STRONG>4. Uploading it all to your website</STRONG>
+
+<BR>&nbsp;<BR>
+You must upload three things to the <EM>same</EM> directory:
+<dir>
+<li>it3free.class (upload in binary mode)
+<li>menu.txt (upload in ascii mode)
+<li>the HTML file that uses the applet
+</dir>
+A frequent mistake is to put things in the wrong place or give them
+incorrect names - then the files can't find each other.
+<BR>&nbsp;<BR>
+When trying out stuff on your website or locally, you should
+realise that changes while developing will not always appear if you just
+reload the page. You must super-reload (SHIFT-reload under
+Netscape and CTRL-reload under Microsoft).
+<BR>&nbsp;<BR>
+
+
+
+
+<STRONG>5. Additional Help</STRONG>
+<BR>&nbsp;<BR>
+Remember that with many thousands of people using our free
+software, we cannot both provide individual help and develop
+more free software for you. Time has its limits. We offer
+a great number of FAQ's on this site, covering things like
+frames usage, script usage, bug-finding, etc. Please use the
+documentations and FAQ's fully before contacting us for help.
+Most help requests we receive are from people who haven't
+read the documentation and FAQ's properly.
+
+
+
+<BR>&nbsp;<BR>
+
+
+</FONT>
+
+
+
+
+<script language="javascript">dispFoot(6);</script>
+
+
+</BODY>
+</html>

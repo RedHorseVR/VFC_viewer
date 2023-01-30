@@ -1,0 +1,125 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : SampleData.java.ins
+;  File Date : 12:58:46 PM - 27:Aug:1999
+
+
+input( /**  C:\WINDOWS\Profiles\lui\Desktop\SampleTree\src\SampleData.java  **/  );//  FILE:C:\WINDOWS\Profiles\lui\Desktop\SampleTree\src\SampleData.java
+generic();// /* 
+generic();//  * @(#)SampleData.java 1.3 99/04/23 
+generic();//  * 
+generic();//  * Copyright (c) 1997-1999 by Sun Microsystems, Inc. All Rights Reserved. 
+generic();//  *  
+generic();//  * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use, 
+generic();//  * modify and redistribute this software in source and binary code form, 
+generic();//  * provided that i) this copyright notice and license appear on all copies of 
+generic();//  * the software; and ii) Licensee does not utilize the software in a manner 
+generic();//  * which is disparaging to Sun. 
+generic();//  *  
+generic();//  * This software is provided "AS IS," without a warranty of any kind. ALL 
+generic();//  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY 
+generic();//  * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR 
+generic();//  * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE 
+generic();//  * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING 
+generic();//  * OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS 
+generic();//  * LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, 
+generic();//  * INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER 
+generic();//  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF 
+generic();//  * OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE 
+generic();//  * POSSIBILITY OF SUCH DAMAGES. 
+generic();//  *  
+generic();//  * This software is not designed or intended for use in on-line control of 
+generic();//  * aircraft, air traffic, aircraft navigation or aircraft communications; or in 
+generic();//  * the design, construction, operation or maintenance of any nuclear 
+generic();//  * facility. Licensee represents and warrants that it will not use or 
+generic();//  * redistribute the Software for such purposes. 
+generic();//  */
+set( import java.awt.Color; );// 
+set( import java.awt.Font; );// 
+generic();// /** 
+generic();//   * @version 1.3 04/23/99 
+generic();//   * @author Scott Violet 
+generic();//   */
+event( public class SampleData extends Object { );// 
+generic();// /** Font used for drawing. */
+set( protected Font font; );// 
+generic();// /** Color used for text. */
+set( protected Color color; );// 
+generic();// /** Value to display. */
+set( protected String string; );// 
+generic();// /** 
+generic();//       * Constructs a new instance of SampleData with the passed in 
+generic();//       * arguments. 
+generic();//       */
+
+input( public SampleData(Font newFont, Color newColor, String newString) );// 
+set( { );// 
+set(   font =newFont; );// 
+set( color =newColor; );// 
+set( string =newString; );// 
+end( } );// 
+generic();// /** 
+generic();//       * Sets the font that is used to represent this object. 
+generic();//       */
+
+input( public void setFont(Font newFont) );// 
+set( { );// 
+set(   font =newFont; );// 
+end( } );// 
+generic();// /** 
+generic();//       * Returns the Font used to represent this object. 
+generic();//       */
+
+input( public Font getFont() );// 
+set( { );// 
+end(   return font; );// 
+end( } );// 
+generic();// /** 
+generic();//       * Sets the color used to draw the text. 
+generic();//       */
+
+input( public void setColor(Color newColor) );// 
+set( { );// 
+set(   color =newColor; );// 
+end( } );// 
+generic();// /** 
+generic();//       * Returns the color used to draw the text. 
+generic();//       */
+
+input( public Color getColor() );// 
+set( { );// 
+end(   return color; );// 
+end( } );// 
+generic();// /** 
+generic();//       * Sets the string to display for this object. 
+generic();//       */
+
+input( public void setString(String newString) );// 
+set( { );// 
+set(   string =newString; );// 
+end( } );// 
+generic();// /** 
+generic();//       * Returnes the string to display for this object. 
+generic();//       */
+
+input( public String string() );// 
+set( { );// 
+end(   return string; );// 
+end( } );// 
+
+input( public String toString() );// 
+set( { );// 
+end(   return string; );// 
+end( } );// 
+end( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    SampleData.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 295 147 689 511 1 95   219   58    jdk12~1.key  0

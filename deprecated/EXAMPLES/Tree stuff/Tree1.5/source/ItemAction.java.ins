@@ -1,0 +1,86 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : ItemAction.java.ins
+;  File Date : 05:56:37 PM - 29:Aug:1999
+
+generic(    );//// Author: C Dare-Edwards
+generic(    );//// 
+generic(    );//// cdare-edwards@mcsoftware.com.au
+generic(    );//// 
+generic(    );////  Copyright Conrad Dare-Edwards
+generic(    );////
+generic(    );////  The copyright to the computer program (s) herein
+generic(    );////  is the property of Conrad Dare-Edwards. The program (s)
+generic(    );////  may be used and/or copied only with the written
+generic(    );////  permission of Conrad Dare-Edwards or in accordance
+generic(    );////  with the terms and conditions stipulated in the
+generic(    );////  agreement/contract under which the program (s) have
+generic(    );////  been supplied.
+generic(  import java.applet.*;  );//
+generic(  import java.net.*;  );//
+end(  );// AUTO 
+
+input(  public class ItemAction extends java.lang.Object  );//
+generic(  {  );//
+generic(  String m_status;  );//
+generic(  URL m_doc;  );//
+generic(  String m_docTarget;  );//
+generic(  Applet m_applet;  );//
+set(  public static boolean m_showURL = true;  );//
+generic(    );/////////////////////////////////////////////////////////////////
+generic(    );//// initalisation
+generic(  public ItemAction(Applet applet )  );//
+generic(  {  );//
+set(  m_applet = applet;  );//
+end(  }  );//
+generic(    );//// set status string and add URL link to the end if present
+generic(  public void setStatus( String status )  );//
+generic(  {  );//
+generic(    );//// copy status sting
+branch(  if( status != null )  );//
+path();///auto path//
+set(  m_status = new String( status );  );//
+generic(    );//// and add url if present
+branch(  if( m_doc != null && m_showURL )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( m_status == null ) m_status = new String();  );//
+path(  else m_status = m_status.concat(" - ");  );//
+set(  m_status = m_status.concat( m_doc.toString() );  );//
+bend(  }  );//
+bend(  }  );//
+generic(  public void setDocument( URL doc, String target )  );//
+generic(  {  );//
+set(  m_doc = doc;  );//
+set(  m_docTarget = target;  );//
+generic(  setStatus( m_status );  );//
+bend(  }  );//
+generic(    );//////////////////////////////////////////////////////////////////////
+generic(    );//// actavtion actions
+generic(  public void showStatus( )  );//
+generic(  {  );//
+branch(  if( m_status != null )  );//
+path();///auto path//
+generic(  m_applet.showStatus( m_status );  );//
+bend(  }  );//
+generic(  public void  showDocument( )  );//
+generic(  {  );//
+branch(  if( m_doc != null )  );//
+path();///auto path//
+generic(  {  );//
+set(  AppletContext ac = m_applet.getAppletContext();  );//
+generic(  ac.showDocument( m_doc, m_docTarget );  );//
+bend(  }  );//
+end(  }  );//
+end(  }  );//
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    ItemAction.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 241 183 592 423 1 75   345   63    java.key  0

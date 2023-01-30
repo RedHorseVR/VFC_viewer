@@ -1,0 +1,167 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : Resource.java.ins
+;  File Date : 09:40:56 PM - 26:Aug:1999
+
+
+input( /**  C:\WINDOWS\Profiles\luis\Desktop\FCviewApplet\Resource\Resource.java  **/  );//  FILE:C:\WINDOWS\Profiles\luis\Desktop\FCviewApplet\Resource\Resource.java
+generic();// /* Generated Resource Class - Do not edit.  You should only extend this class.  */
+generic();// /* Imports */
+set( import java.awt.*; );// 
+set( import java.net.*; );// 
+set( import java.applet.*; );// 
+event( class Resource { );// 
+set( Frame DIALOG_FRAME_IDD_DIALOG1; );// 
+set( List IDC_LIST1; );// 
+set(Choice  IDC_COMBO2;);// 
+
+input( Frame initIDD_DIALOG1( Container c ) );// 
+set( { );// 
+set(   c.setLayout(null); );// 
+set( Button IDC_BUTTON1; );// 
+set( c.add( IDC_BUTTON1=new Button( "X") ); );// 
+set( IDC_BUTTON1.reshape(SCALE_X(65),SCALE_Y(0),SCALE_W(13),SCALE_H(10) ); );// 
+set( DIALOG_FRAME_IDD_DIALOG1 =new Frame ( "VFC Tree" ); );// 
+set( initIDR_MENU1(); );// 
+set( DIALOG_FRAME_IDD_DIALOG1.setMenuBar( IDR_MENU1 ); );// 
+set( DIALOG_FRAME_IDD_DIALOG1.add( "Center", c ); );// 
+set( DIALOG_FRAME_IDD_DIALOG1.reshape(SCALE_X(300),SCALE_Y(252),SCALE_W(78)+20,SCALE_H(161)+20 ); );// 
+set( DIALOG_FRAME_IDD_DIALOG1.show(); );// 
+end( return DIALOG_FRAME_IDD_DIALOG1; );// 
+end( } );// 
+set( Frame MAIN_FRAME; );// 
+
+input( void initMAIN( Container c ) );// 
+set( { );// 
+set(   c.setLayout(null); );// 
+set( Button IDOK; );// 
+set( c.add( IDOK=new Button( "Zoom In") ); );// 
+set( IDOK.reshape(SCALE_X(255),SCALE_Y(0),SCALE_W(39),SCALE_H(15) ); );// 
+set( Checkbox IDC_CHECK2; );// 
+set( c.add( IDC_CHECK2=new Checkbox( "Comments") ); );// 
+set( IDC_CHECK2.reshape(SCALE_X(345),SCALE_Y(290),SCALE_W(55),SCALE_H(10) ); );// 
+set( Button IDC_BUTTON1; );// 
+set( c.add( IDC_BUTTON1=new Button( "Tree View") ); );// 
+set( IDC_BUTTON1.reshape(SCALE_X(0),SCALE_Y(0),SCALE_W(42),SCALE_H(14) ); );// 
+set( c.add( IDC_COMBO2= new Choice() ); );// 
+set( );// IDC_COMBO2.addItem( " item 2 " ); 
+set( );// IDC_COMBO2.addItem( " item 3 " ); 
+set( IDC_COMBO2.reshape(SCALE_X(345),SCALE_Y(0),SCALE_W(54),SCALE_H(30) ); );// 
+set( Button IDOK2; );// 
+set( c.add( IDOK2=new Button( "Zoom Out") ); );// 
+set( IDOK2.reshape(SCALE_X(295),SCALE_Y(0),SCALE_W(39),SCALE_H(15) ); );// 
+set( Button IDC_BUTTON3; );// 
+set( c.add( IDC_BUTTON3=new Button( "X") ); );// 
+set( IDC_BUTTON3.reshape(SCALE_X(43),SCALE_Y(0),SCALE_W(13),SCALE_H(14) ); );// 
+set( c.add( IDC_LIST1= new List() ); );// 
+set( IDC_LIST1.reshape(SCALE_X(345),SCALE_Y(15),SCALE_W(54),SCALE_H(275) ); );// 
+set( Scrollbar IDC_VERT; );// 
+set( c.add( IDC_VERT= new Scrollbar( Scrollbar.VERTICAL ) ); );// 
+set( IDC_VERT.reshape(SCALE_X(335),SCALE_Y(0),SCALE_W(11),SCALE_H(290) ); );// 
+set( Scrollbar IDC_HORZ; );// 
+set( c.add( IDC_HORZ= new Scrollbar( Scrollbar.HORIZONTAL ) ); );// 
+set( IDC_HORZ.reshape(SCALE_X(0),SCALE_Y(290),SCALE_W(335),SCALE_H(9) ); );// 
+set( Button IDOK3; );// 
+set( c.add( IDOK3=new Button( "Home") ); );// 
+set( IDOK3.reshape(SCALE_X(215),SCALE_Y(0),SCALE_W(39),SCALE_H(15) ); );// 
+set( );// IDC_USER1.size(SCALE_X(153),SCALE_Y(135),SCALE_W(142),SCALE_H(105) ); 
+end( } );// 
+
+input( void reshapeMAIN( Frame f ) );// 
+set( { );// 
+set(   f.reshape(SCALE_X(50),SCALE_Y(100),SCALE_W(403)+20,SCALE_H(304) + 20 ); );// 
+end( } );// 
+
+input( Frame initMAINframe( Container c, String title ) );// 
+set( { );// 
+set(   Frame MAIN_FRAME=new Frame( title ); );// 
+set( initIDR_MENU1(); );// 
+set( MAIN_FRAME.setMenuBar( IDR_MENU1 ); );// 
+set( MAIN_FRAME.add( "Center", c ); );// 
+set( reshapeMAIN(MAIN_FRAME); );// 
+set( MAIN_FRAME.show(); );// 
+set( initMAIN(c); );// 
+end( return MAIN_FRAME; );// 
+end( } );// 
+set( public MenuBar IDR_MENU1 =new MenuBar(); );// 
+
+input( void initIDR_MENU1() );// 
+set( { );// 
+set(   Menu Popup1; );// 
+set( Popup1 =new Menu("File"); );// 
+set( Popup1.add("Open..."); );// 
+set( Popup1.add("Close..."); );// 
+set( Popup1.add("Test1"); );// 
+set( Popup1.add("Test2"); );// 
+set( Popup1.add("Test3"); );// 
+set( Popup1.add("Test4"); );// 
+set( Menu Popup2; );// 
+set( Popup2 =new Menu("Run ..."); );// 
+set( Popup2.add("test"); );// 
+set( Menu Popup3; );// 
+set( Popup3 =new Menu("no pop"); );// 
+set( Popup3.add("test"); );// 
+set( IDR_MENU1.add( Popup1 ); );// 
+set( IDR_MENU1.add( Popup2 ); );// 
+set( IDR_MENU1.add( Popup3 ); );// 
+end( } );// 
+
+input( Resource( Container c , URL cBase ) );// 
+set( { );// 
+set(   CodeBase=cBase; );// 
+set( initMAIN( c); );// 
+set( Initialize(); );// 
+set( c.repaint(); );// 
+end( } );// 
+
+input( Resource( ) );// 
+set( { );// 
+set(   Initialize(); );// 
+end( } );// 
+
+input( void Initialize( ) );// 
+set( { );// 
+end(   } );// 
+
+input( public void paint(Graphics g) );// 
+set( { );// 
+set(   g.setFont( MAIN_FONT ); );// 
+end( } );// 
+
+input( int SCALE_X(int x) );// 
+set( { );// 
+end(   return (int)(x*SCALE); );// 
+end( } );// 
+
+input( int SCALE_Y(int x) );// 
+set( { );// 
+end(   return (int)(x*SCALE); );// 
+end( } );// 
+
+input( int SCALE_W(int x) );// 
+set( { );// 
+end(   return (int)(x*SCALE); );// 
+end( } );// 
+
+input( int SCALE_H(int x) );// 
+set( { );// 
+end(   return (int)(x*SCALE); );// 
+end( } );// 
+generic();// /* public resource data */
+generic();// //input
+set( URL CodeBase=null; );// 
+set( double SCALE =1.6; );// 
+set( public Font MAIN_FONT =null; );// 
+generic();// /* end of Resource class */
+end( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    Resource.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 4294967292 4294967292 733 611 10 95   343   4294966360    java.key  0

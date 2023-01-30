@@ -1,0 +1,91 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : TreeApp.java.ins
+;  File Date : 12:59:34 AM - 30:Aug:1999
+
+
+input(  /** Imports **/      );//// // <--- part of framework......
+generic(  import java.awt.*;  );//
+generic(  import java.applet.*;  );//
+generic(  import java.net.*;  );//
+generic(  /*------------*/  );//
+end(  );// AUTO 
+
+input( public class TreeApp extends Applet implements Runnable { );// 
+process(TreeTool TT = null ;);// 
+set( private Thread loadThread =null; );// 
+set( private String m_rootTitle ="Root Directory"; );// 
+set( private boolean m_expanded =false; );// 
+set( private URL m_baseURL = null;);// 
+set( private TreeControl m_control; );// 
+generic();// // // Parameter names.  To change a name of a parameter, you need only make...
+generic();// // // a single change.  Simply modify the value of the parameter string below....
+generic();// // //--------------------------------------------------------------------------...
+
+input( public TreeApp() );// 
+set( { );// 
+end(   } );// 
+
+input( public String getAppletInfo() );// 
+set( { );// <--- WARNING: BROKEN LINE 
+set(   return "Name: TreeApp\r\n" + "Author: Conrad Dare-Edwards\r\n" + "Re-engineerd using VFC\r\n" + "WWW:http://www.mcsoftware.com.au\r\n" + "E-Mail: cdare-edwards@mcsoftware.com.au";);//
+end( } );// 
+
+input(public void init() {  );//
+set();//
+process(TreeTool TT = new TreeTool( this ) ;);// 
+set(m_control = TT.m_control;);// 
+process(init_TreeTool(););// 
+set( loadThread =new Thread(this); );// 
+set( loadThread.start(); );// 
+end(  } );//
+
+input(public void run() {);//
+end(  } );//
+
+input( public void init_TreeTool());// 
+generic();// // // setup base URL...
+set( { );// 
+process(System.out.println("Hello world!");  );//
+generic();// // // setup base URL...
+set(TT.addItem( "FlowCode Module;program.gif;;code map", null, this, m_baseURL, true ););/// //Root node//
+set( Item statusItem =new Item( "Loading items.."); );// 
+set( );// m_control.m_folder.setTitle( m_folder.getTitle() ); 
+set( m_control.m_folder.addElement( statusItem ); );// 
+set( m_control.initalise( ); );// 
+generic();// // // readin the item params item 1 to item N...
+process( );// addItem( param, null, this, m_baseURL, false ); 
+set( TT.addItem( "Input1;module.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input1/Input1;input.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input1/Print( HELLO ):1;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input1/Print( HELLO ):2;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input1/End;end.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set();//
+set(TT.addItem( "Input2;module.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input2/Input1;input.gif;;Random Splines" , null, this, m_baseURL, false ););//
+loop(TT.addItem( "Input2/loop;loop.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input2/loop/Print( HELLO ):1;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+branch(TT.addItem( "Input2/loop/branch;branch.gif;;Random Splines" , null, this, m_baseURL, false ););//
+path(TT.addItem( "Input2/loop/branch/path1;path.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input2/loop/branch/path1/Print( HELLO ):1;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+path(TT.addItem( "Input2/loop/branch/path2;path.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input2/loop/branch/path2/Print( HELLO ):1;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+bend(TT.addItem( "Input2/loop/branch/bend;bend.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input2/loop/process;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+lend(TT.addItem( "Input2/loop/lend;lend.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set(TT.addItem( "Input2/End;end.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set();//
+set( statusItem.setTitle( "Loading images..." ); );// 
+process(TT.LoadImages(););//
+end(} );//
+end(  } );//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    TreeApp.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 41 175 643 932 77 95   290   4294967291    java.key  0

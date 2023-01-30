@@ -1,0 +1,358 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : ScrPane.java.ins
+;  File Date : 05:56:50 PM - 29:Aug:1999
+
+generic(    );//// Author: C Dare-Edwards
+generic(    );//// 
+generic(    );//// cdare-edwards@mcsoftware.com.au
+generic(    );//// 
+generic(    );////  Copyright Conrad Dare-Edwards
+generic(    );////
+generic(    );////  The copyright to the computer program (s) herein
+generic(    );////  is the property of Conrad Dare-Edwards. The program (s)
+generic(    );////  may be used and/or copied only with the written
+generic(    );////  permission of Conrad Dare-Edwards or in accordance
+generic(    );////  with the terms and conditions stipulated in the
+generic(    );////  agreement/contract under which the program (s) have
+generic(    );////  been supplied.
+generic(  import java.awt.*;  );//
+end(  );// AUTO 
+
+input(  public class ScrPane extends Panel  );//
+generic(  {  );//
+generic(  Scrollbar m_hbar, m_vbar;  );//
+set(  boolean java_old = true;  );//
+generic(  public int m_offsetx, m_offsety;  );//
+generic(  int m_image_width, m_image_height;  );//
+generic(  Image m_image;  );//
+generic(  public Color m_bgColour;      );//// window background colour
+generic(  Image m_backgroundImage;  );//
+generic(  boolean has_vbar;   );//// keep track if we have scroll bars or not
+generic(  boolean has_hbar;  );//
+generic(  public ScrPane( )  );//
+generic(  {  );//
+generic(    );//// implict super call creates panel
+generic(  super();  );//
+set(  m_image_width =  0;  );//
+set(  m_image_height = 0;  );//
+generic(  checkJavaSupport();  );//
+generic(    );//// create our components
+set(  m_vbar = new Scrollbar( Scrollbar.VERTICAL );  );//
+set(  m_hbar = new Scrollbar( Scrollbar.HORIZONTAL );  );//
+generic(    );//// use a border layout manager
+generic(  this.setLayout(  new BorderLayout(0,0) );  );//
+generic(  this.add( "East" , m_vbar );  );//
+generic(  this.add( "South", m_hbar );  );//
+generic(    );//// background color
+set(  m_bgColour = Color.white;  );//
+end(  }  );//
+generic(  public void setBackgroundImage( Image backImage )  );//
+generic(  {  );//
+set(  m_backgroundImage = backImage;  );//
+end(  }  );//
+generic(  public Rectangle getRect( )  );//
+generic(  {  );//
+generic(    );//// get rectangle size with canvas size
+set(  Rectangle rect = new Rectangle (size() );  );//
+generic(    );//// set top corner
+set(  rect.x = m_offsetx;  );//
+set(  rect.y = m_offsety;  );//
+generic(    );//// adjust width and height for scroll bars
+branch(  if( m_hbar.isVisible() )  );//
+path();///auto path//
+set(  rect.height -=  (m_hbar.size()).height;  );//
+generic(    );//// vertical bar
+branch(  if( m_vbar.isVisible() )  );//
+path();///auto path//
+set(  rect.width -=  (m_vbar.size()).width;  );//
+end(  return rect;  );//
+bend(  }  );//
+generic(  public void setSize( int width, int height )  );//
+generic(  {  );//
+end(  if( width == 0 || height == 0 ) return;   );//// catch intailisation problems
+branch(  if( m_backgroundImage != null )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// make sure we are not smaller than the backgroung image
+branch(  if( width < m_backgroundImage.getWidth( this ) )  );//
+path();///auto path//
+set(  width = m_backgroundImage.getWidth(this );  );//
+generic(    );//// adjust height for background image maximum the canvas height
+branch(  if( height <  m_backgroundImage.getHeight( this ) )  );//
+path();///auto path//
+set(  height =  m_backgroundImage.getHeight( this );  );//
+bend(  }  );//
+generic(    );//// if width and height have changed then reallocate an image
+branch(  if( width != m_image_width || height != m_image_height )  );//
+path();///auto path//
+generic(  {  );//
+set(  m_image_width  = width;  );//
+set(  m_image_height = height;  );//
+branch(  if( m_image != null ) m_image.flush();   );//// clear any proccessing thats still to be done
+path();///auto path//
+generic(    );////  create a new image
+set(  m_image = createImage( m_image_width, m_image_height);  );//
+bend(  }  );//
+set(  boolean layoutControl= false;   );//
+set(  Dimension canvas_size = size();  );//
+generic(    );//// check for valid canvas sizes
+end(  if( canvas_size.width == 0 || canvas_size.height == 0 ) return;  );//
+generic(    );////////////////////////////////////////////////////////////////
+generic(    );//// add vertical scroll if needed
+generic(    );//// remove height of horizontal scroll bar from canvas size
+set(  Dimension hbar_size = m_hbar.size();  );//
+branch(  if( hbar_size.height != 0 )canvas_size.height -=  hbar_size.height;  );//
+path(  else canvas_size.height -= 10;  );//
+generic(    );//// check if we need a vertical scroll bar and add as needed
+branch(  if( m_image_height <= canvas_size.height )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( m_vbar.isVisible() )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );////  m_vbar.setVisible( false );
+generic(  m_vbar.show( false );  );//
+set(  layoutControl = true;  );//
+bend(  }  );//
+set(  m_offsety = 0;  );//
+bend(  }  );//
+path(  else  );//
+generic(  {  );//
+generic(  int m_max_v;  );//
+branch(  if (java_old) m_max_v = m_image_height-canvas_size.height;  );//
+path(  else m_max_v = m_image_height;  );//
+generic(  m_vbar.setValues( m_offsety, canvas_size.height, 0, m_max_v );  );//
+generic(    );////   m_vbar.setBlockIncrement( canvas_size.height / 3  );
+generic(  m_vbar.setLineIncrement(15);  );//
+generic(  m_vbar.setPageIncrement(canvas_size.height / 3);  );//
+branch(  if( !m_vbar.isVisible() )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );////    m_vbar.setVisible( true );
+generic(  m_vbar.show( true );  );//
+set(  layoutControl = true;  );//
+bend(  }  );//
+bend(  }  );//
+generic(    );/////////////////////////////////////////////////////////////////
+generic(    );//// add horizontal scroll if needed
+generic(    );//// remove width of vetical scroll bar from canvas size
+branch(  if( m_vbar.isVisible() )  );//
+path();///auto path//
+generic(  {  );//
+set(  Dimension vbar_size = m_vbar.size();  );//
+branch(  if( vbar_size.width != 0 ) canvas_size.width -=  vbar_size.width;  );//
+path(  else canvas_size.width -= 15;  );//
+bend(  }  );//
+generic(    );//// check if we need a horizontal scroll bar and add as needed
+branch(  if( m_image_width <= canvas_size.width )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( m_hbar.isVisible() )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );////    m_hbar.setVisible( false );
+generic(  m_hbar.show( false );  );//
+set(  layoutControl = true;  );//
+bend(  }  );//
+set(  m_offsetx = 0;  );//
+bend(  }  );//
+path(  else  );//
+generic(  {  );//
+generic(  int m_max_v;  );//
+branch(  if (java_old) m_max_v = m_image_width - canvas_size.width;  );//
+path(  else m_max_v = m_image_width;  );//
+generic(    );////  m_hbar.setBlockIncrement( canvas_size.width / 3  );
+generic(  m_hbar.setValues( m_offsetx, canvas_size.width,  0, m_max_v );  );//
+generic(  m_hbar.setLineIncrement(15);  );//
+generic(  m_hbar.setPageIncrement(canvas_size.width / 3);  );//
+branch(  if( !m_hbar.isVisible() )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );////    m_hbar.setVisible( true );
+generic(  m_hbar.show( true );  );//
+set(  layoutControl = true;  );//
+bend(  }  );//
+bend(  }  );//
+branch(  if( layoutControl ) layout();  );//
+path();///auto path//
+bend(  }  );//
+generic(    );//// shift scroll postions to make the rectangle visible
+generic(    );//// returns true if repainted canvas
+generic(  public boolean makeVisible( Rectangle item_rect )  );//
+generic(  {  );//
+set(  Rectangle our_rect = getRect();  );//
+set(  int our_rigthx = (our_rect.x + our_rect.width);  );//
+set(  int item_rigthx = (item_rect.x + item_rect.width);  );//
+set(  int scrollx = 0;  );//
+generic(  /*if( our_rect.x < item_rect.x &&  );//
+generic(  our_rigthx < item_rigthx )  );//
+generic(  {  );//
+generic(    );//// rigth over hang
+generic(    );//// avoid shifting our left edge off the side
+branch(  if( our_rect.width < item_rect.width )  );//
+path();///auto path//
+set(  item_rigthx -= item_rect.width - our_rect.width;  );//
+set(  scrollx = item_rigthx - our_rigthx;  );//
+bend(  }  );//
+path(  else  );//
+branch(  if( our_rect.x > item_rect.x)  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// left overhang
+set(  scrollx = item_rect.x - our_rect.x;   );//
+bend(  }  );//
+generic(  */  );//
+set(  int our_boty = (our_rect.y + our_rect.height);  );//
+set(  int item_boty = (item_rect.y + item_rect.height);  );//
+set(  int scrolly = 0;  );//
+branch(  if( our_rect.y < item_rect.y &&  );//
+path();///auto path//
+generic(  our_boty < item_boty )  );//
+generic(  {  );//
+generic(    );//// bottom over hang
+generic(    );//// avoid shifting our left edge off the side
+branch(  if( our_rect.height < item_rect.height )  );//
+path();///auto path//
+set(  item_boty -= item_rect.height - our_rect.height;  );//
+set(  scrolly = item_boty - our_boty;  );//
+bend(  }  );//
+path(  else  );//
+branch(  if( our_rect.y > item_rect.y )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// top overhang
+set(  scrolly = item_rect.y - our_rect.y;   );//
+bend(  }  );//
+generic(    );//// if any changes shift scroll position
+branch(  if( scrollx != 0 || scrolly != 0 )  );//
+path();///auto path//
+generic(  {  );//
+set(  m_offsetx += scrollx;  );//
+set(  m_offsety += scrolly;  );//
+generic(  setSize( m_image_width, m_image_height );  );//
+generic(  refresh();   );//
+end(  return true;  );//
+bend(  }  );//
+end(  return false;  );//
+bend(  }  );//
+generic(    );//// screen refresh
+generic(  public void refresh( )  );//
+generic(  {  );//
+generic(  update( getGraphics() );  );//
+bend(  }  );//
+generic(    );//// get a drawing Graphics for the scroll pane
+generic(  public Graphics getCanvas( )  );//
+generic(  {  );//
+set(  Graphics g = m_image.getGraphics();    );//
+generic(  g.setFont( getFont() );  );//
+end(  return g;  );//
+bend(  }  );//
+generic(  public void paint( Graphics g )  );//
+generic(  {  );//
+branch(  if( m_image != null )  );//
+path();///auto path//
+generic(  g.drawImage( m_image,  -m_offsetx, -m_offsety, m_bgColour, this );  );//
+bend(  }  );//
+generic(  public void update( Graphics g )  );//
+generic(  {  );//
+set(  Rectangle rect = new Rectangle( size() );  );//
+generic(  g.setColor( m_bgColour );  );//
+generic(  g.fillRect( rect.x, rect.y, rect.width,rect.height );  );//
+generic(  paint( g );   );//// dont clear background
+bend(  }  );//
+generic(    );//// clip a rectangle of the graphics and
+generic(    );//// clear that - further drawing will be
+generic(    );//// restricted to the clipped area as
+generic(    );//// there seems to be no way of turning it off
+generic(  public void clearRect(Graphics g, Rectangle rect )  );//
+generic(  {  );//
+generic(  g.setColor( m_bgColour );  );//
+generic(  g.fillRect( rect.x, rect.y, rect.width, rect.height );  );//
+branch(  if( m_backgroundImage != null )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// set our own clipping area
+generic(  g.clipRect(rect.x, rect.y, rect.width, rect.height );  );//
+generic(    );//// draw background image
+generic(  g.drawImage( m_backgroundImage, 0,0, this );  );//
+bend(  }  );//
+bend(  }  );//
+generic(    );//// clear complete drawing area
+generic(  public void clearRect(Graphics g )  );//
+generic(  {  );//
+generic(  g.setColor( m_bgColour );  );//
+generic(  g.fillRect( 0,0, m_image_width, m_image_height);  );//
+branch(  if( m_backgroundImage != null )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// draw background image
+generic(  g.drawImage( m_backgroundImage, 0,0, this );  );//
+bend(  }  );//
+bend(  }  );//
+generic(  public boolean handleEvent( Event e )  );//
+generic(  {  );//
+branch(  if( e.target == m_hbar )  );//
+path();///auto path//
+generic(  {  );//
+generic(  switch( e.id )  );//
+generic(  {  );//
+path(  case Event.SCROLL_LINE_UP:  );//
+path(  case Event.SCROLL_LINE_DOWN:  );//
+path(  case Event.SCROLL_PAGE_UP:  );//
+path(  case Event.SCROLL_PAGE_DOWN:  );//
+path(  case Event.SCROLL_ABSOLUTE:  );//
+set(  m_offsetx = ((Integer)e.arg).intValue();  );//
+end(  break;  );//
+bend(  }  );//
+generic(  this.update( getGraphics() );  );//
+end(  return true;  );//
+bend(  }  );//
+branch(  if( e.target == m_vbar )  );//
+path();///auto path//
+generic(  {  );//
+generic(  switch( e.id )  );//
+generic(  {  );//
+path(  case Event.SCROLL_LINE_UP:  );//
+path(  case Event.SCROLL_LINE_DOWN:  );//
+path(  case Event.SCROLL_PAGE_UP:  );//
+path(  case Event.SCROLL_PAGE_DOWN:  );//
+path(  case Event.SCROLL_ABSOLUTE:  );//
+set(  m_offsety = ((Integer)e.arg).intValue();  );//
+end(  break;  );//
+bend(  }  );//
+generic(  this.update( getGraphics() );  );//
+end(  return true;  );//
+end(  }  );//
+end(  return super.handleEvent( e );  );//
+end(  }  );//
+generic(  public synchronized void reshape( int x, int y, int width, int height )  );//
+generic(  {  );//
+generic(  super.reshape( x,y,width,height);  );//
+generic(  setSize( m_image_width, m_image_height );  );//
+generic(  refresh( );  );//
+end(  }  );//
+generic(  public boolean checkJavaSupport()  );//
+generic(  {  );//
+generic(    );//// extract Java  version number
+set(  String version = System.getProperty("java.version");  );//
+branch(  if (version.startsWith("1.0")  );//
+path();///auto path//
+generic(  || version.equals("1.1")  );//
+generic(  || version.equals("1.1.0")  );//
+generic(  || version.equals("1.1.1")  );//
+end(  || version.equals("1.1.2")) return java_old = true;  );//
+end(  return java_old = false;  );//
+bend(  }  );//
+end(  }  );//
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    ScrPane.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 7 24 592 423 1 75   345   63    java.key  0

@@ -1,0 +1,199 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : DynamicTreeNode.java.ins
+;  File Date : 01:15:03 PM - 27:Aug:1999
+
+generic(  /*  );//
+output(  * @(#)DynamicTreeNode.java1.6 99/04/23  );//
+generic(  *  );//
+generic(  * Copyright (c) 1997-1999 by Sun Microsystems, Inc. All Rights Reserved.  );//
+generic(  *  );//
+generic(  * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use,  );//
+generic(  * modify and redistribute this software in source and binary code form,  );//
+generic(  * provided that i) this copyright notice and license appear on all copies of  );//
+generic(  * the software; and ii) Licensee does not utilize the software in a manner  );//
+generic(  * which is disparaging to Sun.  );//
+generic(  *  );//
+generic(  * This software is provided "AS IS," without a warranty of any kind. ALL  );//
+generic(  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY  );//
+generic(  * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR  );//
+generic(  * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE  );//
+generic(  * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING  );//
+generic(  * OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS  );//
+generic(  * LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT,  );//
+generic(  * INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER  );//
+generic(  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF  );//
+generic(  * OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE  );//
+generic(  * POSSIBILITY OF SUCH DAMAGES.  );//
+generic(  *  );//
+generic(  * This software is not designed or intended for use in on-line control of  );//
+generic(  * aircraft, air traffic, aircraft navigation or aircraft communications; or in  );//
+generic(  * the design, construction, operation or maintenance of any nuclear  );//
+generic(  * facility. Licensee represents and warrants that it will not use or  );//
+generic(  * redistribute the Software for such purposes.  );//
+generic(  */  );//
+generic(  import javax.swing.tree.DefaultMutableTreeNode;  );//
+generic(  import java.awt.Color;  );//
+generic(  import java.awt.Font;  );//
+generic(  import java.awt.Toolkit;  );//
+generic(  import java.util.Random;  );//
+generic(  /**  );//
+generic(  * DynamicTreeNode illustrates one of the possible ways in which dynamic  );//
+generic(  * loading can be used in tree.  The basic premise behind this is that  );//
+generic(  * getChildCount() will be messaged from JTreeModel before any children  );//
+generic(  * are asked for.  So, the first time getChildCount() is issued the  );//
+generic(  * children are loaded.<p>  );//
+generic(  * It should be noted that isLeaf will also be messaged from the model.  );//
+generic(  * The default behavior of TreeNode is to message getChildCount to  );//
+end(  * determine this. As such, isLeaf is subclassed to always return false.<p>  );//
+generic(  * There are others ways this could be accomplished as well.  Instead of  );//
+end(  );// AUTO 
+
+input(  * subclassing TreeNode you could subclass JTreeModel and do the same  );//
+generic(  * thing in getChildCount().  Or, if you aren't using TreeNode you could  );//
+output(  * write your own TreeModel implementation.  );//
+generic(  * Another solution would be to listen for TreeNodeExpansion events and  );//
+generic(  * the first time a node has been expanded post the appropriate insertion  );//
+generic(  * events.  I would not recommend this approach though, the other two  );//
+generic(  * are much simpler and cleaner (and are faster from the perspective of  );//
+generic(  * how tree deals with it).  );//
+generic(  *  );//
+generic(  * NOTE: getAllowsChildren() can be messaged before getChildCount().  );//
+generic(  *       For this example the nodes always allow children, so it isn't  );//
+generic(  *       a problem, but if you do support true leaf nodes you may want  );//
+generic(  *       to check for loading in getAllowsChildren too.  );//
+generic(  *  );//
+output(  * @version 1.6 04/23/99  );//
+output(  * @author Scott Violet  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public class DynamicTreeNode extends DefaultMutableTreeNode  );//
+generic(  {  );//
+generic(    );//// Class stuff.
+generic(  /** Number of names. */  );//
+generic(  static protected float                    nameCount;  );//
+generic(  /** Names to use for children. */  );//
+generic(  static protected String[]                 names;  );//
+generic(  /** Potential fonts used to draw with. */  );//
+generic(  static protected Font[]                   fonts;  );//
+generic(  /** Used to generate the names. */  );//
+generic(  static protected Random                   nameGen;  );//
+generic(  /** Number of children to create for each node. */  );//
+set(  static protected final int                DefaultChildrenCount = 7;  );//
+generic(  static {  );//
+generic(  String[]            fontNames;  );//
+branch(  try {  );//
+path();///auto path//
+set(  fontNames = Toolkit.getDefaultToolkit().getFontList();  );//
+bend(  } catch (Exception e) {  );//
+set(  fontNames = null;  );//
+end(  }  );//
+branch(  if(fontNames == null || fontNames.length == 0) {  );//
+path();///auto path//
+set(  names = new String[] {"Mark Andrews", "Tom Ball", "Alan Chung",  );//
+generic(  "Rob Davis", "Jeff Dinkins",  );//
+generic(  "Amy Fowler", "James Gosling",  );//
+generic(  "David Karlton", "Dave Kloba",  );//
+generic(  "Dave Moore", "Hans Muller",  );//
+generic(  "Rick Levenson", "Tim Prinzing",  );//
+generic(  "Chester Rose", "Ray Ryan",  );//
+generic(  "Georges Saab", "Scott Violet",  );//
+bend(  "Kathy Walrath", "Arnaud Weber" };  );//
+end(  }  );//
+path(  else {  );//
+generic(  /* Create the Fonts, creating fonts is slow, much better to  );//
+loop(  do it once. */  );//
+set(  int              fontSize = 12;  );//
+set(  names = fontNames;  );//
+set(  fonts = new Font[names.length];  );//
+set(  for(int counter = 0, maxCounter = names.length;  );//
+generic(  counter < maxCounter; counter++) {  );//
+branch(  try {  );//
+path();///auto path//
+set(  fonts[counter] = new Font(fontNames[counter], 0, fontSize);  );//
+bend(  }  );//
+path(  catch (Exception e) {  );//
+set(  fonts[counter] = null;  );//
+lend(  }  );//
+set(  fontSize = ((fontSize + 2 - 12) % 12) + 12;  );//
+end(  }  );//
+end(  }  );//
+set(  nameCount = (float)names.length;  );//
+set(  nameGen = new Random(System.currentTimeMillis());  );//
+end(  }  );//
+generic(  /** Have the children of this node been loaded yet? */  );//
+generic(  protected boolean           hasLoaded;  );//
+generic(  /**  );//
+generic(  * Constructs a new DynamicTreeNode instance with o as the user  );//
+generic(  * object.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public DynamicTreeNode(Object o) {  );//
+generic(  super(o);  );//
+end(  }  );//
+end(  );// AUTO 
+
+input(  public boolean isLeaf() {  );//
+end(  return false;  );//
+end(  }  );//
+generic(  /**  );//
+generic(  * If hasLoaded is false, meaning the children have not yet been  );//
+generic(  * loaded, loadChildren is messaged and super is messaged for  );//
+end(  * the return value.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public int getChildCount() {  );//
+branch(  if(!hasLoaded) {  );//
+path();///auto path//
+generic(  loadChildren();  );//
+bend(  }  );//
+end(  return super.getChildCount();  );//
+end(  }  );//
+generic(  /**  );//
+generic(  * Messaged the first time getChildCount is messaged.  Creates  );//
+generic(  * children with random names from names.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  protected void loadChildren() {  );//
+generic(  DynamicTreeNode             newNode;  );//
+generic(  Font                        font;  );//
+generic(  int                         randomIndex;  );//
+generic(  SampleData                  data;  );//
+set(  for(int counter = 0; counter < DynamicTreeNode.DefaultChildrenCount;  );//
+generic(  counter++) {  );//
+set(  randomIndex = (int)(nameGen.nextFloat() * nameCount);  );//
+branch(  if(fonts != null)  );//
+path();///auto path//
+set(  font = fonts[randomIndex];  );//
+path(  else  );//
+set(  font = null;  );//
+branch(  if(counter % 2 == 0)  );//
+path();///auto path//
+set(  data = new SampleData(font, Color.red, names[randomIndex]);  );//
+path(  else  );//
+set(  data = new SampleData(font, Color.blue, names[randomIndex]);  );//
+set(  newNode = new DynamicTreeNode(data);  );//
+generic(  /* Don't use add() here, add calls insert(newNode, getChildCount())  );//
+set(  so if you want to use add, just be sure to set hasLoaded = true  );//
+generic(  first. */  );//
+generic(  insert(newNode, counter);  );//
+bend(  }  );//
+generic(  /* This node has now been loaded, mark it so. */  );//
+set(  hasLoaded = true;  );//
+bend(  }  );//
+end(  }  );//
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    DynamicTreeNode.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 57 55 732 649 81 75   385   4294965572    jdk12~1.key  0

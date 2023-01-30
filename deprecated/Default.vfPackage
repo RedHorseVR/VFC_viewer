@@ -1,0 +1,86 @@
+// Together Model file
+package Default;
+
+/**@shapeType Package
+@options #Fri Aug 20 15:13:24 CDT 1999
+option.orientation=~Portrait
+option.top=1
+option.fittopage=false
+option.bottom=1
+option.otherprint=Options oisoft.together.z1.z13.z16~bba
+option.right=1
+option.margins=Margins oisoft.together.z1.z13.z16~bb4
+option.boundingbox=true
+option.detail=Notation Dependent
+option.labelpapersize=Paper size oisoft.together.z1.z13.z14~bb7
+option.papersize=~Letter
+option.printfooter=true
+option.subpackages=~SubPackageContents
+option.links=Notation Dependent
+option.printempty=false
+option.associationLinks=
+option.initialwidth=200
+option.inheritance=Vertical
+option.initialbox=Initial maximum oisoft.together.z1.z13.z16~bbd
+option.justification=Top
+option.cmt=
+option.referenced=~HideReferenced
+option.quality=High
+option.printzoom=1
+option.left=1
+option.initialheight=600
+option.formatting=UML
+option.showprintgrid=false
+option.notation=UML
+
+@filters #Fri Aug 20 15:13:24 CDT 1999
+filter.extendsLink=1/show
+filter.privateAttribute=1/show
+filter.anyLink=1/show
+filter.allOperations=1/show
+filter.publicOperation=1/show
+filter.staticAttribute=1/show
+filter.implementsLink=1/show
+filter.privateOperation=1/show
+filter.getSetOperation=1/show
+filter.packageAttribute=1/show
+filter.abstractOperation=1/show
+filter.associationLink=1/show
+filter.dependencyLink=1/show
+filter.hidePrefixClass=0/lnk
+filter.publicClass=1/show
+filter.constructorOperation=1/show
+filter.publicAttribute=1/show
+filter.packageOperation=1/show
+filter.usageDependencyLink=1/hide
+filter.packageDependencyLink=1/show
+filter.protectedAttribute=1/show
+filter.abstractClass=1/show
+filter.aggregationLink=1/show
+filter.staticOperation=1/show
+filter.interfaceClass=1/show
+filter.protectedOperation=1/show
+filter.allAttributes=1/show
+filter.showPrefixClass=0/lnk
+filter.instantiationLink=1/show
+filter.packageClass=1/show
+
+@positions #Fri Aug 20 15:13:24 CDT 1999
+AggregationLink#JavaApplet#lnkUnnamed#FCview=105,125,105,82
+Class#FCview=38,8,253,207,0
+Class#JavaApplet=6,357,248,278,0
+Class#StatementObject=305,24,131,196,0
+AggregationLink#JavaApplet#lnkView#FCview=146,357,146,215
+AssociationLink#StatementObject#Link#StatementObject=410,220,410,256,472,256,472,194,436,194
+AssociationLink#StatementObject#lnkUnnamed#FCview=305,95,183,95
+AggregationLink#StatementObject#lnkUnnamed#FCview=305,95,183,95
+AggregationLink#JavaApplet#lnkView#StatementObject=370,370,370,168
+AggregationLink#StatementObject#lnkUnnamed#JavaApplet=279,77,279,152
+AssociationLink#FCview#SO1#StatementObject=291,119,305,119
+*/
+class Default {
+  FCview _1;
+  StatementObject _2;
+  JavaApplet _4;
+  JavaApplet _3;
+}

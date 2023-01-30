@@ -1,0 +1,27 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : MyAppHTML.ins
+;  File Date : 08:47:08 PM - 26:Aug:1999
+
+
+input(<title>Test page for Applet: MyAppt</title>);//
+process(<h1> );//
+process(<i> );//
+set(MyApp Applet Page);//
+process(</i> );//
+process(</h1> );//
+end(<hr>);//
+event(<applet code=MyTestApp.class width=900 height=480>);//
+set(  <param name=flowfile value=MyTestApp.ins>);//  <param name=flowfile value=test.ins>
+end(</applet>);//
+process(<hr>);//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 10198015 0 255 255 65535 65280 0
+;    MyTestApp.html   <!-   -->
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 314 188 655 501 9 100   299   4294967278    html.key  0

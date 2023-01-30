@@ -1,0 +1,336 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : TreeControl.java.ins
+;  File Date : 05:57:38 PM - 29:Aug:1999
+
+generic(    );//// Author: C Dare-Edwards
+generic(    );//// 
+generic(    );//// cdare-edwards@mcsoftware.com.au
+generic(    );//// 
+generic(    );////  Copyright Conrad Dare-Edwards
+generic(    );////
+generic(    );////  The copyright to the computer program (s) herein
+generic(    );////  is the property of Conrad Dare-Edwards. The program (s)
+generic(    );////  may be used and/or copied only with the written
+generic(    );////  permission of Conrad Dare-Edwards or in accordance
+generic(    );////  with the terms and conditions stipulated in the
+generic(    );////  agreement/contract under which the program (s) have
+generic(    );////  been supplied.
+generic(  import java.awt.*;  );//
+generic(  import java.util.Hashtable;  );//
+generic(  import java.awt.image.ImageObserver;  );//
+generic(  import java.applet.Applet;  );//
+generic(  import java.util.Enumeration;  );//
+generic(  import java.util.StringTokenizer;  );//
+generic(  import java.net.URL;  );//
+generic(  import java.net.MalformedURLException;  );//
+end(  );// AUTO 
+
+input(  public class TreeControl extends ScrPane  );//
+generic(  {  );//
+generic(  FolderItem m_folder;  );//
+generic(  Item m_selected;  );//
+generic(  Item m_mouseHit;  );//
+generic(  int m_activation_type;  );//
+generic(  int m_layoutOffsetX;  );//
+generic(  int m_layoutOffsetY;  );//
+generic(  public Color m_detailColour;      );//// directory lines color
+generic(  public Color m_highColour;    );//// hightlight background colour
+generic(  public Color m_textColour;    );//// text colour 
+generic(  public Color m_highTextColour;   );//// text highligh colour
+generic(  public TreeControl()  );//
+generic(  {  );//
+set(  m_folder = new FolderItem("Directory");  );//
+set(  m_selected = m_folder;  );//
+set(  m_activation_type = 0;  );//
+generic(    );//// setup default colors
+set(  m_detailColour = Color.lightGray;  );//
+set(  m_highColour = new Color(153,0,66);   );//// rose red
+set(  m_textColour = Color.black;  );//
+set(  m_highTextColour = Color.white;  );//
+set(  m_layoutOffsetX = 1;  );//
+set(  m_layoutOffsetY = 1;  );//
+generic(  setBackground( m_bgColour );  );//
+end(  }  );//
+generic(    );//// set layout offset for the directory structure
+generic(  public void setOffset( int x, int y )  );//
+generic(  {  );//
+set(  m_layoutOffsetX = x;  );//
+set(  m_layoutOffsetY = y;  );//
+end(  }  );//
+generic(  public void draw()  );//
+generic(  {  );//
+set(  Rectangle rect  = m_folder.layout( m_layoutOffsetX, m_layoutOffsetY );  );//
+generic(  setSize( rect.x + rect.width, rect.y + rect.height );  );//
+set(  Graphics g = getCanvas();  );//
+generic(  clearRect( g );  );//
+generic(  m_folder.draw( g, this, Item.DRAW_FULL );  );//
+branch(  if( m_selected != null )  );//
+path();///auto path//
+generic(  m_selected.draw( g, this, Item.DRAW_HIGHLIGHT );  );//
+generic(  refresh();  );//
+bend(  }  );//
+generic(  public FolderItem getFolder()  );//
+generic(  {  );//
+end(  return m_folder;   );//
+end(  }  );//
+generic(  public boolean mouseDown( Event e, int x, int y )  );//
+generic(  {  );//
+branch(  if((m_mouseHit = m_folder.hitTest( x + m_offsetx ,y + m_offsety)) != null )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( m_mouseHit != null )  );//
+path();///auto path//
+generic(  m_mouseHit.draw( getCanvas(), this, Item.DRAW_HIGHLIGHT );  );//
+generic(    );//// catch double clicks
+branch(  if( e.clickCount > 1 )  );//
+path();///auto path//
+set(  m_activation_type = Item.ACT_DBCLICK;  );//
+path(  else  );//
+set(  m_activation_type = Item.ACT_CLICK;  );//
+generic(  refresh();  );//
+bend(  }  );//
+end(  return true;  );//
+bend(  }  );//
+generic(  public FolderItem setFolder( FolderItem folder )  );//
+generic(  {  );//
+set(  FolderItem base = m_folder;  );//
+set(  m_folder = folder;  );//
+set(  m_selected = null;  );//
+set(  m_mouseHit = null;  );//
+set(  m_activation_type = 0;  );//
+set(  m_selected = m_folder;  );//
+generic(  initalise();   );//
+end(  return base;  );//
+bend(  }  );//
+generic(  public void initalise( )  );//
+generic(  {  );//
+generic(    );//// load all the images
+set(  Font font = getFont();  );//
+branch(  if( font == null )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( (font = new Font( "Dialog", 0 ,10)) != null )  );//
+path();///auto path//
+generic(  setFont( font );  );//
+bend(  }  );//
+generic(    );//// set the background color if changed
+generic(  m_folder.expand( true );  );//
+generic(    );//// setup all the components
+generic(  m_folder.initalise( getFontMetrics( font ) , this );  );//
+generic(  draw();  );//
+bend(  }  );//
+generic(    );//// find item from string eg 
+generic(    );//// and set item as selected
+generic(    );//// returns null if not found else the item that was selected
+generic(  public Item highlight( String itemTitle )  );//
+generic(  {  );//
+generic(    );//// break string down into elements
+set(  StringTokenizer stoke = new StringTokenizer(itemTitle, "\\/", false);  );//
+set(  FolderItem parent = m_folder;  );//
+set(  Item currentItem = null;  );//
+set(  boolean redrawFlag = false;   );//// redraw flag
+generic(  while( stoke.hasMoreElements() )  );//
+generic(  {  );//
+branch(  if( !parent.isExpanded() )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// expand folder
+generic(  parent.expand( true );  );//
+set(  redrawFlag = true;  );//
+bend(  }  );//
+generic(    );//// find item in the list
+branch(  if((currentItem = parent.findItem( stoke.nextToken() )) != null )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// if more elements to come
+branch(  if( stoke.hasMoreElements() )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( currentItem instanceof FolderItem )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// if more elements make parent currentItem
+set(  parent = (FolderItem)currentItem;  );//
+bend(  }  );//
+path(  else   );//// error we are not a folder and we need one
+generic(  {  );//
+generic(    );//// validate any changes
+branch(  if(redrawFlag ) draw();  );//
+path();///auto path//
+end(  return null;   );//// return not found  
+bend(  }  );//
+bend(  }  );//
+bend(  }  );//
+path(  else  );//
+generic(  {  );//
+generic(    );//// validate any changes
+branch(  if(redrawFlag ) draw();  );//
+path();///auto path//
+generic(    );//// error no item by that name return not found
+end(  return null;  );//
+bend(  }  );//// end else not found
+end(  }   );//// end while tokens
+generic(    );//// redraw screen as we have changed the number of visible items
+branch(  if(redrawFlag ) draw();  );//
+path();///auto path//
+generic(    );//// and set this item as selected
+generic(  setSelected( currentItem );  );//
+end(  return currentItem;  );//
+bend(  }  );//
+generic(    );//// set an item as selected
+generic(  public void setSelected( Item item )  );//
+generic(  {  );//
+branch(  if( m_selected != item )  );//
+path();///auto path//
+generic(  {  );//
+set(  Graphics g = getCanvas();  );//
+generic(  item.draw( g, this, Item.DRAW_HIGHLIGHT );  );//
+branch(  if( m_selected != null )  );//
+path();///auto path//
+generic(  {  );//
+generic(  m_selected.draw( getCanvas(), this, Item.DRAW_CLEAR );  );//
+bend(  }  );//
+set(  m_selected = item;  );//
+branch(  if(!makeVisible( item.getRect() ) )  );//
+path();///auto path//
+generic(  refresh();  );//
+generic(    );//// activate item
+generic(  m_selected.activate( Item.ACT_HIGHLIGHT, null  );  );//
+bend(  }  );//
+bend(  }  );//
+generic(  public boolean mouseUp( Event e, int x, int y )  );//
+generic(  {  );//
+branch(  if( m_mouseHit != null )  );//
+path();///auto path//
+generic(  {  );//
+set(  Item item = m_folder.hitTest( x+m_offsetx , y+m_offsety);  );//
+branch(  if( item == m_mouseHit )  );//
+path();///auto path//
+generic(  {  );//
+set(  e.x += m_offsetx;  );//
+set(  e.y += m_offsety;  );//
+generic(    );//// setup activation
+branch(  if( e.clickCount > 1 ) m_activation_type = Item.ACT_DBCLICK;  );//
+path();///auto path//
+generic(    );//// acitvate item
+branch(  if( item.activate( m_activation_type, e ) )  );//
+path();///auto path//
+generic(  {  );//
+set(  m_selected = item;  );//
+generic(  draw();      );//
+generic(  makeVisible( item.getRect() );   );//
+bend(  }  );//
+path(  else  );//
+generic(  {  );//
+generic(  setSelected( item );  );//
+bend(  }  );//
+generic(    );//// clear activation
+set(  m_activation_type = Item.ACT_CLICK;  );//
+set(  m_mouseHit = null;  );//
+bend(  }  );//
+path(  else  );//
+generic(  {   );//// clear mouse hit item
+set(  Graphics g = getCanvas();  );//
+generic(  m_mouseHit.draw( g, this, Item.DRAW_CLEAR );  );//
+generic(  refresh();  );//
+bend(  }  );//
+end(  }  );//
+end(  return true;  );//
+end(  }  );//
+generic(  public boolean mouseMove( Event e, int x, int y )  );//
+generic(  {  );//
+set(  Item item = null;  );//
+branch(  if((item = m_folder.hitTest( x+m_offsetx , y+m_offsety)) != null )  );//
+path();///auto path//
+generic(  {  );//
+generic(  item.activate( Item.ACT_HIGHLIGHT, null  );  );//
+bend(  }  );//
+end(  return true;  );//
+end(  }  );//
+generic(  public void next( boolean expand )  );//
+generic(  {  );//
+set(  Item next = null;  );//
+branch(  if( (next = m_folder.getNext( m_selected, expand )) != null )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( expand ) draw();  );//
+path();///auto path//
+generic(  setSelected( next );  );//
+bend(  }  );//
+bend(  }  );//
+generic(  public void activate( )  );//
+generic(  {  );//
+branch(  if( m_selected != null )  );//
+path();///auto path//
+generic(  m_selected.activate( Item.ACT_CLICK, null );     );//
+bend(  }  );//
+generic(  public void prev( boolean expand )  );//
+generic(  {  );//
+set(  Item next = null;  );//
+branch(  if( (next = m_folder.getPrev( m_selected, expand )) != null )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( expand ) draw();  );//
+path();///auto path//
+generic(  setSelected( next );  );//
+bend(  }  );//
+bend(  }  );//
+generic(  public boolean keyDown(Event  evt, int  key)  );//
+generic(  {  );//
+set(  Item next = null;  );//
+generic(    );//// up arrow previous item
+branch(  if( key == Event.UP )  );//
+path();///auto path//
+generic(  {  );//
+end(  prev( false );  return false;  );//
+bend(  }  );//
+generic(    );//// down arrow select next item
+branch(  if( key == Event.DOWN )  );//
+path();///auto path//
+generic(  {  );//
+end(  next( false );  return false;  );//
+bend(  }  );//
+generic(    );//// enter of right arrow activate item
+branch(  if( key == 10 || key == Event.RIGHT )   );//// enter
+path();///auto path//
+generic(  {  );//
+branch(  if( m_selected.activate( Item.ACT_DBCLICK, null ) )  );//
+path();///auto path//
+generic(  {  );//
+generic(  draw();   );//
+generic(  makeVisible( m_selected.getRect() );   );//
+bend(  }  );//
+end(  return false;  );//
+bend(  }  );//
+generic(    );//// left arrow close up folder
+branch(  if( key == Event.LEFT )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( m_selected instanceof FolderItem )  );//
+path();///auto path//
+generic(  {  );//
+set(  FolderItem item = (FolderItem)m_selected;  );//
+branch(  if( item.isExpanded() )  );//
+path();///auto path//
+generic(  {  );//
+generic(  item.expand( false );  );//
+generic(  draw();      );//
+bend(  }  );//
+bend(  }  );//
+end(  return false;  );//
+bend(  }  );//
+end(  return true;  );//
+end(  }  );//
+end(  }  );//
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    TreeControl.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 117 109 592 423 1 75   218   81    java.key  0

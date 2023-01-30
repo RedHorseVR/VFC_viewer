@@ -1,0 +1,286 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : Item.java.ins
+;  File Date : 05:56:20 PM - 29:Aug:1999
+
+generic(    );//// Author: C Dare-Edwards
+generic(    );//// 
+generic(    );//// cdare-edwards@mcsoftware.com.au
+generic(    );//// 
+generic(    );////  Copyright Conrad Dare-Edwards
+generic(    );////
+generic(    );////  The copyright to the computer program (s) herein
+generic(    );////  is the property of Conrad Dare-Edwards. The program (s)
+generic(    );////  may be used and/or copied only with the written
+generic(    );////  permission of Conrad Dare-Edwards or in accordance
+generic(    );////  with the terms and conditions stipulated in the
+generic(    );////  agreement/contract under which the program (s) have
+generic(    );////  been supplied.
+generic(  import java.awt.*;  );//
+generic(  import java.awt.image.ImageObserver;  );//
+generic(  import TreeControl;  );//
+end(  );// AUTO 
+
+input(  public class Item  extends java.lang.Object  );//
+generic(  {  );//
+generic(    );//// constants for activate
+set(  static final int ACT_DBCLICK = 1;  );//
+set(  static final int ACT_CLICK = 2;  );//
+set(  static final int ACT_HIGHLIGHT = 3;  );//
+set(  static final int DRAW_FULL = 1;  );//
+set(  static final int DRAW_HIGHLIGHT = 2;  );//
+set(  static final int DRAW_CLEAR = 4;  );//
+set(  static final int DRAW_SECONDIMAGE = 8;  );//
+generic(    );//// varibles
+generic(  String m_title;   );//// text string object title
+generic(  Image m_icon;   );//// displayed icon
+generic(  Image m_highlightIcon;   );//// second image for hightlighting
+generic(  ItemAction m_action;   );//// activation object
+generic(  Rectangle m_rect;   );//// drawing area
+generic(    );//////////////////////////////////////////////////
+generic(    );////  public Item( String title )
+generic(    );//// construction
+generic(  public Item( String title )  );//
+generic(  {  );//
+set(  m_title = title;  );//
+generic(  // if( m_title == null ) m_title = "";  );//// if( m_title == null ) m_title = ;
+set(  m_rect = new Rectangle();  );//
+end(  }  );//
+generic(  /* constructors that are not used removed to reduce code sixe  );//
+generic(  public Item( String title, Image icon )  );//
+generic(  {  );//
+set(  m_title = title;  );//
+set(  m_icon = icon;  );//
+set(  m_rect = new Rectangle();  );//
+end(  }  );//
+generic(  public Item( String title, Image icon, ItemAction action)  );//
+generic(  {  );//
+set(  m_title = title;  );//
+set(  m_icon = icon;  );//
+set(  m_action = action;  );//
+set(  m_rect = new Rectangle();  );//
+end(  }  );//
+generic(  */  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public Item( Item item )
+generic(    );//// copy constructor
+generic(    );//// note action is a reference copy any changes will effect both items
+generic(  public Item( Item item )  );//
+generic(  {  );//
+set(  m_title = item.getTitle();  );//
+set(  m_icon = item.getIcon();  );//
+set(  m_action = item.getAction();  );//
+set(  m_rect = new Rectangle();  );//
+generic(  m_rect.equals( item.getRect() );  );//
+set(  m_highlightIcon = item.getHighlightIcon();  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public void draw( Graphics g, ImageObserver ob, int highlight )
+generic(    );////  draw ourselves onto the screen
+generic(    );//// DRAW_FULL   complete redraw
+generic(    );////  DRAW_HIGHLIGHT  redraw with highlight colors
+generic(    );////  DRAW_CLEAR   redraw clearing highlight
+generic(    );////  DRAW_SECONDIMAGE additional flag to display highlight image 
+generic(  public void draw( Graphics g, TreeControl ob, int highlight )  );//
+generic(  {  );//
+set(  int offsetx = m_rect.x;  );//
+set(  int offsety = m_rect.y;  );//
+generic(    );//// if not a full redraw then we need to clear out backrground
+branch(  if ( (highlight & DRAW_CLEAR) > 0 || (highlight & DRAW_HIGHLIGHT) > 0  )  );//
+path();///auto path//
+generic(  {  );//
+generic(  ob.clearRect( g, m_rect );  );//
+bend(  }  );//
+generic(    );//// if icon draw icon
+branch(  if( m_icon != null )  );//
+path();///auto path//
+generic(  {  );//
+set(  Image item_icon = m_icon;  );//
+set(  int image_width = item_icon.getWidth( ob );  );//
+set(  int image_height = item_icon.getHeight( ob );  );//
+generic(    );//// only bother if we have vaild image sizes
+branch(  if( image_width > 0 && image_height > 0 )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( m_highlightIcon != null && (highlight & DRAW_HIGHLIGHT) >0 )  );//
+path();///auto path//
+set(  item_icon = m_highlightIcon;  );//
+generic(    );//// centre icon verticaly
+set(  offsety += ((m_rect.height - image_height)/2);  );//
+generic(    );//// draw icon
+generic(  g.drawImage( item_icon, offsetx, offsety, ob);  );//
+generic(    );//// shift offset to compensate for image
+set(  offsetx += image_width;  );//
+bend(  }  );//
+bend(  }  );//
+generic(    );//// change color if highlighted
+branch(  if( (highlight & DRAW_HIGHLIGHT) >0 && m_title.length() != 0)  );//
+path();///auto path//
+generic(  {  );//
+generic(  g.setColor( ob.m_highColour );   );//// red
+generic(  g.fillRect(  );//
+generic(  offsetx,  );//
+generic(  m_rect.y,  );//
+generic(  (m_rect.width - (offsetx - m_rect.x)),  );//
+generic(  m_rect.height );  );//
+generic(  g.setColor( ob.m_highTextColour );  );//
+bend(  }  );//
+path(  else   );//// setup colors for defualt draw
+generic(  {  );//
+generic(  g.setColor( ob.m_textColour );  );//
+bend(  }  );//
+set(  offsety = m_rect.y;  );//
+set(  offsetx += 2;  );//
+generic(    );//// draw title text
+set(  offsety += ((m_rect.height - (g.getFontMetrics()).getHeight()) /2 );  );//
+set(  offsety += (g.getFontMetrics()).getAscent();  );//
+generic(  g.drawString(m_title, offsetx, offsety );  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public boolean activate( int activate_type, Event )
+generic(    );//// activate item into some form of action input
+generic(    );//// doesn't use the Event object
+generic(  public boolean activate( int activate_type, Event event )  );//
+generic(  {  );//
+branch(  if( m_action != null )  );//
+path();///auto path//
+generic(  {  );//
+generic(  m_action.showStatus();    );//// activate status bar
+branch(  if( activate_type == ACT_CLICK || activate_type == ACT_DBCLICK )  );//
+path();///auto path//
+generic(  m_action.showDocument();   );//// load url
+bend(  }  );//
+end(  return false;   );//// no redraw
+bend(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public Item hitTest( int x, int y )
+generic(    );//// does x,y fall within the rectangle
+generic(  public Item hitTest( int x, int y )  );//
+generic(  {  );//
+branch(  if( m_rect.inside( x,y ) )  );//
+path();///auto path//
+end(  return this;  );//
+path(  else return null;  );//
+bend(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );//// public Rectangle layout( int x, int y )
+generic(    );//// layout item for redawing
+generic(  public Rectangle layout( int x, int y )  );//
+generic(  {  );//
+generic(  m_rect.move(x,y);  );//
+end(  return m_rect;  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public void initalise( FontMetrics fm, ImageObserver ob )
+generic(    );//// computes the widht and height of item
+generic(    );//// intalise drawing area this should be called after
+generic(    );//// construction and after any changes to title or icon
+generic(  public void initalise( FontMetrics fm, ImageObserver ob )  );//
+generic(  {  );//
+generic(    );//// find width and setup
+set(  int width = 4;  );//
+set(  int height = 0;  );//
+branch(  if( m_icon != null )  );//
+path();///auto path//
+generic(  {  );//
+set(  width += m_icon.getWidth( ob );  );//
+set(  height = m_icon.getHeight( ob );  );//
+bend(  }  );//
+set(  width += fm.stringWidth( m_title );  );//
+set(  int fontHeight = (fm.getLeading() + fm.getMaxAscent() + fm.getMaxDescent());  );//
+branch(  if( height < fontHeight )  );//
+path();///auto path//
+set(  height = fontHeight;  );//
+generic(    );//// set rectangle
+set(  m_rect.width = width;  );//
+set(  m_rect.height = height;  );//
+bend(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public Rectangle getRect(  )
+generic(    );//// get the drwing area rectangle
+generic(  public Rectangle getRect(  )  );//
+generic(  {  );//
+end(  return m_rect;  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public int getWidth()
+generic(    );//// get width in pixels of item
+generic(  public int getWidth()  );//
+generic(  {  );//
+end(  return m_rect.width;  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public int getHeight()
+generic(    );//// get height in pixels of item
+generic(  public int getHeight()  );//
+generic(  {  );//
+end(  return m_rect.height;  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public String getTitle( )
+generic(    );//// get item title
+generic(  public String getTitle( )  );//
+generic(  {  );//
+end(  return m_title;   );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public void setTitle( String title )
+generic(    );//// change title to somthing else
+generic(  public void setTitle( String title )  );//
+generic(  {  );//
+set(  m_title = title;   );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );//// public ItemAction getAction( )
+generic(    );//// get action
+generic(  public ItemAction getAction( )  );//
+generic(  {  );//
+end(  return m_action;  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );//// public void setAction( ItemAction action )
+generic(    );//// set action
+generic(  public void setAction( ItemAction action )  );//
+generic(  {  );//
+set(  m_action = action;  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );//// public Image getIcon( )
+generic(    );//// get item icon
+generic(  public Image getIcon( )  );//
+generic(  {  );//
+end(  return m_icon;   );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );//// public void setIcon( Image icon )
+generic(    );//// change icon to somthing else
+generic(  public void setIcon( Image icon )  );//
+generic(  {  );//
+set(  m_icon = icon;   );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );//// public Image getHighlightIcon( )
+generic(    );//// get second image
+generic(  public Image getHighlightIcon( )  );//
+generic(  {  );//
+end(  return m_highlightIcon;   );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );////  public void setHighlightIcon( Image icon )
+generic(    );////  change second image
+generic(  public void setHighlightIcon( Image icon )  );//
+generic(  {  );//
+set(  m_highlightIcon = icon;   );//
+end(  }  );//
+end(  }   );//// end item
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    Item.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 37 55 592 423 1 75   345   63    java.key  0

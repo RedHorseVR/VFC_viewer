@@ -1,0 +1,461 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : SampleTree.java.ins
+;  File Date : 01:35:08 PM - 27:Aug:1999
+
+generic(  /*  );//
+output(  * @(#)SampleTree.java1.17 99/04/23  );//
+generic(  *  );//
+generic(  * Copyright (c) 1997-1999 by Sun Microsystems, Inc. All Rights Reserved.  );//
+generic(  *  );//
+generic(  * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use,  );//
+generic(  * modify and redistribute this software in source and binary code form,  );//
+generic(  * provided that i) this copyright notice and license appear on all copies of  );//
+generic(  * the software; and ii) Licensee does not utilize the software in a manner  );//
+generic(  * which is disparaging to Sun.  );//
+generic(  *  );//
+generic(  * This software is provided "AS IS," without a warranty of any kind. ALL  );//
+generic(  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY  );//
+generic(  * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR  );//
+generic(  * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE  );//
+generic(  * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING  );//
+generic(  * OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS  );//
+generic(  * LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT,  );//
+generic(  * INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER  );//
+generic(  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF  );//
+generic(  * OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE  );//
+generic(  * POSSIBILITY OF SUCH DAMAGES.  );//
+generic(  *  );//
+generic(  * This software is not designed or intended for use in on-line control of  );//
+generic(  * aircraft, air traffic, aircraft navigation or aircraft communications; or in  );//
+generic(  * the design, construction, operation or maintenance of any nuclear  );//
+generic(  * facility. Licensee represents and warrants that it will not use or  );//
+generic(  * redistribute the Software for such purposes.  );//
+generic(  */  );//
+generic();//  import javax.*;
+generic(  import javax.swing.*;  );//
+generic(  import javax.swing.event.*;  );//
+generic(  import java.awt.BorderLayout;  );//
+generic(  import java.awt.Color;  );//
+generic(  import java.awt.Dimension;  );//
+generic(  import java.awt.FlowLayout;  );//
+generic(  import java.awt.event.ActionEvent;  );//
+generic(  import java.awt.event.ActionListener;  );//
+generic(  import java.awt.event.WindowAdapter;  );//
+generic(  import java.awt.event.WindowEvent;  );//
+generic(  import javax.swing.tree.*;  );//
+generic(  /**  );//
+generic(  * A demo for illustrating how to do different things with JTree.  );//
+generic(  * The data that this displays is rather boring, that is each node will  );//
+generic(  * have 7 children that have random names based on the fonts.  Each node  );//
+generic(  * is then drawn with that font and in a different color.  );//
+generic(  * While the data isn't interesting the example illustrates a number  );//
+generic(  * of things:  );//
+generic(  *  );//
+generic(  * For an example of dynamicaly loading children refer to DynamicTreeNode.  );//
+generic(  * For an example of adding/removing/inserting/reloading refer to the inner  );//
+end(  );// AUTO 
+
+input(  *     classes of this class, AddAction, RemovAction, InsertAction and  );//
+generic(  *     ReloadAction.  );//
+generic(  * For an example of creating your own cell renderer refer to  );//
+generic(  *     SampleTreeCellRenderer.  );//
+end(  );// AUTO 
+
+input(  * For an example of subclassing JTreeModel for editing refer to  );//
+generic(  *     SampleTreeModel.  );//
+generic(  *  );//
+output(  * @version 1.17 04/23/99  );//
+output(  * @author Scott Violet  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public class SampleTree  );//
+generic(  {  );//
+generic(  /** Window for showing Tree. */  );//
+generic(  protected JFrame            frame;  );//
+generic(  /** Tree used for the example. */  );//
+generic(  protected JTree             tree;  );//
+generic(  /** Tree model. */  );//
+generic(  protected DefaultTreeModel        treeModel;  );//
+generic(  /**  );//
+generic(  * Constructs a new instance of SampleTree.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public SampleTree() {  );//
+generic(    );//// Force SampleTree to come up in the Cross Platform L&F
+branch(  try {  );//
+path();///auto path//
+generic(  UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());  );//
+generic(    );//// If you want the System L&F instead, comment out the above line and
+generic(    );//// uncomment the following:
+generic(    );//// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+bend(  } catch (Exception exc) {  );//
+generic(  System.err.println("Error loading L&F: " + exc);  );//
+end(  }  );//
+set(  JMenuBar         menuBar = constructMenuBar();  );//
+set(  JPanel           panel = new JPanel(true);  );//
+set(  frame = new JFrame("SampleTree");  );//
+generic(  frame.getContentPane().add("Center", panel);  );//
+generic(  frame.setJMenuBar(menuBar);  );//
+generic(  frame.setBackground(Color.lightGray);  );//
+generic(  /* Create the JTreeModel. */  );//
+set(  DefaultMutableTreeNode root = createNewNode("Root");  );//
+set(  treeModel = new SampleTreeModel(root);  );//
+generic(  /* Create the tree. */  );//
+set(  tree = new JTree(treeModel);  );//
+generic(  /* Enable tool tips for the tree, without this tool tips will not  );//
+generic(  be picked up. */  );//
+generic(  ToolTipManager.sharedInstance().registerComponent(tree);  );//
+generic(  /* Make the tree use an instance of SampleTreeCellRenderer for  );//
+generic(  drawing. */  );//
+generic(  tree.setCellRenderer(new SampleTreeCellRenderer());  );//
+generic(  /* Make tree ask for the height of each row. */  );//
+generic(  tree.setRowHeight(-1);  );//
+generic(  /* Put the Tree in a scroller. */  );//
+set(  JScrollPane        sp = new JScrollPane();  );//
+generic(  sp.setPreferredSize(new Dimension(300, 300));  );//
+generic(  sp.getViewport().add(tree);  );//
+generic(  /* And show it. */  );//
+generic(  panel.setLayout(new BorderLayout());  );//
+generic(  panel.add("Center", sp);  );//
+generic(  panel.add("South", constructOptionsPanel());  );//
+generic(  frame.addWindowListener( new WindowAdapter() {  );//
+end(  );// AUTO 
+
+input(  public void windowClosing(WindowEvent e) {System.exit(0);}});  );//
+generic(  frame.pack();  );//
+generic(  frame.show();  );//
+end(  }  );//
+generic(  /** Constructs a JPanel containing check boxes for the different  );//
+generic(  * options that tree supports. */  );//
+end(  );// AUTO 
+
+input(  private JPanel constructOptionsPanel() {  );//
+generic(  JCheckBox               aCheckbox;  );//
+set(  JPanel           retPanel = new JPanel(false);  );//
+set(  JPanel           borderPane = new JPanel(false);  );//
+generic(  borderPane.setLayout(new BorderLayout());  );//
+generic(  retPanel.setLayout(new FlowLayout());  );//
+set(  aCheckbox = new JCheckBox("show handles");  );//
+generic(  aCheckbox.setSelected(tree.getShowsRootHandles());  );//
+generic(  aCheckbox.addChangeListener(new ShowHandlesChangeListener());  );//
+generic(  retPanel.add(aCheckbox);  );//
+set(  aCheckbox = new JCheckBox("show root");  );//
+generic(  aCheckbox.setSelected(tree.isRootVisible());  );//
+generic(  aCheckbox.addChangeListener(new ShowRootChangeListener());  );//
+generic(  retPanel.add(aCheckbox);  );//
+set(  aCheckbox = new JCheckBox("editable");  );//
+generic(  aCheckbox.setSelected(tree.isEditable());  );//
+generic(  aCheckbox.addChangeListener(new TreeEditableChangeListener());  );//
+generic(  aCheckbox.setToolTipText("Triple click to edit");  );//
+generic(  retPanel.add(aCheckbox);  );//
+generic(  borderPane.add(retPanel, BorderLayout.CENTER);  );//
+generic(  /* Create a set of radio buttons that dictate what selection should  );//
+generic(  be allowed in the tree. */  );//
+set(  ButtonGroup           group = new ButtonGroup();  );//
+set(  JPanel         buttonPane = new JPanel(false);  );//
+generic(  JRadioButton          button;  );//
+generic(  buttonPane.setLayout(new FlowLayout());  );//
+set(  button = new JRadioButton("Single");  );//
+generic(  button.addActionListener(new AbstractAction() {  );//
+end(  public boolean isEnabled() { return true; }  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent e) {  );//
+generic(  tree.getSelectionModel().setSelectionMode  );//
+generic(  (TreeSelectionModel.SINGLE_TREE_SELECTION);  );//
+end(  }  );//
+end(  });  );//
+generic(  group.add(button);  );//
+generic(  buttonPane.add(button);  );//
+set(  button = new JRadioButton("Contiguous");  );//
+generic(  button.addActionListener(new AbstractAction() {  );//
+end(  public boolean isEnabled() { return true; }  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent e) {  );//
+generic(  tree.getSelectionModel().setSelectionMode  );//
+generic(  (TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);  );//
+end(  }  );//
+end(  });  );//
+generic(  group.add(button);  );//
+generic(  buttonPane.add(button);  );//
+set(  button = new JRadioButton("Discontiguous");  );//
+generic(  button.addActionListener(new AbstractAction() {  );//
+end(  public boolean isEnabled() { return true; }  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent e) {  );//
+generic(  tree.getSelectionModel().setSelectionMode  );//
+generic(  (TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);  );//
+end(  }  );//
+end(  });  );//
+generic(  button.setSelected(true);  );//
+generic(  group.add(button);  );//
+generic(  buttonPane.add(button);  );//
+generic(  borderPane.add(buttonPane, BorderLayout.SOUTH);  );//
+generic(    );//// NOTE: This will be enabled in a future release.
+generic(    );//// Create a label and combobox to determine how many clicks are
+generic(    );//// needed to expand.
+generic(  /*  );//
+set(  JPanel               clickPanel = new JPanel();  );//
+set(  Object[]             values = { "Never", new Integer(1),  );//
+generic(  new Integer(2), new Integer(3) };  );//
+set(  final JComboBox      clickCBox = new JComboBox(values);  );//
+generic(  clickPanel.setLayout(new FlowLayout());  );//
+generic(  clickPanel.add(new JLabel("Click count to expand:"));  );//
+generic(  clickCBox.setSelectedIndex(2);  );//
+generic(  clickCBox.addActionListener(new ActionListener() {  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent ae) {  );//
+set(  Object       selItem = clickCBox.getSelectedItem();  );//
+branch(  if(selItem instanceof Integer)  );//
+path();///auto path//
+generic(  tree.setToggleClickCount(((Integer)selItem).intValue());  );//
+path(  else   );//// Don't toggle
+generic(  tree.setToggleClickCount(0);  );//
+bend(  }  );//
+end(  });  );//
+generic(  clickPanel.add(clickCBox);  );//
+generic(  borderPane.add(clickPanel, BorderLayout.NORTH);  );//
+generic(  */  );//
+end(  return borderPane;  );//
+end(  }  );//
+generic(  /** Construct a menu. */  );//
+end(  );// AUTO 
+
+input(  private JMenuBar constructMenuBar() {  );//
+generic(  JMenu            menu;  );//
+set(  JMenuBar         menuBar = new JMenuBar();  );//
+generic(  JMenuItem        menuItem;  );//
+generic(  /* Good ol exit. */  );//
+set(  menu = new JMenu("File");  );//
+generic(  menuBar.add(menu);  );//
+set(  menuItem = menu.add(new JMenuItem("Exit"));  );//
+generic(  menuItem.addActionListener(new ActionListener() {  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent e) {  );//
+generic(  System.exit(0);  );//
+end(  }});  );//
+generic(  /* Tree related stuff. */  );//
+set(  menu = new JMenu("Tree");  );//
+generic(  menuBar.add(menu);  );//
+set(  menuItem = menu.add(new JMenuItem("Add"));  );//
+generic(  menuItem.addActionListener(new AddAction());  );//
+set(  menuItem = menu.add(new JMenuItem("Insert"));  );//
+generic(  menuItem.addActionListener(new InsertAction());  );//
+set(  menuItem = menu.add(new JMenuItem("Reload"));  );//
+generic(  menuItem.addActionListener(new ReloadAction());  );//
+set(  menuItem = menu.add(new JMenuItem("Remove"));  );//
+generic(  menuItem.addActionListener(new RemoveAction());  );//
+end(  return menuBar;  );//
+end(  }  );//
+generic(  /**  );//
+generic(  * Returns the TreeNode instance that is selected in the tree.  );//
+end(  * If nothing is selected, null is returned.  );//
+generic(  */  );//
+generic(  protected DefaultMutableTreeNode getSelectedNode() {  );//
+set(  TreePath   selPath = tree.getSelectionPath();  );//
+branch(  if(selPath != null)  );//
+path();///auto path//
+end(  return (DefaultMutableTreeNode)selPath.getLastPathComponent();  );//
+end(  return null;  );//
+bend(  }  );//
+generic(  protected DefaultMutableTreeNode createNewNode(String name) {  );//
+end(  return new DynamicTreeNode(new SampleData(null, Color.black, name));  );//
+end(  }  );//
+generic(  /**  );//
+generic(  * AddAction is used to add a new item after the selected item.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  class AddAction extends Object implements ActionListener  );//
+generic(  {  );//
+generic(  /** Number of nodes that have been added. */  );//
+generic(  public int               addCount;  );//
+generic(  /**  );//
+generic(  * Messaged when the user clicks on the Add menu item.  );//
+generic(  * Determines the selection from the Tree and adds an item  );//
+generic(  * after that.  If nothing is selected, an item is added to  );//
+generic(  * the root.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent e) {  );//
+generic(  int               newIndex;  );//
+set(  DefaultMutableTreeNode          lastItem = getSelectedNode();  );//
+generic(  DefaultMutableTreeNode          parent;  );//
+generic(  /* Determine where to create the new node. */  );//
+branch(  if(lastItem != null) {  );//
+path();///auto path//
+set(  parent = (DefaultMutableTreeNode)lastItem.getParent();  );//
+branch(  if(parent == null) {  );//
+path();///auto path//
+set(  parent = (DefaultMutableTreeNode)treeModel.getRoot();  );//
+set(  lastItem = null;  );//
+bend(  }  );//
+bend(  }  );//
+path(  else  );//
+set(  parent = (DefaultMutableTreeNode)treeModel.getRoot();  );//
+branch(  if(lastItem == null)  );//
+path();///auto path//
+set(  newIndex = treeModel.getChildCount(parent);  );//
+path(  else  );//
+set(  newIndex = parent.getIndex(lastItem) + 1;  );//
+generic(  /* Let the treemodel know. */  );//
+generic(  treeModel.insertNodeInto(createNewNode("Added " +  );//
+generic(  Integer.toString(addCount++)),  );//
+generic(  parent, newIndex);  );//
+bend(  }  );//
+end(  }   );//// End of SampleTree.AddAction
+generic(  /**  );//
+generic(  * InsertAction is used to insert a new item before the selected item.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  class InsertAction extends Object implements ActionListener  );//
+generic(  {  );//
+generic(  /** Number of nodes that have been added. */  );//
+generic(  public int               insertCount;  );//
+generic(  /**  );//
+generic(  * Messaged when the user clicks on the Insert menu item.  );//
+generic(  * Determines the selection from the Tree and inserts an item  );//
+generic(  * after that.  If nothing is selected, an item is added to  );//
+generic(  * the root.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent e) {  );//
+generic(  int               newIndex;  );//
+set(  DefaultMutableTreeNode          lastItem = getSelectedNode();  );//
+generic(  DefaultMutableTreeNode          parent;  );//
+generic(  /* Determine where to create the new node. */  );//
+branch(  if(lastItem != null) {  );//
+path();///auto path//
+set(  parent = (DefaultMutableTreeNode)lastItem.getParent();  );//
+branch(  if(parent == null) {  );//
+path();///auto path//
+set(  parent = (DefaultMutableTreeNode)treeModel.getRoot();  );//
+set(  lastItem = null;  );//
+bend(  }  );//
+bend(  }  );//
+path(  else  );//
+set(  parent = (DefaultMutableTreeNode)treeModel.getRoot();  );//
+branch(  if(lastItem == null)  );//
+path();///auto path//
+set(  newIndex = treeModel.getChildCount(parent);  );//
+path(  else  );//
+set(  newIndex = parent.getIndex(lastItem);  );//
+generic(  /* Let the treemodel know. */  );//
+generic(  treeModel.insertNodeInto(createNewNode("Inserted " +  );//
+generic(  Integer.toString(insertCount++)),  );//
+generic(  parent, newIndex);  );//
+bend(  }  );//
+end(  }   );//// End of SampleTree.InsertAction
+generic(  /**  );//
+generic(  * ReloadAction is used to reload from the selected node.  If nothing  );//
+generic(  * is selected, reload is not issued.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  class ReloadAction extends Object implements ActionListener  );//
+generic(  {  );//
+generic(  /**  );//
+generic(  * Messaged when the user clicks on the Reload menu item.  );//
+generic(  * Determines the selection from the Tree and asks the treemodel  );//
+generic(  * to reload from that node.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent e) {  );//
+set(  DefaultMutableTreeNode          lastItem = getSelectedNode();  );//
+branch(  if(lastItem != null)  );//
+path();///auto path//
+generic(  treeModel.reload(lastItem);  );//
+bend(  }  );//
+end(  }   );//// End of SampleTree.ReloadAction
+generic(  /**  );//
+generic(  * RemoveAction removes the selected node from the tree.  If  );//
+generic(  * The root or nothing is selected nothing is removed.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  class RemoveAction extends Object implements ActionListener  );//
+generic(  {  );//
+generic(  /**  );//
+generic(  * Removes the selected item as long as it isn't root.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public void actionPerformed(ActionEvent e) {  );//
+set(  DefaultMutableTreeNode          lastItem = getSelectedNode();  );//
+branch(  if(lastItem != null && lastItem != (DefaultMutableTreeNode)treeModel.getRoot()) {  );//
+path();///auto path//
+generic(  treeModel.removeNodeFromParent(lastItem);  );//
+bend(  }  );//
+end(  }  );//
+end(  }   );//// End of SampleTree.RemoveAction
+generic(  /**  );//
+generic(  * ShowHandlesChangeListener implements the ChangeListener interface  );//
+generic(  * to toggle the state of showing the handles in the tree.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  class ShowHandlesChangeListener extends Object implements ChangeListener  );//
+generic(  {  );//
+end(  );// AUTO 
+
+input(  public void stateChanged(ChangeEvent e) {  );//
+generic(  tree.setShowsRootHandles(((JCheckBox)e.getSource()).isSelected());  );//
+end(  }  );//
+end(  }   );//// End of class SampleTree.ShowHandlesChangeListener
+generic(  /**  );//
+generic(  * ShowRootChangeListener implements the ChangeListener interface  );//
+generic(  * to toggle the state of showing the root node in the tree.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  class ShowRootChangeListener extends Object implements ChangeListener  );//
+generic(  {  );//
+end(  );// AUTO 
+
+input(  public void stateChanged(ChangeEvent e) {  );//
+generic(  tree.setRootVisible(((JCheckBox)e.getSource()).isSelected());  );//
+end(  }  );//
+end(  }   );//// End of class SampleTree.ShowRootChangeListener
+generic(  /**  );//
+generic(  * TreeEditableChangeListener implements the ChangeListener interface  );//
+generic(  * to toggle between allowing editing and now allowing editing in  );//
+generic(  * the tree.  );//
+generic(  */  );//
+end(  );// AUTO 
+
+input(  class TreeEditableChangeListener extends Object implements ChangeListener  );//
+generic(  {  );//
+end(  );// AUTO 
+
+input(  public void stateChanged(ChangeEvent e) {  );//
+generic(  tree.setEditable(((JCheckBox)e.getSource()).isSelected());  );//
+end(  }  );//
+end(  }   );//// End of class SampleTree.TreeEditableChangeListener
+end(  );// AUTO 
+
+input(  static public void main(String args[]) {  );//
+generic(  new SampleTree();  );//
+end(  }  );//
+end(  }  );//
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    SampleTree.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 99 88 502 398 1 75   235   4294965817    jdk12~1.key  0

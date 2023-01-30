@@ -1,0 +1,125 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : Dialog1.ins
+;  File Date : 04:10:30 AM - 29:Aug:1999
+
+
+input(/** recipe log **/);//<--- part of framework
+process(/** created Dialog1.class using frame: 'Dialog Applet.fm'   **/);//
+end();//
+
+input(/** Imports **/);//
+generic(import java.awt.*;);//  
+generic(import java.applet.*;);//  
+generic(import java.net.*;);//  
+generic(import jcx.*;);//  
+end(/*------------*/);//
+
+input(public class Dialog1  extends Applet {);//
+
+input(/** class event procs **/);//<--- used in framework
+
+input(/** class data **/);//<--- used in framework
+set(Frame frame=null;);//   <----- frame is set when the dialog is created via the resources class object and this framework
+generic(  TreePanel TreeView;);//
+generic(  URL CodeBase;  );//
+end(/* end static variables */);// 
+
+input(public TreePanel  initTree() {);//
+generic(  TreeNode root;);//
+generic(TreePanel treePane;);//
+process(treePane = new TreePanel(););//Scontainer.add ( treePane = new TreePanel());
+generic(  treePane.showPreIcons ( false ););//  treePane.showPreIcons (true);  
+generic(  treePane.setFont ( new Font( "Areal" , Font.PLAIN , 10) ););//
+generic(  treePane.setUrlFont ( new Font( "Areal" , Font.PLAIN , 10) ););//
+generic();//  treePane.setFont (f);  
+generic();//  treePane.setUrlFont (uf);  
+generic();//  treePane.addNotify();
+generic(  URL[] imgUrls = null;);//
+branch(  try {  );//
+path();//
+set(  imgUrls = new URL [10];  );//
+set(  imgUrls [0] = new URL (CodeBase,  "iconpics/ylnode.gif");  );//
+set(  imgUrls [1] = new URL (CodeBase,  "iconpics/grnode.gif");  );//
+set(  imgUrls [2] = new URL (CodeBase,  "iconpics/phone.gif");  );//
+set(  imgUrls [3] = new URL (CodeBase,  "iconpics/ppen.gif");  );//
+set(  imgUrls [4] = new URL (CodeBase,  "iconpics/dblptr.gif");  );//
+set(  imgUrls [5] = new URL (CodeBase,  "iconpics/file.gif");  );//
+set(  imgUrls [6] = new URL (CodeBase,  "iconpics/excl.gif");  );//
+set(  imgUrls [7] = new URL (CodeBase,  "iconpics/yes.gif");  );//
+set(  imgUrls [8] = new URL (CodeBase,  "iconpics/no.gif");  );//
+set(  imgUrls [9] = new URL (CodeBase,  "iconpics/url.gif");  );//
+set(  }  );//
+path(  catch (MalformedURLException e) {  );//
+generic(    );//// // do error recovery ......
+bend(  }  );//
+set(  root = treePane.getRoot ();  );//
+generic(  root.setIconURL (imgUrls [0]);  );//
+generic(  root.setName  ("Inputs"););//
+generic(  root.select();  );//
+set(  TreeNode t0 = root.addChild (new TreeNode(null, "Child with two Icon states", imgUrls [7], imgUrls [6]));  );//
+generic(  t0.setCloseIconURL (imgUrls [8]);  );//
+set(  TreeNode t00 = t0.addChild (new TreeNode(null, "Expand me to See the scroll bars", null, null));  );//
+loop(  for (int i=0; i<50; i++)  );//
+lend(  t00.addChild (new TreeNode(null, "Child with file icon "+Integer.toString(i), imgUrls [5], imgUrls [5]));  );//
+generic(  t00.collapse();  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre Yes + Pen icon", imgUrls [3], imgUrls [7]));  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre No + Phone icon", imgUrls [2], imgUrls [8]));  );//
+set(  TreeNode t1 = root.addChild (new TreeNode(null, "Child with grey icon", imgUrls [1], null));  );//
+set(  TreeNode t10 = t1.addChild (new TreeNode(null, "Child with yellow icon", imgUrls [0], null));  );//
+generic(  t10.addChild (new TreeNode(null, "Child No icon", null, null));  );//
+set(  TreeNode x = t10.addChild (new TreeNode(null, "x", imgUrls [0], null));  );//
+set(  TreeNode y = x.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+set(  TreeNode z = y.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+generic(  z.addChild (new TreeNode(null, "Child with a pre Yes +file icon", imgUrls [5], imgUrls [7]));  );//
+generic(  t1.addChild (new TreeNode(null, "Child 2 With Pre No + Exclamation icon", imgUrls [6], imgUrls [8]));  );//
+generic(  root.addChild (new TreeNode(null, "Child withFile icon", imgUrls [5], null));  );//
+end(return treePane ;    });//
+
+input(public void init(){);//  
+set( );//frame.add( TreeView  );
+process(System.out.println("init Dialog\n"););//
+end(} );//  
+
+input(public boolean action( Event e , Object what ) {);//
+process(System.out.println("Hello world!");  );//
+branch(  if (e.target instanceof TreePanel ));//
+path({ );//
+bend(} );//
+end(return true ;  });//  return false; }  
+
+input(public boolean handleEvent(Event e){);//  
+branch(switch (e.id){);//  
+path(case Event.ACTION_EVENT:);//
+branch(if( "OK".equals(e.arg) || "Cancel".equals(e.arg) ||  "X".equals(e.arg)  ));//
+path({ );// 
+branch(if( frame!=null  ));//
+path({ );// 
+process(frame.hide(););//
+process(frame.dispose(););//
+bend(} );// 
+end(return true;);//
+bend(} );// 
+path(case Event.WINDOW_DESTROY:);//
+branch(if( frame!=null  ));//
+path({ );// 
+process(frame.hide(););//
+process(frame.dispose(););//
+bend(} );// 
+end(return true;);//
+set();//
+bend(} );//  
+end(  return super.handleEvent( e ) ; });//  return false; }  
+
+input(}       /* end of class definition */);//
+end();//  
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 0 13158600 0 0 13158600 65280 16777215 0 0 0 0 0 16711935
+;    Dialog1.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 348 618 643 579 73 119   335   4294967008    java.key  0

@@ -1,0 +1,243 @@
+;  IRL FlowCode Version: Version 10.0
+;  c1995-2015: Visual Flow Coder by 2LResearch
+;
+;  File Name : FCview.java.ins
+;  File Date : 09:35:53 AM - 30:Jan:2023
+
+
+input(  /** Imports **/      );//// // <--- part of framework......
+generic(  import java.awt.*;  );//
+generic();//  import java.applet.*;
+generic(  import java.util.*;);//
+generic(  import java.io.*;);//
+set( import java.net.*;);// 
+end(  );// AUTO 
+
+input(  public class FCview extends Frame {);//  public class FCview extends Applet {
+branch();//
+path();//
+generic(  Color SelectedObjectColor  = new Color(  255  , 0 , 0 ) ;);//
+generic(  Color CommentObjectColor  = new Color(  100 , 100 , 100 ) ;);//
+set(boolean first_draw = true;);//
+process(private  Point p ;);/////
+generic(  private String VFCfile;  );//
+set(private StatementObject SO1 , SO2 , SO3 , SO4 , SO5 , SO6 , SO7 ;);//
+set(public  StatementObject Head ;);//
+set(public Vector SO;);//
+set(Stack iterativeS;);//
+set(Stack logicalS;);//
+set(URL DocBase = null;);//
+set(private String LastType = null ;);//
+set(public int Zoom = 20;);//
+set(public int currentObject =1;);//
+set(public boolean DrawComments = true ;);//public boolean DrawComments = false;
+path();//
+
+input(String GetLines ( InputStream  st ) throws IOException);// 
+set( { );// 
+set(int c;);//
+set(String  buff = new String(""););//
+output();//System.out.println( "Hello --- getting lines "  );
+loop(while( ( c = st.read() ) != -1 ) {);//GetLines( st ) ;
+branch(if(  c == '\n' ));// 
+path({);// 
+output(System.out.println( buff ););//////
+branch(if(  !buff.startsWith(";") &&  !buff.startsWith("\r")  ));//
+path( { );//
+set(SO.addElement( track_stack_links(  (SO1=new StatementObject( buff , SO )) )  ) ;);//
+branch(if( SO.size() == 1  ));//
+path( { );//
+set(Head = SO1;);//
+bend( } );//
+path( }else{ );//
+bend( } );//
+set(buff = "";);//
+path(}else{);// 
+set(buff = buff + (char)c;);//
+bend( } );// 
+lend( } );// 
+output();//System.out.println( "Hello --- exit getting  lines "  );
+end(return null; });// 
+path();//
+
+input( public void load( String fname ));// 
+set( { );// 
+set(   InputStream in =null;);// 
+output();//System.out.println( "load()"  );
+output();//System.out.println( fname  );
+branch( try { );// 
+path();//
+set( );// Thread.currentThread().setPriority(Thread.MIN_PRIORITY); 
+set(//  in =new URL( fname).openStream(););//  in =new URL(getDocumentBase(),fname).openStream(); in =new URL( DocBase ,fname).openStream();
+process(in = new FileInputStream( fname  ););//
+set( } );// 
+path(   catch(Exception e) { );// 
+process(System.out.println("load() Exception <LineNumber>! " +   e.getMessage() + "\n"  ););//
+bend( } );// 
+branch(try );//
+path( {  );//
+set();//InputStream  in  = new InputStream("test.ins");
+set( );// StreamTokenizer st =new StreamTokenizer(in);
+process(GetLines( in ) ;);//while( in.read( buff , 0 , 64 ) != -1 ) {
+path( }catch( Exception e ){);//
+process(System.out.println("get lines Exception <Linenumber>! " +   e.getMessage() + "\n"  ););//
+bend( } );//
+branch( try { );// 
+path();//
+branch( if (in != null));// 
+path();//
+set( in.close(););// 
+bend();// 
+set( } );// 
+path(   catch(Exception e) { );// 
+bend( } );// 
+output();//System.out.println( "load() - loaded .. going to paint now then exit "  );
+set( repaint(); );// 
+end( } );// 
+path();//
+
+input(FCview (  String filename ) throws IOException {);//FCview ( URL docbase , String filename ) throws IOException {
+set();//DocBase = docbase ;
+set(   InputStream is =null; );// 
+set(VFCfile = filename;);//
+set(logicalS = new Stack( ) ;);// Use to track logical nesting 
+set(iterativeS = new Stack( ) ;);// Use to track logical nesting 
+output();//System.out.println( "\t---------------------DEBUG-------------------------"  );
+output();//System.out.println( VFCfile );
+set(SO = new Vector( 200 ););//
+set();//SO.addElement( track_stack_links(  new StatementObject( "input( ! );/... commentary " ) )  ) ;
+process(load( VFCfile ););//load( "test.ins" );
+output();//System.out.println( "\tpost load ------DEBUG-------------------------"  );
+set();//SO.addElement( track_stack_links(  new StatementObject( "end( ! );/... commentary " ) )  ) ;
+set();//int     i=10;
+end(  } );//
+path();//
+
+input(private StatementObject track_stack_links( StatementObject SO ) {);//
+branch(if( SO.Type.equals("branch")  ));//
+path( { );//
+branch(try );//
+path( {  );//
+process(logicalS.push( SO ););//
+path( }catch( EmptyStackException  e ){);//
+bend( } );//
+path(} else if(   SO.Type.equals("path" )  ) {);//
+branch(try );//
+path( {  );//
+process( StatementObject S = (StatementObject) logicalS.peek( ););//
+branch(if(  S.Type.equals("branch")  ));//
+path( { );//
+process(S.PLink.addElement( SO ););//
+process(SO.Link = S ;);//
+bend( } );//
+path( }catch( EmptyStackException  e ){);//
+bend( } );//
+path(} else if(   SO.Type.equals("loop" )  ) {);//
+branch(try );//
+path( {  );//
+process(iterativeS.push( SO ););//
+path( }catch( EmptyStackException  e ){);//
+bend( } );//
+path(} else if( SO.Type.equals("bend") ) {);//
+branch(try );//
+path( {  );//
+set(StatementObject Sb = (StatementObject) logicalS.pop(  ););//
+set( SO.Link = Sb;);//
+set(Sb.Link = SO ;);//
+path( }catch( EmptyStackException  e ){);//
+bend( } );//
+path(} else if(  SO.Type.equals("lend") ) {);//
+branch(try );//
+path( {  );//
+set(SO.Link = (StatementObject) iterativeS.pop(  ););//
+path( }catch( EmptyStackException  e ){);//
+bend( } );//
+bend( } );//
+set( LastType = SO.Type;);//
+end(return SO;  });//
+path();//
+
+input(   public Point  drawBounds( ){);//  public void _draw( Graphics g, int x, int y, int z){
+set();//FontMetrics FM = g.getFontMetrics();
+set(Point P = new Point( 0 , 0 ););//
+set(StatementObject S ;);//
+loop(for( int i =0 ; i< SO.size()  ; i++ ) {);//
+process(S  = (StatementObject)  SO.elementAt( i ) ;);//
+branch(if( S.xmax - S.xmin> P.x  ));//only draw if within visible limits of 1000 x 600
+path( { );//
+process(P.x = S.xmax - S.xmin ;);// 
+bend( } );//
+branch(if( S.y2 - Head.Yo > P.y  ));//only draw if within visible limits of 1000 x 600
+path( { );//
+process(P.y = S.y2 - Head.Yo ;);// 
+bend( } );//
+lend( } // end for );//
+end(return P; });//  
+path();//
+
+input(   public void draw( Graphics g, int x, int y, int z){);//  public void _draw( Graphics g, int x, int y, int z){
+set();//FontMetrics FM = g.getFontMetrics();
+output(System.out.println( "draw ... DEBUG-------------------------"  ););//
+set(StatementObject S ;);//
+branch(if( first_draw  ));// 
+path( {);//Calc only on first run to avoid bad display
+output(System.out.println( "\t---------------------DEBUG-------------------------"  ););//
+process(S  = (StatementObject)  SO.elementAt( 0 ) ;);//
+output(System.out.println( "\t statment object draw ... DEBUG-------------------------"  ););//
+set(first_draw = false;);//
+process(S.calculate( g, x, y, z ););//
+bend(} );//
+process(zoom( g , x, y ););//
+loop(for( int i =0 ; i< SO.size()  ; i++ ) {);//
+branch(if( i+1 == currentObject  ));//
+path( { );//
+process(g.setColor( SelectedObjectColor  ););//
+path( }else{ );//
+process(g.setColor(  Color.black  ););//
+bend( } );//
+process(S  = (StatementObject)  SO.elementAt( i ) ;);//
+set(S.show_comments = DrawComments ;);//
+process(S.transform(  x ,  y , z) ;);//p = S.draw( g, p.x , p.y  , z) ;
+branch(if( S.xmax > 0 &&  S.xmin < 1000 && S.y2 > 0 && S.y1 < 600  ));//only draw if within visible limits of 1000 x 600
+path( { );//
+process(S.draw( g, x ,  y , z) ;);//p = S.draw( g, p.x , p.y  , z) ;
+path(} else if( S.Type.equals("lend")  ||  S.Type.equals("bend")    ||  S.Type.equals("path")  ) {);//
+process(S.draw( g, x ,  y , z) ;);//p = S.draw( g, p.x , p.y  , z) ;
+path( }else{ );//
+process(S.draw( g, x ,  y , z) ;);//p = S.draw( g, p.x , p.y  , z) ;
+bend( } );//
+lend( } // end for );//
+set();//SO1.show_comments = true;
+output(System.out.println( "exit draw ... DEBUG-------------------------"  ););//
+end(} );//  
+path();//
+
+input(   public void zoom( Graphics g , int x , int y ){);//zoom by points
+set(int MINZ = 1 , MAXZ = 50;);//
+branch(if( Zoom >= MAXZ ));//if( Zoom >= 25  )
+path( { );//
+set(Zoom = MAXZ ;);//
+path(} else if( Zoom  < MINZ ) {);//
+set(Zoom  = MINZ ;);//
+bend( } );//
+branch(if( Zoom  == Head.font_h  ));//
+path( { );//
+end(return; );//
+path(}else{ );//
+generic(Head.font_h = Zoom ;);//
+process(Head.calculate( g , x , y, 0 ););//
+bend( } );//
+end(} );//  
+set();//
+bend();//
+end(  }  );//
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    FCview.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 1636 414 2088 1402 12 169   663   4294966956    java.key  0

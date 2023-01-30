@@ -1,0 +1,496 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : JavaApplet.ins
+;  File Date : 10:27:44 PM - 29:Aug:1999
+
+
+input(// HYPER LINK TO HTML_JavaApplet --->);//FILE: HTML_JavaApplet.ins
+
+input(/** Imports **/);//<--- part of framework
+generic(import java.awt.*;);//  
+generic(import java.applet.*;);//  
+generic(import java.net.*;);//  
+set( import java.net.URL; );// 
+set( import java.net.MalformedURLException; );// 
+set( import java.util.StringTokenizer; );// 
+set( import java.util.Hashtable; );// 
+set( import java.util.Enumeration; );// 
+generic(import TreeApp;);//  
+set();//import Resource;
+end(/*------------*/);//
+
+input(public class JavaApplet  extends Applet {);//  <----- start of class definition  has drawing vars for lines
+
+input(/** class data **/);//<--- used in framework
+generic(URL CodeBase;);//
+set();//Resource Res;
+end(/** end variables **/ );//
+
+input(/** methods **/);//<--- used in framework
+end();//
+
+input(public void init(){);//  
+set(CodeBase = getCodeBase(););//
+set();//Res  = new Resource( this , CodeBase );
+set(TreeControl  m_control =new TreeControl(););// 
+process(add(m_control ););// new TreeApp(CodeBase) ;
+set( m_control.initalise( ); );// 
+set( m_control.setBackground( Color.black ););// 
+process(LoadTree(););//
+end(} );//  
+
+input(public static void main(String args[]){);//  
+generic(JavaApplet  Obj = new JavaApplet(););//  create the object application 
+process(//setup frame using MAIN controls);//Obj.Res.initMAINframe( Obj , "Main Window" ) ;
+end(} );//  
+
+input(public void paint(Graphics g){);//  
+process(g.drawString( "Hello new world ..." , 20 , 20 ););//
+end(} );//  
+
+input(public boolean handleEvent(Event e){);//  
+branch(switch (e.id){);//  
+path(case Event.ACTION_EVENT:);//
+branch(if( "OK".equals(e.arg) || "CLOSE".equals(e.arg)  ));//
+path({ );// 
+process(System.exit(0););// THIS LOGIC CALL CAUSES A SECURITY EXCEPTION WHEN USED IN APPLET MODE
+end(return true; );//
+bend(} );// 
+end(break; );//
+path(case Event.WINDOW_DESTROY:);//
+generic(System.exit(0););//  THIS FAILS TO FIRE IN APPLICATION MODE
+end(return true;);//
+set();//
+bend(} );//  
+end(return false; });//
+
+input(// ************************ TREE WORK);//
+set( private String m_rootTitle ="Root Directory"; );// 
+set( private boolean m_expanded =false; );// 
+set( private String m_baseURLString; );// 
+set( private URL m_baseURL = null;);// 
+set( private TreeControl m_control; );// 
+set( FolderItem m_folder; );// 
+set( private Hashtable m_imageList; );// 
+set( private Thread loadThread =null; );// 
+generic();// // // Parameter names.  To change a name of a parameter, you need only make...
+generic();// // // a single change.  Simply modify the value of the parameter string below....
+generic();// // //--------------------------------------------------------------------------...
+set( private final String PARAM_rootTitle ="rootTitle"; );// 
+set( private final String PARAM_expanded ="expanded"; );// 
+set( private final String PARAM_baseURL ="baseURL"; );// 
+set( private final String PARAM_bgImage ="bgImage"; );// 
+set( private final String PARAM_bgColor ="bgColor"; );// 
+set( private final String PARAM_fgColor ="fgColor"; );// 
+set( private final String PARAM_bgHighlight ="bgHighlight"; );// 
+set( private final String PARAM_textColor ="textColor"; );// 
+set( private final String PARAM_textHighlight ="textHighlight"; );// 
+set( private final String PARAM_font ="font"; );// 
+set( private final String PARAM_offset ="offset"; );// 
+set( private final String PARAM_dotted ="dotted"; );// 
+set( private final String PARAM_showURL ="showURL"; );// 
+
+input( public void LoadTree());// 
+generic();// // // setup base URL...
+set( { );// 
+process(System.out.println("Hello world!");  );//
+set(   String param =getParameter("baseURL"); );// 
+generic();// // // setup base URL...
+branch(if(   m_baseURL == null  ));//
+path( { );//
+branch( try{ );// 
+path();//
+generic();// // /auto path//...
+branch( if( param != null ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+set(   m_baseURL =new URL( param ); );// 
+generic();// // // default base url...
+set( } );// 
+path(   else );// 
+set( m_baseURL =getDocumentBase(); );// 
+bend();// 
+set( } );// 
+path(   catch( MalformedURLException e ) { );// 
+set( m_baseURL =getDocumentBase(); );// 
+generic();// // // set root item title...
+bend( } );// 
+path(}else{ );//
+bend( } );//
+set( );// param =getParameter("rootTitle"); 
+set( addItem( "FlowCode Module;program.gif;;code map", null, this, m_baseURL, true ););// //Root node
+set( Item statusItem =new Item( "Loading items.."); );// 
+set( m_control.m_folder.setTitle( m_folder.getTitle() ); );// 
+set( m_control.m_folder.addElement( statusItem ); );// 
+set( m_control.initalise( ); );// 
+generic();// // // readin the item params item 1 to item N...
+process( );// addItem( param, null, this, m_baseURL, false ); 
+set( addItem( "Input1;module.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input1/Input1;input.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input1/Print( HELLO ):1;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input1/Print( HELLO ):2;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input1/End;end.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set();//
+set( addItem( "Input2;module.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input2/Input1;input.gif;;Random Splines" , null, this, m_baseURL, false ););//
+loop( addItem( "Input2/loop;loop.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input2/loop/Print( HELLO ):1;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+branch( addItem( "Input2/loop/branch;branch.gif;;Random Splines" , null, this, m_baseURL, false ););//
+path(addItem( "Input2/loop/branch/path1;path.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input2/loop/branch/path1/Print( HELLO ):1;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+path(addItem( "Input2/loop/branch/path2;path.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input2/loop/branch/path2/Print( HELLO ):1;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+bend( addItem( "Input2/loop/branch/bend;bend.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input2/loop/process;set.gif;;Random Splines" , null, this, m_baseURL, false ););//
+lend( addItem( "Input2/loop/lend;lend.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set( addItem( "Input2/End;end.gif;;Random Splines" , null, this, m_baseURL, false ););//
+set();//
+set( statusItem.setTitle( "Loading images..." ); );// 
+process(LoadImages(););//
+end(} );//
+generic();// // // add an item to the control on the fly...
+
+input( public void add( String string ) );// 
+set( { );// 
+set(   FolderItem old_folder =m_folder; );// 
+set( m_folder =m_control.getFolder(); );// 
+set( addItem( string, null, this, m_baseURL, false ); );// 
+generic();// // // load images...
+set( MediaTracker tracker =new MediaTracker( this ); );// 
+generic();// // // pull all the images our of the hashtable...
+generic();// // // and add them to the tracker...
+set( Enumeration en =m_imageList.elements(); );// 
+loop( while( en.hasMoreElements() ) { );// 
+set( tracker.addImage( (Image)en.nextElement(), 0 ); );// 
+lend( } );// 
+generic();// // // load all the images...
+branch( try { );// 
+path();//
+set( tracker.waitForAll(); );// 
+set( } );// 
+path(   catch( InterruptedException e ) { );// 
+generic();// // // do nothing as compontents will handle image problems...
+bend( } );// 
+set( m_control.setFolder( m_folder ); );// 
+set( m_folder =old_folder; );// 
+end( } );// 
+
+input(void LoadImages() {);//
+set( m_control.initalise( ); );// 
+generic();// // // load images...
+set( MediaTracker tracker =new MediaTracker( this ); );// 
+generic();// // // pull all the images our of the hashtable...
+generic();// // // and add them to the tracker...
+set( Enumeration en =m_imageList.elements(); );// 
+loop( while( en.hasMoreElements() ) { );// 
+set( tracker.addImage( (Image)en.nextElement(), 0 ); );// 
+lend( } );// 
+generic();// // // load all the images...
+branch( try { );// 
+path();//
+set( tracker.waitForAll(); );// 
+set( } );// 
+path(   catch( InterruptedException e ) { );// 
+generic();// // // do nothing as compontents will handle image problems...
+bend( } );// 
+set( m_folder =m_control.setFolder( m_folder ); );// 
+end( } );// 
+
+input( public void _run());// 
+generic();// // // setup base URL...
+set( { );// 
+set(   String param =getParameter("baseURL"); );// 
+generic();// // // setup base URL...
+branch( try{ );// 
+path();//
+generic();// // /auto path//...
+branch( if( param != null ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+set(   m_baseURL =new URL( param ); );// 
+generic();// // // default base url...
+set( } );// 
+path(   else );// 
+set( m_baseURL =getDocumentBase(); );// 
+bend();// 
+set( } );// 
+path(   catch( MalformedURLException e ) { );// 
+set( m_baseURL =getDocumentBase(); );// 
+generic();// // // set root item title...
+bend( } );// 
+set( param =getParameter("rootTitle"); );// 
+branch( if (param != null) );// 
+path();//
+generic();// // /auto path//...
+set( addItem( param, null, this, m_baseURL, true ); );// 
+bend();// 
+set( Item statusItem =new Item( "Loading items.."); );// 
+set( m_control.m_folder.setTitle( m_folder.getTitle() ); );// 
+set( m_control.m_folder.addElement( statusItem ); );// 
+set( m_control.initalise( ); );// 
+generic();// // // readin the item params item 1 to item N...
+set( int x =1; );// 
+loop( while(( param = getParameter( "item" + x++)) != null ) { );// 
+branch( if( param.startsWith("**") ) );// 
+path();//
+set( continue; );// 
+generic();// // /auto path//...
+bend();// 
+set( addItem( param, null, this, m_baseURL, false ); );// 
+lend( } );// 
+set( statusItem.setTitle( "Loading images..." ); );// 
+set( m_control.initalise( ); );// 
+generic();// // // load images...
+set( MediaTracker tracker =new MediaTracker( this ); );// 
+generic();// // // pull all the images our of the hashtable...
+generic();// // // and add them to the tracker...
+set( Enumeration en =m_imageList.elements(); );// 
+loop( while( en.hasMoreElements() ) { );// 
+set( tracker.addImage( (Image)en.nextElement(), 0 ); );// 
+lend( } );// 
+generic();// // // load all the images...
+branch( try { );// 
+path();//
+set( tracker.waitForAll(); );// 
+set( } );// 
+path(   catch( InterruptedException e ) { );// 
+generic();// // // do nothing as compontents will handle image problems...
+bend( } );// 
+set( m_folder =m_control.setFolder( m_folder ); );// 
+end( } );// 
+generic();// // // test if image is already to be loaded...
+generic();// // // or add to load list...
+
+input( private final Image addImage( String imageURL, Applet applet ) );// 
+generic();// // // dont bother with 0 length strings...
+set( { );// 
+branch(   if( imageURL.length() == 0 ) );// 
+path();//
+end( return null; );// 
+set();// 
+generic();// // // check if we already have this loaded...
+bend();// 
+branch( if( m_imageList.containsKey( imageURL ) ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+end(   return (Image) m_imageList.get( imageURL ); );// 
+set();// 
+set( } );// 
+path(   else );// 
+generic();// // // create image and add it to the list...
+set( { );// 
+branch(   try { );// 
+path();//
+set( URL link =new URL( applet.getCodeBase(), imageURL ); );// 
+generic();// // //Image image = applet.getImage( applet.getDocumentBase(), imageURL );...
+set( Image image =applet.getImage( link ); );// 
+set( m_imageList.put( imageURL, image ); );// 
+end( return image; );// 
+set();// 
+set( } );// 
+path(   catch( MalformedURLException e ) { );// 
+generic();// // // do nothting...
+bend( } );// 
+set();// 
+bend();// 
+end( } return null; );// 
+end( } );// 
+generic();// // // parse image arguments and add images to the item...
+
+input( private final Item addImage( Item item, String imageArgs, Applet applet ) );// 
+set( { );// 
+branch(   if( imageArgs.length() == 0 ) );// 
+path();//
+end( return null; );// 
+set();// 
+bend();// 
+set( StringTokenizer stoke =new StringTokenizer(imageArgs, ",", false ); );// 
+branch( if( stoke.hasMoreElements() ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+set(   item.m_icon =( addImage( stoke.nextToken(), applet ) ); );// 
+generic();// // // add second image if its a folder...
+branch( if( stoke.hasMoreElements() ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+set(   item.m_highlightIcon =( addImage( stoke.nextToken(), applet ) ); );// 
+bend();// 
+bend();// 
+end( } } return item; );// 
+end( } );// 
+
+input( private final String addItem( String itemTitle, String none, Applet applet, URL baseURL, boolean rootItem ) );// 
+set( { );// 
+set(   Item item=null; );// 
+generic();// // // first item == item text and depth...
+branch( if( rootItem ) );// 
+path();//
+generic();// // // if root directory item...
+generic();// // /auto path//...
+set( { );// 
+set(   item =m_folder; );// 
+generic();// // // item equals root...
+set( item.setTitle( getArgument(itemTitle,0) ); );// 
+set( } );// 
+path(   else );// 
+generic();// // // normal item...
+set( { );// 
+branch(   if(( item = addItemString( getArgument(itemTitle,0) )) == null ) );// 
+path();//
+generic();// // /auto path//...
+end( return null; );// 
+set();// 
+bend();// 
+bend();// 
+generic();// // // second item == image...
+set( } addImage( item, getArgument(itemTitle,1) , applet ); );// 
+set( ItemAction action =new ItemAction( this ); );// 
+set( item.setAction( action ); );// 
+generic();// // // forth argument is the status string...
+set( action.setStatus( getArgument(itemTitle,3) ); );// 
+generic();// // // third item == link url...
+set( String linkArgs =getArgument(itemTitle,2); );// 
+branch( if( linkArgs.length() != 0 ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+set(   StringTokenizer stoke =new StringTokenizer(linkArgs, ",", false ); );// 
+set( String link =stoke.nextToken(); );// 
+set( String targetFrame ="_top"; );// 
+generic();// // // strip frame from string...
+branch( if( stoke.hasMoreElements() ) );// 
+path();//
+generic();// // /auto path//...
+set( targetFrame =stoke.nextToken(); );// 
+bend();// 
+branch( try { );// 
+path();//
+set( URL linkURL =new URL( baseURL, link ); );// 
+set( action.setDocument( linkURL, targetFrame ); );// 
+set( } );// 
+path(   catch( MalformedURLException e ) { );// 
+set( action.setStatus( "Error: Malformed URL Exception" ); );// 
+bend( } );// 
+set();// 
+bend();// 
+end( } return item.getTitle(); );// 
+end( } );// 
+generic();// // // strip an argument from an argument string broken up by ;...
+
+input( private final String getArgument( String args, int arg_number ) );// 
+set( { );// 
+set(   int position=0; );// 
+set( int arg_position =0; );// 
+branch( try { );// 
+path();//
+generic();// // // count across argument breakers ';'...
+loop( while( arg_position < arg_number && position < args.length() ) { );// 
+branch( if( args.charAt( position++ ) == ';' ) );// 
+path();//
+generic();// // /auto path//...
+set( arg_position++; );// 
+bend();// 
+lend( } );// 
+set();// 
+generic();// // // eat and white leading white space...
+loop( while( args.charAt( position ) == ' ' && position < args.length() ) position++; );// 
+branch( if( arg_position != arg_number ) );// 
+path();//
+end( return ""; );// 
+set();// 
+bend();// 
+set( int arg_start =position; );// 
+generic();// // // cut out our argument...
+loop( while( position < args.length() && args.charAt( position ) != ';' ) position++; );// 
+end( return args.substring( arg_start, position ); );// 
+set();// 
+set( } );// 
+path(   catch( StringIndexOutOfBoundsException e ) { );// 
+end( return ""; );// 
+set();// 
+bend( } );// 
+end( } );// 
+
+input( private final Item addItemString( String itemTitle ) );// 
+set( { );// 
+branch(   if( itemTitle.length() == 0 ) );// 
+path();//
+end( return null; );// 
+set();// 
+generic();// // // break string down into elements...
+bend();// 
+set( StringTokenizer stoke =new StringTokenizer(itemTitle, "\\/", false); );// 
+set( FolderItem parent =m_folder; );// 
+set( Item currentItem =null; );// 
+loop( while( stoke.hasMoreElements() ) { );// 
+set( String token =stoke.nextToken(); );// 
+generic();// // // find item in the list...
+set( currentItem =parent.findItem( token ); );// 
+generic();// // // no item create one...
+branch( if( currentItem == null ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+branch(   if( stoke.hasMoreElements() ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+set(  currentItem =(Item)new FolderItem( token ); );// 
+set( } );// 
+path(   else );// 
+set( { );// 
+set(  currentItem =new Item( token ); );// 
+bend();// 
+set( } parent.addElement( currentItem ); );// 
+set( } );// 
+path(   else );// 
+generic();// // // if found item...
+generic();// // // if more elements to come...
+set( { );// 
+branch(   if( stoke.hasMoreElements() ) );// 
+path();//
+generic();// // /auto path//...
+generic();// // // if we are not a folder convert item to a folder...
+set( { );// 
+branch(   if( !(currentItem instanceof FolderItem) ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+set(   Item converted =(Item) new FolderItem(currentItem ); );// 
+set( parent.replaceItem( currentItem, converted ); );// 
+set( currentItem =converted; );// 
+bend();// 
+bend();// 
+bend();// 
+generic();// // // end else found...
+generic();// // // if more elements make parent currentItem...
+set( } );// 
+branch(   } } if( stoke.hasMoreElements() ) );// 
+path();//
+generic();// // /auto path//...
+set( parent =(FolderItem)currentItem; );// 
+bend();// 
+lend( } );// 
+generic();// // // end while tokens...
+end( return currentItem; );// 
+end( } );// 
+generic();// //  FlowCode File: TreeApp.java.ins...
+generic();// //  Export  File: TreeApp.java...
+generic();// //  Export  Date: 06:15:57 PM - 29:Aug:1999...
+
+input(}       /** end of class definition **/);// <------------ end of class definition
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 255 0 255 255 65535 65280 9633792
+;    JavaApplet.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 5 17 691 709 28 100   445   4294966592    java.key  0

@@ -1,0 +1,669 @@
+;-Document
+input( /**  C:\WINDOWS\Profiles\luis\Desktop\Tree stuff\Tree1.5\source\TreeApp.java  **/  );//  FILE:C:\WINDOWS\Profiles\luis\Desktop\Tree stuff\Tree1.5\source\TreeApp.java
+
+generic();// //	Author: C Dare-Edwards
+generic();// //	
+generic();// //	cdare-edwards@mcsoftware.com.au
+generic();// //	
+generic();// //  Copyright Conrad Dare-Edwards   
+generic();// //
+generic();// //  The copyright to the computer program (s) herein
+generic();// //  is the property of Conrad Dare-Edwards. The program (s)
+generic();// //  may be used and/or copied only with the written 
+generic();// //  permission of Conrad Dare-Edwards or in accordance 
+generic();// //  with the terms and conditions stipulated in the 
+generic();// //  agreement/contract under which the program (s) have
+generic();// //  been supplied.
+set( import java.applet.*; );// 
+set( import java.awt.*; );// 
+set( import java.net.URL; );// 
+set( import java.net.MalformedURLException; );// 
+set( import java.util.StringTokenizer; );// 
+set( import java.util.Hashtable; );// 
+set( import java.util.Enumeration; );// 
+event( public class TreeApp extends Applet implements Runnable { );// 
+set( private String m_rootTitle ="Root Directory"; );// 
+set( private boolean m_expanded =false; );// 
+set( private String m_baseURLString; );// 
+set( private URL m_baseURL; );// 
+set( private TreeControl m_control; );// 
+set( FolderItem m_folder; );// 
+set( private Hashtable m_imageList; );// 
+set( private Thread loadThread =null; );// 
+generic();// // Parameter names.  To change a name of a parameter, you need only make
+generic();// // a single change.  Simply modify the value of the parameter string below.
+generic();// //--------------------------------------------------------------------------
+set( private final String PARAM_rootTitle ="rootTitle"; );// 
+set( private final String PARAM_expanded ="expanded"; );// 
+set( private final String PARAM_baseURL ="baseURL"; );// 
+set( private final String PARAM_bgImage ="bgImage"; );// 
+set( private final String PARAM_bgColor ="bgColor"; );// 
+set( private final String PARAM_fgColor ="fgColor"; );// 
+set( private final String PARAM_bgHighlight ="bgHighlight"; );// 
+set( private final String PARAM_textColor ="textColor"; );// 
+set( private final String PARAM_textHighlight ="textHighlight"; );// 
+set( private final String PARAM_font ="font"; );// 
+set( private final String PARAM_offset ="offset"; );// 
+set( private final String PARAM_dotted ="dotted"; );// 
+set( private final String PARAM_showURL ="showURL"; );// 
+input( public TreeApp() );// 
+set( { );// 
+end(   } );// 
+input( public String getAppletInfo() );// 
+set( { );// <--- WARNING: BROKEN LINE 
+end(   return "Name: TreeApp\r\n" + "Author: Conrad Dare-Edwards\r\n" + "Created with Microsoft Visual J++ Version 1.1\r\n" + "WWW:  http://www.mcsoftware.com.au\r\n" + "E-Mail: );// 
+set( cdare-edwards@mcsoftware.com.au"; );// 
+output( /** WARNING: BROKEN LINE(S) ABOVE **/ );// 
+end( } );// 
+generic();// /* 
+generic();// 	public String[][] getParameterInfo() 
+generic();// 	{ 
+generic();// 		String[][] info = 
+generic();// 		{ 
+generic();// 			{ PARAM_rootTitle, "String", "Title for top directory" }, 
+generic();// 			{ PARAM_expanded, "boolean", "Root directory expanded ?" }, 
+generic();// 			{ PARAM_baseURL, "String", "URL base for links" }, 
+generic();// 			{ PARAM_bgImage, "String", "Background image URL" }, 
+generic();// 			{ PARAM_bgColor, "String", "Window background color" }, 
+generic();// 			{ PARAM_fgColor, "String", "Color of the link lines" }, 
+generic();// 			{ PARAM_bgHighlight, "String", "Background color for hightlighted text"}, 
+generic();// 			{ PARAM_textColor, "String", "Text color" }, 
+generic();// 			{ PARAM_textHighlight, "String", "Highlighted text color" }, 
+generic();// 			{ PARAM_font, "String", "Font to be used" }, 
+generic();// 			{ PARAM_offset, "String", "Directory offset from 0,0" }, 
+generic();// 			{ PARAM_dotted, "boolean", "Draw dotted lines" }, 
+generic();// 			{ PARAM_showURL, "boolean", "Show URL on status line" } 
+generic();//  
+generic();// 		}; 
+generic();// 		return info;		 
+generic();// 	} 
+generic();// */ 
+generic();// // init applet and load prama's
+input( public void init() );// 
+set( { );// 
+set(   m_folder =new FolderItem(""); );// 
+set( m_imageList =new Hashtable(); );// 
+set( String param; );// 
+set( param =getParameter(PARAM_expanded); );// 
+branch( if (param != null) );// 
+set( m_expanded =Boolean.valueOf(param).booleanValue(); );// 
+generic();// // draw dotted lines
+bend();// 
+set( boolean dotted =true; );// 
+set( param =getParameter(PARAM_dotted); );// 
+branch( if (param != null) );// 
+set( dotted =Boolean.valueOf(param).booleanValue(); );// 
+generic();// // set dotted lines 
+bend();// 
+set( FolderItem.m_drawDotted =dotted; );// 
+generic();// // setup show URL in ItemAction
+set( boolean showURL =true; );// 
+set( param =getParameter(PARAM_showURL); );// 
+branch( if (param != null) );// 
+set( showURL =Boolean.valueOf(param).booleanValue(); );// 
+bend();// 
+set( ItemAction.m_showURL =showURL; );// 
+generic();// // setup our control
+generic();// // use a border layout manager
+set( this.setLayout( new BorderLayout(0,0) ); );// 
+set( m_control =new TreeControl(); );// 
+generic();// // add components to our container
+set( this. add( "Center", m_control ); );// 
+generic();// // set default font
+set( Font font =getParamFont( PARAM_font ); );// 
+branch( if( font == null ) );// 
+set( font =new Font( "Dialog", 0 ,10); );// 
+generic();// // and set it
+bend();// 
+branch( if(font != null) );// 
+set( m_control.setFont( font ); );// 
+generic();// // set background image
+bend();// 
+set( param =getParameter( PARAM_bgImage ); );// 
+branch( if (param != null) );// 
+path( { );// 
+set(  	m_control.setBackgroundImage( addImage( param, this ) ); );// 
+generic();// // setup colors
+bend();// 
+set( } Color color; );// 
+generic();// // background color
+branch( if( (color = getParamColor( PARAM_bgColor )) != null ) );// 
+path( { );// 
+set(  	m_control.m_bgColour =color; );// 
+set( m_control.setBackground( color ); );// 
+set( setBackground( color ); );// 
+generic();// // highlighted text background
+bend();// 
+set( }  );// 
+branch(   if( (color = getParamColor( PARAM_bgHighlight )) != null ) );// 
+set( m_control.m_highColour =color; );// 
+generic();// // detail color 
+bend();// 
+branch( if( (color = getParamColor( PARAM_fgColor )) != null ) );// 
+set( m_control.m_detailColour =color; );// 
+generic();// // text color
+bend();// 
+branch( if( (color = getParamColor( PARAM_textColor )) != null ) );// 
+set( m_control.m_textColour =color; );// 
+generic();// // hightlighted text color
+bend();// 
+branch( if( (color = getParamColor( PARAM_textHighlight )) != null ) );// 
+set( m_control.m_highTextColour =color; );// 
+generic();// // get and set directory offset
+bend();// 
+set( Point point; );// 
+branch( if( (point = getParamPoint( PARAM_offset )) != null ) );// 
+set( m_control.setOffset( point.x, point.y ); );// 
+generic();// // load images and draw control
+bend();// 
+set( m_control.initalise( ); );// 
+set( loadThread =new Thread(this); );// 
+set( loadThread.start(); );// 
+end( } );// 
+input( private Color getParamColor( String param ) );// 
+set( { );// 
+set(   Color colour =Color.white; );// 
+set( param.trim(); );// 
+set( String parameterString; );// 
+branch( if( (parameterString = getParameter( param ) ) != null ) );// 
+path( { );// 
+branch(   if( parameterString.compareTo("black")== 0 ) );// 
+set( colour =Color.black; );// 
+path( else );// 
+branch( if(parameterString.compareTo("blue")== 0 ) );// 
+set( colour =Color.blue; );// 
+path( else );// 
+branch( if(parameterString.compareTo("cyan")== 0 ) );// 
+set( colour =Color.cyan; );// 
+path( else );// 
+branch( if(parameterString.compareTo("darkgray")== 0 ) );// 
+set( colour =Color.darkGray; );// 
+path( else );// 
+branch( if(parameterString.compareTo("gray")== 0 ) );// 
+set( colour =Color.gray; );// 
+path( else );// 
+branch( if(parameterString.compareTo("green")== 0 ) );// 
+set( colour =Color.green; );// 
+path( else );// 
+branch( if(parameterString.compareTo("lightgray")== 0 ) );// 
+set( colour =Color.lightGray; );// 
+path( else );// 
+branch( if(parameterString.compareTo("magenta")== 0 ) );// 
+set( colour =Color.magenta; );// 
+path( else );// 
+branch( if(parameterString.compareTo("orange")== 0 ) );// 
+set( colour =Color.orange; );// 
+path( else );// 
+branch( if(parameterString.compareTo("pink")== 0 ) );// 
+set( colour =Color.pink; );// 
+path( else );// 
+branch( if(parameterString.compareTo("red")== 0 ) );// 
+set( colour =Color.red; );// 
+path( else );// 
+branch( if(parameterString.compareTo("white")== 0 ) );// 
+set( colour =Color.white; );// 
+path( else );// 
+branch( if(parameterString.compareTo("yellow") == 0 ) );// 
+set( colour =Color.yellow; );// 
+path( else );// 
+branch( if(parameterString.compareTo("rose") == 0 ) );// 
+set( colour =new Color(153,0,66); );// 
+path( else );// 
+generic();// // try as a hex constant
+set( { );// 
+branch(   try { );// 
+set( Integer integer =Integer.valueOf( parameterString, 16 ); );// 
+branch( if( integer != null ) );// 
+set( colour =new Color( integer.intValue() ); );// 
+bend();// 
+set( } );// 
+path(   catch( NumberFormatException e ) { );// 
+end( return null; );// 
+set();// 
+bend( } );// 
+set();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+bend();// 
+end( } return colour; );// 
+set();// 
+bend();// 
+end( } return null; );// 
+end( } );// 
+input( private Font getParamFont( String param ) );// 
+set( { );// 
+set(   String parameterString; );// 
+set( param.trim(); );// 
+branch( if( (parameterString = getParameter( param ) ) != null ) );// 
+path( { );// 
+set(   String fontName ="Helvetica"; );// 
+set( int style =Font.PLAIN; );// 
+set( int size =12; );// 
+set( StringTokenizer stoke =new StringTokenizer( parameterString, "-", false ); );// 
+branch( if( stoke.hasMoreElements() ) );// 
+set( fontName =stoke.nextToken(); );// 
+bend();// 
+branch( if( stoke.hasMoreElements() ) );// 
+path( { );// 
+set(   String styleString =stoke.nextToken(); );// 
+set( styleString =styleString.toLowerCase(); );// 
+branch( if( styleString.compareTo("plain") == 0 ) );// 
+set( style =Font.PLAIN; );// 
+bend();// 
+branch( if( styleString.compareTo("italic") == 0 ) );// 
+set( style =Font.ITALIC; );// 
+bend();// 
+branch( if( styleString.compareTo("bold") == 0 ) );// 
+set( style =Font.BOLD; );// 
+bend();// 
+branch( if( styleString.compareTo("bolditalic") == 0 ) );// 
+set( style =Font.BOLD + Font.ITALIC; );// 
+bend();// 
+generic();// // end get style
+bend();// 
+set( } );// 
+branch(  	if( stoke.hasMoreElements() ) );// 
+path( { );// 
+branch(   try{ );// 
+set( Integer integer =Integer.valueOf(stoke.nextToken()); );// 
+set( size =integer.intValue(); );// 
+set( } );// 
+path(   catch( NumberFormatException e ) { );// 
+set( size =12; );// 
+bend( } );// 
+set();// 
+generic();// // end get size
+bend();// 
+end( } return new Font( fontName, style, size ); );// 
+set();// 
+bend();// 
+end( } return null; );// 
+end( } );// 
+input( private Point getParamPoint( String param ) );// 
+set( { );// 
+set(   String parameterString; );// 
+set( Point point =new Point(0,0); );// 
+set( param.trim(); );// 
+branch( if( (parameterString = getParameter( param ) ) != null ) );// 
+path( { );// 
+set(   StringTokenizer stoke =new StringTokenizer( parameterString, ",", false ); );// 
+generic();// // get x point
+branch( if( stoke.hasMoreElements() ) );// 
+path( { );// 
+branch(   try { );// 
+set( Integer integer =Integer.valueOf( stoke.nextToken() ); );// 
+branch( if( integer != null ) );// 
+set( point.x =integer.intValue(); );// 
+bend();// 
+set( } );// 
+path(   catch( NumberFormatException e ) { );// 
+end( return null; );// 
+set();// 
+bend( } );// 
+set();// 
+generic();// // get y point
+bend();// 
+set( } );// 
+branch(  	if( stoke.hasMoreElements() ) );// 
+path( { );// 
+branch(   try { );// 
+set( Integer integer =Integer.valueOf( stoke.nextToken() ); );// 
+branch( if( integer != null ) );// 
+set( point.y =integer.intValue(); );// 
+bend();// 
+set( } );// 
+path(   catch( NumberFormatException e ) { );// 
+end( return null; );// 
+set();// 
+bend( } );// 
+set();// 
+bend();// 
+bend();// 
+end( }	} return point; );// 
+end( } );// 
+generic();// // add an item to the control on the fly
+input( public void add( String string ) );// 
+set( { );// 
+set(   FolderItem old_folder =m_folder; );// 
+set( m_folder =m_control.getFolder(); );// 
+set( addItem( string, null, this, m_baseURL, false ); );// 
+generic();// // load images
+set( MediaTracker tracker =new MediaTracker( this ); );// 
+generic();// // pull all the images our of the hashtable
+generic();// // and add them to the tracker
+set( Enumeration en =m_imageList.elements(); );// 
+loop( while( en.hasMoreElements() ) { );// 
+set( tracker.addImage( (Image)en.nextElement(), 0 ); );// 
+lend( } );// 
+generic();// // load all the images
+branch( try { );// 
+set( tracker.waitForAll(); );// 
+set( } );// 
+path(   catch( InterruptedException e ) { );// 
+generic();// // do nothing as compontents will handle image problems
+bend( } );// 
+set( m_control.setFolder( m_folder ); );// 
+set( m_folder =old_folder; );// 
+end( } );// 
+generic();// // delete item from list
+input( public void delete( String itemTitle ) );// 
+set( { );// 
+set(   itemTitle =getArgument( itemTitle, 0 ); );// 
+set( itemTitle.trim(); );// 
+generic();// // break string down into elements
+set( StringTokenizer stoke =new StringTokenizer(itemTitle, "\\/", false); );// 
+set( FolderItem parent =m_control.getFolder(); );// 
+set( Item currentItem =null; );// 
+loop( while( stoke.hasMoreElements() ) { );// 
+generic();// // find item in the list
+branch( if((currentItem = parent.findItem( stoke.nextToken() )) != null ) );// 
+generic();// // if more elements to come
+set( { );// 
+branch(   if( stoke.hasMoreElements() ) );// 
+path( { );// 
+branch(   if( currentItem instanceof FolderItem ) );// 
+generic();// // if more elements make parent currentItem
+set( { );// 
+set(   parent =(FolderItem)currentItem; );// 
+set( } );// 
+path(  	else );// 
+generic();// // error we are not a folder and we need one 
+set( { );// 
+end(  	return ; );// 
+set();// 
+generic();// // return not found 	
+bend();// 
+bend();// 
+set( } );// 
+path(   } } else );// 
+set( { );// 
+end(   return; );// 
+set();// 
+bend();// 
+generic();// // end else not found
+lend( } );// 
+generic();// // end while tokens
+generic();// // and remove it
+set( }  );// 
+branch(   if( parent != null && currentItem != null ) );// 
+path( { );// 
+set(   parent.removeItem( currentItem ); );// 
+bend();// 
+set( } m_control.setFolder( m_control.getFolder() ); );// 
+end( } );// 
+generic();// // highlight a particular item
+input( public void highlight( String itemTitle ) );// 
+set( { );// 
+set(   itemTitle =getArgument( itemTitle, 0 ); );// 
+set( itemTitle.trim(); );// 
+set( m_control.highlight( itemTitle ); );// 
+end( } );// 
+generic();// // hightlight next visible item
+input( public void next( ) );// 
+set( { );// 
+set(   m_control.next( true ); );// 
+end( } );// 
+generic();// // highlight previous visible item
+input( public void previous( ) );// 
+set( { );// 
+set(   m_control.prev( true ); );// 
+end( } );// 
+generic();// // activate current selection
+input( public void activate( ) );// 
+set( { );// 
+set(   m_control.activate( ); );// 
+end( } );// 
+input( public void run() );// 
+generic();// // setup base URL
+set( { );// 
+set(   String param =getParameter("baseURL"); );// 
+generic();// // setup base URL
+branch( try{ );// 
+branch( if( param != null ) );// 
+path( { );// 
+set(   m_baseURL =new URL( param ); );// 
+generic();// // default base url
+set( } );// 
+path(   else );// 
+set( m_baseURL =getDocumentBase(); );// 
+bend();// 
+set( } );// 
+path(   catch( MalformedURLException e ) { );// 
+set( m_baseURL =getDocumentBase(); );// 
+generic();// // set root item title
+bend( } );// 
+set( param =getParameter("rootTitle"); );// 
+branch( if (param != null) );// 
+set( addItem( param, null, this, m_baseURL, true ); );// 
+bend();// 
+set( Item statusItem =new Item( "Loading items.."); );// 
+set( m_control.m_folder.setTitle( m_folder.getTitle() ); );// 
+set( m_control.m_folder.addElement( statusItem ); );// 
+set( m_control.initalise( ); );// 
+generic();// // readin the item params item 1 to item N
+set( int x =1; );// 
+loop( while(( param = getParameter( "item" + x++)) != null ) { );// 
+branch( if( param.startsWith("**") ) );// 
+set( continue; );// 
+bend();// 
+set( addItem( param, null, this, m_baseURL, false ); );// 
+lend( } );// 
+set( statusItem.setTitle( "Loading images..." ); );// 
+set( m_control.initalise( ); );// 
+generic();// // load images
+set( MediaTracker tracker =new MediaTracker( this ); );// 
+generic();// // pull all the images our of the hashtable
+generic();// // and add them to the tracker
+set( Enumeration en =m_imageList.elements(); );// 
+loop( while( en.hasMoreElements() ) { );// 
+set( tracker.addImage( (Image)en.nextElement(), 0 ); );// 
+lend( } );// 
+generic();// // load all the images
+branch( try { );// 
+set( tracker.waitForAll(); );// 
+set( } );// 
+path(   catch( InterruptedException e ) { );// 
+generic();// // do nothing as compontents will handle image problems
+bend( } );// 
+set( m_folder =m_control.setFolder( m_folder ); );// 
+end( } );// 
+generic();// // test if image is already to be loaded
+generic();// // or add to load list
+input( private final Image addImage( String imageURL, Applet applet ) );// 
+generic();// // dont bother with 0 length strings
+set( { );// 
+branch(   if( imageURL.length() == 0 ) );// 
+end( return null; );// 
+set();// 
+generic();// // check if we already have this loaded
+bend();// 
+branch( if( m_imageList.containsKey( imageURL ) ) );// 
+path( { );// 
+end(   return (Image) m_imageList.get( imageURL ); );// 
+set();// 
+set( } );// 
+path(   else );// 
+generic();// // create image and add it to the list
+set( { );// 
+branch(   try { );// 
+set( URL link =new URL( applet.getCodeBase(), imageURL ); );// 
+generic();// //Image image = applet.getImage( applet.getDocumentBase(), imageURL );
+set( Image image =applet.getImage( link ); );// 
+set( m_imageList.put( imageURL, image ); );// 
+end( return image; );// 
+set();// 
+set( } );// 
+path(   catch( MalformedURLException e ) { );// 
+generic();// // do nothting 
+bend( } );// 
+set();// 
+bend();// 
+end( } return null; );// 
+end( } );// 
+generic();// // parse image arguments and add images to the item
+input( private final Item addImage( Item item, String imageArgs, Applet applet ) );// 
+set( { );// 
+branch(   if( imageArgs.length() == 0 ) );// 
+end( return null; );// 
+set();// 
+bend();// 
+set( StringTokenizer stoke =new StringTokenizer(imageArgs, ",", false ); );// 
+branch( if( stoke.hasMoreElements() ) );// 
+path( { );// 
+set(   item.m_icon =( addImage( stoke.nextToken(), applet ) ); );// 
+generic();// // add second image if its a folder
+branch( if( stoke.hasMoreElements() ) );// 
+path( { );// 
+set(   item.m_highlightIcon =( addImage( stoke.nextToken(), applet ) ); );// 
+bend();// 
+bend();// 
+end( } } return item; );// 
+end( } );// 
+input( private final String addItem( String itemTitle, String none, Applet applet, URL baseURL, boolean rootItem ) );// 
+set( { );// 
+set(   Item item=null; );// 
+generic();// // first item == item text and depth
+branch( if( rootItem ) );// 
+generic();// // if root directory item
+set( { );// 
+set(   item =m_folder; );// 
+generic();// // item equals root
+set( item.setTitle( getArgument(itemTitle,0) ); );// 
+set( } );// 
+path(   else );// 
+generic();// // normal item
+set( { );// 
+branch(   if(( item = addItemString( getArgument(itemTitle,0) )) == null ) );// 
+end( return null; );// 
+set();// 
+bend();// 
+bend();// 
+generic();// // second item == image
+set( } addImage( item, getArgument(itemTitle,1) , applet ); );// 
+set( ItemAction action =new ItemAction( this ); );// 
+set( item.setAction( action ); );// 
+generic();// // forth argument is the status string
+set( action.setStatus( getArgument(itemTitle,3) ); );// 
+generic();// // third item == link url 
+set( String linkArgs =getArgument(itemTitle,2); );// 
+branch( if( linkArgs.length() != 0 ) );// 
+path( { );// 
+set(   StringTokenizer stoke =new StringTokenizer(linkArgs, ",", false ); );// 
+set( String link =stoke.nextToken(); );// 
+set( String targetFrame ="_top"; );// 
+generic();// // strip frame from string
+branch( if( stoke.hasMoreElements() ) );// 
+set( targetFrame =stoke.nextToken(); );// 
+bend();// 
+branch( try { );// 
+set( URL linkURL =new URL( baseURL, link ); );// 
+set( action.setDocument( linkURL, targetFrame ); );// 
+set( } );// 
+path(   catch( MalformedURLException e ) { );// 
+set( action.setStatus( "Error: Malformed URL Exception" ); );// 
+bend( } );// 
+set();// 
+bend();// 
+end( } return item.getTitle(); );// 
+end( } );// 
+generic();// // strip an argument from an argument string broken up by ;
+input( private final String getArgument( String args, int arg_number ) );// 
+set( { );// 
+set(   int position=0; );// 
+set( int arg_position =0; );// 
+branch( try { );// 
+generic();// // count across argument breakers ';'
+loop( while( arg_position < arg_number && position < args.length() ) { );// 
+branch( if( args.charAt( position++ ) == ';' ) );// 
+set( arg_position++; );// 
+bend();// 
+lend( } );// 
+set();// 
+generic();// // eat and white leading white space
+loop( while( args.charAt( position ) == ' ' && position < args.length() ) position++; );// 
+branch( if( arg_position != arg_number ) );// 
+end( return ""; );// 
+set();// 
+bend();// 
+set( int arg_start =position; );// 
+generic();// // cut out our argument
+loop( while( position < args.length() && args.charAt( position ) != ';' ) position++; );// 
+end( return args.substring( arg_start, position ); );// 
+set();// 
+set( } );// 
+path(   catch( StringIndexOutOfBoundsException e ) { );// 
+end( return ""; );// 
+set();// 
+bend( } );// 
+end( } );// 
+input( private final Item addItemString( String itemTitle ) );// 
+set( { );// 
+branch(   if( itemTitle.length() == 0 ) );// 
+end( return null; );// 
+set();// 
+generic();// // break string down into elements
+bend();// 
+set( StringTokenizer stoke =new StringTokenizer(itemTitle, "\\/", false); );// 
+set( FolderItem parent =m_folder; );// 
+set( Item currentItem =null; );// 
+loop( while( stoke.hasMoreElements() ) { );// 
+set( String token =stoke.nextToken(); );// 
+generic();// // find item in the list
+set( currentItem =parent.findItem( token ); );// 
+generic();// // no item create one
+branch( if( currentItem == null ) );// 
+path( { );// 
+branch(   if( stoke.hasMoreElements() ) );// 
+path( { );// 
+set(  	currentItem =(Item)new FolderItem( token ); );// 
+set( } );// 
+path(   else );// 
+set( { );// 
+set(  	currentItem =new Item( token ); );// 
+bend();// 
+set( } parent.addElement( currentItem ); );// 
+set( } );// 
+path(   else );// 
+generic();// // if found item 
+generic();// // if more elements to come
+set( { );// 
+branch(   if( stoke.hasMoreElements() ) );// 
+generic();// // if we are not a folder convert item to a folder
+set( { );// 
+branch(   if( !(currentItem instanceof FolderItem) ) );// 
+path( { );// 
+set(   Item converted =(Item) new FolderItem(currentItem ); );// 
+set( parent.replaceItem( currentItem, converted ); );// 
+set( currentItem =converted; );// 
+bend();// 
+bend();// 
+bend();// 
+generic();// // end else found
+generic();// // if more elements make parent currentItem
+set( } );// 
+branch(   } } if( stoke.hasMoreElements() ) );// 
+set( parent =(FolderItem)currentItem; );// 
+bend();// 
+lend( } );// 
+generic();// // end while tokens
+end( return currentItem; );// 
+end( } );// 
+end( } );// 
+end();//
+;INSECTA EMBEDDED SESSION INFORMATION
+;  255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    TreeApp.java   //   ;
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+;260 146 569 511 1 95   219   58    VJ6.key   0

@@ -1,0 +1,138 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : TreeApplication.ins
+;  File Date : 08:54:33 AM - 27:Aug:1999
+
+generic(  /*  );//
+generic(  * Avin's jcx.TreePanel Demo Application.  );//
+generic(  * Copyright  1995, 1996, 1997 Raja Sundarigari. All Rights Reserved.  );//
+generic(  * Raja Sundarigari (2/9/97)  );//
+generic(  */  );//
+generic(  import  jcx.*;  );//
+generic(  import  java.awt.*;  );//
+generic(  import  java.applet.Applet;  );//
+generic(  import  java.net.URL;  );//
+generic(  import  java.io.*;  );//
+generic(  import  java.net.MalformedURLException;  );//
+generic(  /**  );//
+generic();//  * TestTree Class  
+set();//  * Demonstrates the usage of jcx.TreePanel  and jcx.TreeNode classes  
+generic(  */  );//
+end(  );// AUTO 
+
+input(  public class TreeApplication extends Frame {  );//
+generic(  public Thread treeThread;  );//
+generic(  public FMTreePanel treePane;  );//
+generic(  public TreeNode root;  );//
+generic(  public static URL[] imgUrls;  );//
+end(  );// AUTO 
+
+input(  public TreeApplication () {  );//
+generic(  super ("TestTree");  );//
+set(  int w = 400;  );//
+set(  int h = 500;  );//
+generic(  resize (w,h);  );//
+set(  Font f  = new Font ("Arial", Font.PLAIN, 12);  );//
+generic(  setLayout(new BorderLayout());  );//
+generic(  setBackground (Color.lightGray);  );//
+generic(  try {  );//
+set(  imgUrls = new URL [3];  );//
+set(  imgUrls [0] = new URL ("file:///C:/javabase/tt/TreeApplication/file.gif");  );//
+set(  imgUrls [1] = new URL ("file:///C:/javabase/tt/TreeApplication/open.gif");  );//
+set(  imgUrls [2] = new URL ("file:///C:/javabase/tt/TreeApplication/close.gif");  );//
+end(  }  );//
+generic(  catch (MalformedURLException e) {  );//
+generic(  System.out.println (e.toString());  );//
+end(  }  );//
+set(  add ("Center", treePane = new FMTreePanel ());  );//
+generic(  treePane.showPreIcons (true);  );//
+generic(  treePane.setFont (f);  );//
+set(  root = treePane.getRoot ();  );//
+generic(  root.setIconURL (imgUrls [1]);  );//
+generic(  root.select();  );//
+generic(  try {  );//
+set(  File rt = new File ("C:\\");  );//
+generic(  root.setName ("C:\\");  );//
+generic(  root.setCloseIconURL (imgUrls [2]);  );//
+generic(  treePane.setDir (root, rt);  );//
+end(  }  );//
+generic(  catch (Exception e) {  );//
+generic(  System.out.println (e.toString());  );//
+end(  }  );//
+end(  }  );//
+end(  );// AUTO 
+
+input(  public boolean handleEvent (Event event) {  );//
+branch(  if (event.id == Event.WINDOW_DESTROY) {  );//
+path();//
+generic(  System.exit(0);  );//
+bend(  }  );//
+end(  return super.handleEvent(event);  );//
+end(  }  );//
+end(  );// AUTO 
+
+input(  public static void main (String args[]) {  );//
+set(  TreeApplication f = new TreeApplication ();  );//
+generic(  f.show();  );//
+end(  }  );//
+end(  }  );//
+end(  );// AUTO 
+
+input(  class FMTreePanel  extends TreePanel {  );//
+end(  );// AUTO 
+
+input(  public void expand (TreeNode node) {  );//
+set(  String name = node.name();  );//
+set(  TreeNode n = new TreeNode (null, "");  );//
+set(  n = node;  );//
+generic(  while (true) {  );//
+set(  n = n.parent();  );//
+branch(  if (n==null) break;  );//
+path();//
+set(  name = n.name()+"\\"+name;  );//
+bend(  }  );//
+set(  File file = new File (name);  );//
+branch(  if (file.isDirectory()) setDir (node, file);  );//
+path();//
+bend(  }  );//
+end(  );// AUTO 
+
+input(  static void setDir (TreeNode nd, File rt) {  );//
+loop(  for (int i=0; i<rt.list().length; i++) {  );//
+set(  TreeNode node = new TreeNode (null, rt.list()[i]);  );//
+set(  String path = new String (rt.getPath()+"\\"+rt.list()[i]);  );//
+generic(    );////System.out.println (path);
+set(  File file = new File (path);  );//
+branch(  if (file.isDirectory()) {  );//
+path();//
+generic(  node.setIconURL (TreeApplication.imgUrls [1]);  );//
+generic(  node.setDirectory();  );//
+generic(  node.setCloseIconURL (TreeApplication.imgUrls [2]);  );//
+generic(  node.collapse();  );//
+generic(  nd.addChild (node);  );//
+bend(  }  );//
+lend(  }   );//// add all directories
+loop(  for (int i=0; i<rt.list().length; i++) {  );//
+set(  TreeNode node = new TreeNode (null, rt.list()[i]);  );//
+set(  String path = new String (rt.getPath()+"\\"+rt.list()[i]);  );//
+generic(    );////System.out.println (path);
+set(  File file = new File (path);  );//
+branch(  if (!file.isDirectory()){  );//
+path();//
+generic(  node.setIconURL (TreeApplication.imgUrls [0]);  );//
+generic(  nd.addChild (node);  );//
+bend(  }  );//
+lend(  }   );//// add all files
+end(  }  );//
+end(  };  );//
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    TreeApplication.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 188 283 635 408 6 85   315   38    jdk12~1.key  0

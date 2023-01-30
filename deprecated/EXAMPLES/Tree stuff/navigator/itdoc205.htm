@@ -1,0 +1,206 @@
+
+
+<HTML>
+
+<HEAD>
+<meta name=description content="Image Intelligence Ltd.  Java solutions for website navigation. Professional and free menu applets.">
+<meta name=keywords content="java,applet,menu,tree,index,database,navigation,applets,design,website,intranet">
+<title>iTree menu systems</title>
+<script language="javascript" src="../elements/header.js"></script>
+</head>
+<BODY marginheight=0 marginwidth=0 leftmargin="0" topmargin="0" bgcolor="#ffffff">
+
+
+<script language="javascript">dispHead();</script>
+<IMG SRC="../images/itmenus.gif" WIDTH=360 HEIGHT=50 BORDER=0 ALT="iTree Menu Systems">
+<FONT SIZE=2 FACE="VERDANA,ARIAL,HELVETICA"><STRONG>iTree Mini Documentation</STRONG></FONT>
+
+
+<script language="javascript">dispMid();</script>
+<FONT SIZE=2 FACE="VERDANA,ARIAL,HELVETICA">
+This page contains additional documentation for the commercial version of iTree Mini. The
+commercial version works the same way as the free version (see earlier documentation), with
+the additional features described on this page.
+
+<FONT SIZE=1 FACE="VERDANA,ARIAL,HELVETICA"><dir>
+<li><A HREF="itdoc203.htm">Documentation for iTree Mini (free version)</A>
+<li><A HREF="itdoc206.htm">Additional documentation for iTree Express</A>
+<li><A HREF="itdoc207.htm">Additional documentation for iTree Pro</A>
+
+
+</dir></FONT>
+
+<STRONG>Overview of additional features</STRONG>
+<BR>&nbsp;<BR>
+In the commercial versions you also get:
+<dir>
+<li>17 extra parameters
+<li>index files that can be loaded from parameters as well as external index files
+<li>the removal of all visible copyright information from the information panel
+<li>additional index capacity (100 entries in iTree Mini Menu; infinite entries in iTree Express)
+<li>ability to remove colour-change button in iTree Mini
+<li>further topbar & tab configuration options in iTree Express
+</dir>
+
+
+<STRONG>1. Text formatting.</STRONG>
+To format the text (for the moment excluding colours), there
+are the following parameters. The parameters must be written
+into your HTML file between the APPLET tags - just like the
+examples earlier in the documentation.
+<BR>&nbsp;<BR>
+<FONT SIZE=2 COLOR="#0000FF" FACE="VERDANA,ARIAL,HELVETICA">
+&lt;param name=textfont value="Helvetica"&gt;<BR>
+&lt;param name=textsize value=11&gt;<BR>
+&lt;param name=textstyle value=0&gt;
+</FONT>
+<BR>&nbsp;<BR>
+The parameter <EM>textfont</EM> may have the values
+"Helvetica" and "TimesRoman". The parameter <EM>textsize</EM>
+may have any value you choose. The parameter <EM>textstyle</EM>
+follows this scheme: 0 = plain, 1 = bold, 2 = italic, 3 = bold italic.
+<BR>&nbsp;<BR>
+<STRONG>2. Colour parameters.</STRONG>
+In the free version you choose from preset colour schemes.
+In the commercial versions you can set any of 8 colours
+yourself. To do this, you must first set the <EM>colourscheme</EM>
+parameter to 8, which tells you that you are choosing your own
+colours. Then you must give each of the 8 colour parameters a value. They all
+take hexadecimal values just like HTML colours. For example:
+<BR>&nbsp;<BR>
+<FONT SIZE=2 COLOR="#0000FF" FACE="VERDANA,ARIAL,HELVETICA">
+&lt;param name=bgcol1 value="000000"&gt;<BR>
+&lt;param name=bgcol2 value="ece4ba"&gt;<BR>
+&lt;param name=bgcol3 value="6b6331"&gt;<BR>
+&lt;param name=bgcol4 value="9a7932"&gt;<BR>
+&lt;param name=bgcol5 value="9a7932"&gt;<BR>
+&lt;param name=textcol1 value="ba9952"&gt;<BR>
+&lt;param name=textcol2 value="ece4ba"&gt;<BR>
+&lt;param name=textcol3 value="6b6331"&gt;</FONT>
+<BR>&nbsp;<BR>
+The colour effects are as follows:
+<dir>
+<li>bgcol1 = box top-left border
+<li>bgcol2 = box bottom-right border
+<li>bgcol3 = box main frame fill
+<li>bgcol4 = menu background
+<li>bgcol5 = scroll background
+<li>textcol1 = menu text colour
+<li>textcol2 = title text colour
+<li>textcol3 = rectangular background behind text on mouse-over
+</dir>
+
+
+
+
+
+
+<STRONG>3. Customising the tab and title texts</STRONG>
+<BR>&nbsp;<BR>
+Enter the following parameter with 2 pieces of text separated
+by a vertical line <FONT SIZE=2 COLOR="#FF0000" FACE="VERDANA,ARIAL,HELVETICA">|</FONT>.
+<BR>&nbsp;<BR>
+
+<FONT SIZE=2 COLOR="#000080" FACE="VERDANA,ARIAL,HELVETICA">
+&lt;param name=texts value="Custom Title|Put your own 
+text for the information panel here. § § Enjoy it! § The Author"&gt;</FONT>
+
+<BR>&nbsp;<BR>
+The first piece of text alters the applet title bar text. The final piece of text changes the
+text that appears in the information panel. In this final piece of text,
+space-§-space may be used to force line breaks. In iTree Express, this parameter
+has additional functions - see the additional documentation for iTree Express.
+<BR>&nbsp;<BR>
+
+
+
+</dir>
+
+
+
+<STRONG>4. Loading an index from parameters</STRONG>
+
+<BR>&nbsp;<BR>
+The advantage of loading an index from parameters is that the
+applet starts faster (but your page loads slower). The pros
+and cons of external indices and parameter indices are complex,
+and some people prefer one or the other. With the commercial
+versions of this applet, you have the choice.
+<BR>&nbsp;<BR>
+The parameter index loading uses a special parameter
+called "entry". This parameter can be used up to about 100
+times, each time with an integer tagged on to its name. So
+you can start at "entry0" for the first entry, "entry1" for the
+second entry, and so on. 
+
+<br>&nbsp;<br>
+<FONT SIZE=2 COLOR="#FF0000" FACE="ARIAL">
+&lt;PARAM NAME="entry0" VALUE="...."&gt;<BR>
+&lt;PARAM NAME="entry1" VALUE="...."&gt;<BR>
+&lt;PARAM NAME="entry2" VALUE="...."&gt;<BR>
+&lt;PARAM NAME="entry3" VALUE="...."&gt;<BR>
+&lt;PARAM NAME="entry4" VALUE="...."&gt;<BR>
+&lt;PARAM NAME="entry5" VALUE="...."&gt;
+</FONT>
+<br>&nbsp;<br>
+
+The format of the entry parameter's
+value is much the same as the format of a single line in the
+index file (described earlier), with one difference: instead
+of separating the individual elements with inverted commas, they
+must be separated with the vertical line symbol <STRONG>|</STRONG>. 
+Thus:
+<BR><FONT SIZE=2 COLOR="#ff0000" FACE="ARIAL">
+"TEXT:my entry" "1" "" "LINK:myPage.html,myFrame" "description of my page"
+<BR></FONT>
+becomes:
+<BR><FONT SIZE=2 COLOR="#ff0000" FACE="ARIAL">
+&lt;PARAM NAME="entry_" 
+VALUE="TEXT:my_entry|1||LINK:myPage.html,myFrame|description of my page"&gt;
+<BR>&nbsp;<br></FONT>
+
+
+
+<STRONG>5. Customising the title-bar buttons</STRONG>
+<BR>&nbsp;<BR>
+Enter the following parameter and then adjust the value for the desired effect.
+<BR>&nbsp;<BR>
+<FONT SIZE=2 COLOR="#000080" FACE="VERDANA,ARIAL,HELVETICA">&lt;param name=buttons value=0&gt;</FONT>
+<BR>&nbsp;<BR>
+<li>Value 0: without colour-adjustment button
+<li>Value 1: with colour-adjustment button
+<BR>&nbsp;<BR>
+This parameter has extra functions in iTree Express - see the additional documentation
+for iTree Express.
+
+
+<BR>&nbsp;<BR>
+<STRONG>6. Further parameters</STRONG>
+
+<BR>&nbsp;<BR>
+
+<STRONG>Menufile</STRONG> parameter: you can change the index
+filename ("menu.txt" in the free version) to whatever you like;
+script-writers may find this has advantages, as you can load
+menu content dynamically from such things as CGI scripts.
+<BR>&nbsp;<BR>
+<STRONG>Startlevel</STRONG> parameter: you can enter an integer
+here to determine sub-menu levels that are open when the applet
+first starts. Experiment with values such as 0, 1, 2 and 3.
+<BR>&nbsp;<BR>
+<STRONG>Scrollwidth</STRONG> parameter. The scrollbar can be given a width
+between 7 and 19 pixels.
+
+<BR>&nbsp;<BR>
+
+
+</FONT>
+
+
+
+
+<script language="javascript">dispFoot(6);</script>
+
+
+</BODY>
+</html>

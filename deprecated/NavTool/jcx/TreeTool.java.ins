@@ -1,0 +1,182 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : TreeTool.java.ins
+;  File Date : 06:39:53 AM - 29:Aug:1999
+
+
+input(/** imports **/ );//
+generic(  import  jcx.*;  );//
+generic(  import  java.awt.*;  );//
+generic(  import  java.applet.Applet;  );//
+generic(  import  java.net.URL;  );//
+generic(  import  java.net.MalformedURLException;  );//
+set( import java.awt.event.*; );// 
+end(  );// AUTO 
+
+input(  public class TreeTool extends Container implements Runnable {);//  public class TreeTool extends java.applet.Applet implements Runnable{
+generic(  public Thread treeThread;  );//
+generic(static    public TreePanel treePane = null;);//
+generic(  public TreeNode root;  );//
+generic(  public URL[] imgUrls;  );//
+generic(URL CodeBase = null ;);//
+set(int x = 10;);// 
+set(int y  = 10 ;);//  
+set(int w = 200;);//  int w = (width == null) ? 400 : Integer.valueOf(width).intValue();  
+set(int h  = 200;);//  int h = (height == null) ? 500 : Integer.valueOf(height).intValue();  
+end(  );// AUTO 
+
+input( //  Action Events);//
+branch();//
+path();//
+generic(ActionListener actionListener = null;  );//
+
+input(public void addActionListener(ActionListener l) {  );//
+generic(actionListener = AWTEventMulticaster.add(actionListener, l);  );//
+end(}  );//
+
+input(public void removeActionListener(ActionListener l) {  );//
+generic(actionListener = AWTEventMulticaster.remove(actionListener, l);  );//
+end(}  );//
+path();//
+
+input(public void processEvent(AWTEvent e) {  );//
+generic();// when event occurs which causes "action" semantic  
+branch(if (actionListener != null) {  );//
+path();//
+generic(actionListener.actionPerformed(new ActionEvent( this ,  (int) AWTEvent.COMPONENT_EVENT_MASK , "xxx" )););//
+bend(}          );//
+end(} );//
+bend();//
+end();//
+
+input(static  public String getSelection() {);//
+set(String  S ;;);//
+process(System.out.println("getting Tree Sel \n"););//
+branch(if(  treePane != null ));//
+path( { );//
+output(S =  treePane.getSelection().name() ;);//
+path( }else{ );//
+output(S =  " **** " ;);//
+bend( } );//
+end(return S;  });//
+
+input(public  TreeTool( ) {);//
+set();//CodeBase = getDocumentBase();
+end(} );//
+
+input(public  TreeTool( URL CB ) {);//
+set(CodeBase = CB;);//
+process();//init(); 
+end(} );//
+
+input(public  TreeTool( URL CB , int xi, int yi , int wi, int hi ) {);//
+set(CodeBase = CB;);//
+set(x = xi;);//   
+set(y  = yi;);//   
+set(w = wi;);//  int w = (width == null) ? 400 : Integer.valueOf(width).intValue();  
+set(h  = hi;);//  int h = (height == null) ? 500 : Integer.valueOf(height).intValue();  
+process(init(); );//
+end(} );//
+
+input(private URL _getDocumentBase() {);//private URL getDocumentBase() {
+process(System.out.println("TreeTool getDocumentBase() called ...\n"););//
+end(return CodeBase; });//
+
+input(  public void init () {  );//
+process(start(); );//
+process(System.out.println("TreeTool init() called ...\n"););//
+set();//  String width  = getParameter("width");  
+generic();//  resize (w,h);  
+generic(  setLayout( null ););//  setLayout(new BorderLayout());  
+generic(  setBackground (Color.lightGray);  );//
+branch(  try {  );//
+path();//
+set(  imgUrls = new URL [10];  );//
+set(  imgUrls [0] = new URL (CodeBase,  "iconpics/ylnode.gif");  );//
+set(  imgUrls [1] = new URL (CodeBase,  "iconpics/grnode.gif");  );//
+set(  imgUrls [2] = new URL (CodeBase,  "iconpics/phone.gif");  );//
+set(  imgUrls [3] = new URL (CodeBase,  "iconpics/ppen.gif");  );//
+set(  imgUrls [4] = new URL (CodeBase,  "iconpics/dblptr.gif");  );//
+set(  imgUrls [5] = new URL (CodeBase,  "iconpics/file.gif");  );//
+set(  imgUrls [6] = new URL (CodeBase,  "iconpics/excl.gif");  );//
+set(  imgUrls [7] = new URL (CodeBase,  "iconpics/yes.gif");  );//
+set(  imgUrls [8] = new URL (CodeBase,  "iconpics/no.gif");  );//
+set(  imgUrls [9] = new URL (CodeBase,  "iconpics/url.gif");  );//
+set(  }  );//
+path(  catch (MalformedURLException e) {  );//
+generic(    );//// // do error recovery ......
+bend(  }  );//
+set();//ScrollPane Scontainer = new ScrollPane( ScrollPane.SCROLLBARS_ALWAYS);
+set();//add( Scontainer );
+process();//setLayout( null );
+process(  add ( treePane = new TreePanel()););// treePane = new TreePanel();
+generic(reshape( x  ,  y , w  , h ););//// reshape( 0 , 0, w , h );treePane.reshape( w*3/4 , 0, w/4  , h );
+generic(treePane.reshape( x ,y, w  , h ););//treePane.size( 0 , 0, w/2  , h );
+generic(  treePane.showPreIcons ( false ););//  treePane.showPreIcons (true);  
+generic();//  treePane.SCROLLBARS_ALWAYS = true;
+generic(  treePane.setFont ( new Font( "Areal" , Font.PLAIN , 10 ) ););//
+generic();//  treePane.setUrlFont (uf);  
+generic();//  treePane.addNotify();
+set(  root = treePane.getRoot ();  );//
+generic(  root.setIconURL (imgUrls [0]);  );//
+generic(  root.setName  ("Inputs"););//
+generic(  root.select();  );//
+set(  TreeNode t0 = root.addChild (new TreeNode(null, "Child with two Icon states", imgUrls [7], imgUrls [6]));  );//
+generic(  t0.setCloseIconURL (imgUrls [8]);  );//
+set(  TreeNode t00 = t0.addChild (new TreeNode(null, "Expand me to See the scroll bars", null, null));  );//
+loop(  for (int i=0; i<50; i++)  );//
+lend(  t00.addChild (new TreeNode(null, "Child with file icon "+Integer.toString(i), imgUrls [5], imgUrls [5]));  );//
+generic(  t00.collapse();  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre Yes + Pen icon", imgUrls [3], imgUrls [7]));  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre No + Phone icon", imgUrls [2], imgUrls [8]));  );//
+generic(  t0.collapse(););//
+set(  TreeNode t1 = root.addChild (new TreeNode(null, "Child with grey icon", imgUrls [1], null));  );//
+set(  TreeNode t10 = t1.addChild (new TreeNode(null, "Child with yellow icon", imgUrls [0], null));  );//
+generic(  t10.addChild (new TreeNode(null, "Child No icon", null, null));  );//
+set(  TreeNode x = t10.addChild (new TreeNode(null, "x", imgUrls [0], null));  );//
+generic(  t10.collapse(););//
+set(  TreeNode y = x.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+set(  TreeNode z = y.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+generic(  z.addChild (new TreeNode(null, "Child with a pre Yes +file icon", imgUrls [5], imgUrls [7]));  );//
+generic(  t1.addChild (new TreeNode(null, "Child 2 With Pre No + Exclamation icon", imgUrls [6], imgUrls [8]));  );//
+generic(  root.addChild (new TreeNode(null, "Child withFile icon", imgUrls [5], null));  );//
+generic(root.collapse(););//
+set();//  add ("South", controls = new TreeControls(this));  
+end(  }  );//
+
+input(  public boolean action (Event ev, Object arg) {  );//
+process(System.out.println("TreeTool action() called ...\n"););//
+branch(  if (ev.target instanceof Button) {  );//
+path();//
+bend(  }  );//
+generic(  repaint ();  );//
+generic(treePane.repaint (););//
+end(  return true;  });//
+
+input(  public void start () {  );//
+process(System.out.println("TreeTool start() called ...\n"););//
+set(  treeThread = new Thread(this);  );//
+generic(  treeThread.start();  );//
+end(  }  );//
+
+input(  public void stop () {  );//
+process(System.out.println(" TreeTool stop() called ...\n"););//
+generic();//  showStatus ("Stop called");  
+set(  treeThread = null;  );//
+end(  }  );//
+
+input(  public void run () {  );//
+process(System.out.println("TreeTool run() called ...\n"););//
+generic();//  showStatus ("Run called");  
+end(  }  );//
+end(  }  );//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 33023 16777215 255 255 16777215 65280 16384
+;    TreeTool.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 4294967292 4294967292 1608 1180 18 134   705   4294963087    java.key  0

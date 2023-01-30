@@ -1,0 +1,670 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : FolderItem.java.ins
+;  File Date : 05:58:05 PM - 29:Aug:1999
+
+generic(    );//// Author: C Dare-Edwards
+generic(    );//// 
+generic(    );//// cdare-edwards@mcsoftware.com.au
+generic(    );//// 
+generic(    );////  Copyright Conrad Dare-Edwards
+generic(    );////
+generic(    );////  The copyright to the computer program (s) herein
+generic(    );////  is the property of Conrad Dare-Edwards. The program (s)
+generic(    );////  may be used and/or copied only with the written
+generic(    );////  permission of Conrad Dare-Edwards or in accordance
+generic(    );////  with the terms and conditions stipulated in the
+generic(    );////  agreement/contract under which the program (s) have
+generic(    );////  been supplied.
+generic(  import java.awt.*;  );//
+generic(  import java.awt.image.ImageObserver;  );//
+generic(  import java.util.Vector;  );//
+generic(  import java.util.Enumeration;  );//
+generic(  import TreeControl;  );//
+end(  );// AUTO 
+
+input(  public class FolderItem  extends Item  );//
+generic(  {  );//
+set(  public static boolean m_drawDotted = false;  );//
+set(  int TABSTOP = 20;  );//
+set(  int INDENT = 4;  );//
+set(  int m_half_TextHeight = 10;  );//
+generic(    );////static final int EXPAND_COLLAPSE_WIDTH = 15;
+generic(  Rectangle m_rect;   );//// current drawing area
+generic(  boolean m_expanded;  );//
+generic(  Vector m_list;  );//
+generic(    );//////////////////////////////////////////////////
+generic(    );//// construction
+generic(    );////  public FolderItem( String title )
+generic(    );//// costruct new item with title of title 
+generic(  public FolderItem( String title )  );//
+generic(  {  );//
+generic(  super(title);  );//
+set(  m_expanded = false;  );//
+set(  m_rect = new Rectangle();  );//
+set(  m_list = new Vector();  );//
+end(  }  );//
+generic(    );////  public FolderItem( Item item )
+generic(    );//// copy items contents and construct object
+generic(  public FolderItem( Item item )  );//
+generic(  {  );//
+generic(  super( item );  );//
+set(  m_expanded = false;  );//
+set(  m_rect = new Rectangle();  );//
+set(  m_list = new Vector();  );//
+end(  }  );//
+generic(    );////  public FolderItem( FolderItem item )
+generic(    );//// copy constructor
+generic(  public FolderItem( FolderItem item )  );//
+generic(  {  );//
+generic(  super( (Item) item );  );//
+set(  m_expanded = item.isExpanded();  );//
+set(  m_rect = new Rectangle();  );//
+set(  m_list = new Vector();  );//
+generic(    );//// copy element refereces across
+set(  Enumeration en = item.elements();   );//
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+generic(  addElement( en.nextElement() );     );//
+end(  }  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );//// list operations
+generic(  public Enumeration elements()  );//
+generic(  {  );//
+end(  return m_list.elements();  );//
+end(  }  );//
+generic(  public void addElement( Object item )  );//
+generic(  {  );//
+generic(  m_list.addElement( item );  );//
+end(  }  );//
+generic(  public boolean isEmpty( )  );//
+generic(  {  );//
+end(  return m_list.isEmpty();  );//
+end(  }  );//
+generic(    );////////////////////////////////////////////////////
+generic(    );//// public void draw( Graphics g, ImageObserver ob, int highlight )
+generic(    );//// draw ourselves onto the screen given a graphics
+generic(  public void draw( Graphics g, TreeControl ob, int highlight )  );//
+generic(  {  );//
+branch(  if( !isExpanded() || (highlight & DRAW_FULL) == 0 )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( isExpanded() ) highlight |= DRAW_SECONDIMAGE;  );//
+path();///auto path//
+generic(  super.draw(g, ob, highlight);  );//
+end(  return;  );//
+bend(  }  );//
+path(  else   );//// redraw children
+generic(  {  );//
+generic(    );//// start at the top
+generic(  super.draw(g, ob, highlight | DRAW_SECONDIMAGE);  );//
+set(  int x = INDENT + m_rect.x;  );//
+generic(    );//// int half_TextHeight = super.getHeight() /2;
+set(  int lasty = super.getHeight() + m_rect.y;  );//
+set(  int y = lasty;  );//// + half_TextHeight;
+generic(    );//// shift lasty up to the bottom of the icon
+set(  /*if( super.getIcon() != null )  );//
+generic(  {  );//
+generic(    );//// make sure we have an image hieght
+set(  int image_height = (super.getIcon()).getHeight( ob);  );//
+branch(  if( image_height > 0 )  );//
+path();///auto path//
+set(  lasty -= (super.getHeight() - image_height)/2;  );//
+bend(  }  );//
+set(  */Enumeration en = elements();   );//
+generic(    );//// travel list of items
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+set(  Item element = (Item) en.nextElement();     );//
+generic(  element.draw(g, ob, highlight);  );//
+generic(    );//// draw item lines
+set(  Color color = g.getColor();  );//
+generic(  g.setColor( ob.m_detailColour );  );//
+generic(    );//// draw expand collapse box
+branch(  if( element instanceof FolderItem )  );//
+path();///auto path//
+generic(  {  );//
+set(  FolderItem fitem = (FolderItem) element;  );//
+set(  y = (fitem.getRect()).y + (fitem.getTitleRect().height/2);  );//
+set(  y -= 4;  );//
+set(  int offsetx = x - 4;  );//
+generic(    );//// draw box
+generic(  g.drawRect( offsetx, y , 8 , 8 );   );//
+generic(    );//// add expand collapse box minus
+generic(  g.drawLine( offsetx +2 , y + 4, offsetx +6,  y+4 );  );//
+generic(    );//// draw plus if needed 
+branch(  if( !fitem.isExpanded() )  );//
+path();///auto path//
+generic(  g.drawLine( offsetx +4 , y + 2, offsetx +4,  y+6 );  );//
+generic(    );//// add line across to the image
+generic(  drawLineAcross(g, offsetx + 8 , y + 4, x+(TABSTOP-INDENT) );  );//
+generic(    );//// draw line down to the top of component
+generic(  drawLineDown(g, x, lasty, y );  );//
+generic(    );//// shift down
+set(  lasty = y + 8;  );//
+bend(  }  );//
+path(  else  );//
+generic(  {  );//
+set(  y = (element.getRect()).y + (element.getHeight())/2;  );//
+generic(  drawLineDown(g, x, lasty, y );  );//
+generic(  drawLineAcross(g, x,y, x+(TABSTOP-INDENT) );  );//
+set(  lasty = y;  );//
+bend(  }  );//
+generic(  g.setColor( color );  );//
+bend(  }  );//
+end(  }  );//
+end(  }  );//
+generic(    );//// draw dotted line
+generic(  void drawLineAcross(Graphics g, int xtop, int ytop, int xbot )  );//
+generic(  {  );//
+branch(  if( m_drawDotted )  );//
+path();///auto path//
+generic(  {  );//
+generic(  while( xtop < xbot )  );//
+generic(  {  );//
+generic(  g.drawLine( xtop, ytop, xtop, ytop );  );//
+set(  xtop+=2;  );//
+bend(  }  );//
+end(  }  );//
+path(  else g.drawLine( xtop, ytop, xbot, ytop );  );//
+end(  }  );//
+generic(    );//// draw dotted line
+generic(  void drawLineDown(Graphics g, int xtop, int ytop, int ybot )  );//
+generic(  {  );//
+branch(  if( m_drawDotted )  );//
+path();///auto path//
+generic(  {  );//
+generic(  while( ytop < ybot )  );//
+generic(  {  );//
+generic(  g.drawLine( xtop, ytop, xtop, ytop );  );//
+set(  ytop+=2;  );//
+bend(  }  );//
+end(  }  );//
+path(  else g.drawLine( xtop, ytop, xtop, ybot);  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public boolean activate( int activate_type, Event event )
+generic(    );//// activate item with some form of action input
+generic(    );//// uses event co-ordinates to test if the expand collapse box
+generic(    );//// has been hit or the item send null if not a user input
+generic(    );////
+generic(    );//// returns true if item's layout has changed and needs a full redraw
+generic(  public boolean activate( int activate_type, Event event )  );//
+generic(  {  );//
+branch(  if( event != null )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// if hit title text activate item link else
+generic(    );//// must have hit the expand collaspe box
+branch(  if((super.getRect()).inside( event.x, event.y ) )  );//
+path();///auto path//
+generic(  {  );//
+generic(  super.activate( activate_type, null );  );//
+bend(  }  );//
+path(  else  );//
+generic(  {  );//
+generic(  expand( !m_expanded );  );//
+end(  return true;  );//
+bend(  }  );//
+end(  }  );//
+path(  else   );//// defualt activte super
+generic(  {  );//
+generic(  super.activate( activate_type, null );  );//
+end(  }  );//
+generic(    );//// default expand
+branch(  if( /*activate_type == ACT_CLICK ||*/ activate_type == ACT_DBCLICK )  );//
+path();///auto path//
+generic(  {  );//
+generic(  expand( !m_expanded );  );//
+end(  return true;   );//// redraw
+bend(  }  );//
+end(  return false;   );//// nothing changed no redraw
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public Item hitTest( int x, int y )
+generic(    );//// does x,y fall within the rectangle
+generic(    );//// returns the hit item this ,its child or null
+generic(  public Item hitTest( int x, int y )  );//
+generic(  {  );//
+generic(  Item item;  );//
+generic(    );//// test ourselves
+end(  if( !m_rect.inside( x,y ) ) return null;  );//
+generic(    );//// test our title
+branch(  if( super.hitTest( x,y ) != null )  );//
+path();///auto path//
+end(  return this;  );//
+generic(    );//// setup rectangle for expand collaspe box testing 
+set(  Rectangle expand_rect = new Rectangle( 10,10);  );//
+set(  expand_rect.x = m_rect.x + INDENT - 4;  );//
+generic(    );//// test all of our children
+set(  Enumeration en = elements();  );//
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+set(  Item element = (Item) en.nextElement();     );//
+branch(  if( (item = element.hitTest( x,y )) != null )  );//
+path();///auto path//
+end(  return item;  );//
+generic(    );//// if folder item expand search to include
+generic(    );//// expand collapse box on the left of an item
+branch(  if( element instanceof FolderItem )  );//
+path();///auto path//
+generic(  {  );//
+set(  FolderItem fitem = (FolderItem)element;  );//
+generic(    );//// get items rectangle
+set(  Rectangle rect = fitem.getTitleRect();  );//
+generic(    );//// shift rect to the left of this item
+generic(    );////expand_rect.y = rect.y + (rect.height/2) - 4;
+generic(    );////expand_rect.y = rect.y + m_half_TextHeight -4;
+set(  expand_rect.y = (fitem.getRect()).y + (fitem.getTitleRect().height/2)-4;  );//
+generic(    );//// and hit test
+branch(  if( expand_rect.inside( x,y ) == true )  );//
+path();///auto path//
+end(  return element;  );//
+bend(  }  );//
+bend(  }  );//
+end(  return null;   );//// not found
+bend(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public void initalise( FontMetrics fm, ImageObserver ob )
+generic(    );//// intalise drawing area this should be called after construction and
+generic(    );//// after any changes to title or icon. This sets up and
+generic(  public void initalise( FontMetrics fm, ImageObserver ob )  );//
+generic(  {  );//
+generic(  super.initalise( fm, ob );   );//// set top leave item
+generic(    );//// work out indent from super
+branch(  if( getIcon() != null )  );//
+path();///auto path//
+generic(  {  );//
+set(  INDENT = getIcon().getWidth( ob )/2;  );//
+branch(  if( INDENT < 1 ) INDENT = 4;  );//
+path();///auto path//
+branch(  if( INDENT > 15 ) INDENT = 15;  );//
+path();///auto path//
+set(  TABSTOP = INDENT + 10;   );//
+bend(  }  );//
+set(  m_half_TextHeight =  (fm.getLeading() + fm.getMaxAscent() + fm.getMaxDescent())/2;  );//
+generic(    );//// set rect for all children
+set(  Enumeration en = elements();   );//
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+set(  Item element = (Item) en.nextElement();     );//
+generic(  element.initalise( fm, ob );  );//
+bend(  }  );//
+bend(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );//// public Rectangle layout( int x, int y )
+generic(    );//// layout items of this item and return the bounding rectangle
+generic(    );//// int x, y - position to start laying out from ( top left )
+generic(    );//// returns Rectangle  - bounding rectangle of this item and children
+generic(  public Rectangle layout( int x, int y )  );//
+generic(  {  );//
+generic(    );//// if has no children at present hand back just the title bar's rectangle
+branch(  if( !isExpanded() )  );//
+path();///auto path//
+generic(  {  );//
+set(  Rectangle rect = super.layout(x,y);  );//
+generic(    );//// copy rectangle
+set(  m_rect.x = rect.x;  );//
+set(  m_rect.y = rect.y;  );//
+set(  m_rect.width  = rect.width;  );//
+set(  m_rect.height = rect.height;  );//
+generic(    );//// and return it
+end(  return m_rect;  );//
+bend(  }  );//
+path(  else   );//// else layout children
+generic(  {  );//
+set(  m_rect.x = x;  );//
+set(  m_rect.y = y;  );//
+generic(    );//// start with our title
+set(  Rectangle rect = super.layout(x,y);  );//
+set(  int width  = rect.width;  );//
+set(  int height = rect.height;  );//
+generic(    );//// add folder item indent
+set(  x += TABSTOP;  );//
+set(  Enumeration en = elements();   );//
+generic(    );//// travel list of items
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+set(  Item element = (Item) en.nextElement();     );//
+set(  rect = element.layout(x, y + height);  );//
+generic(    );//// get the width of the widest item
+branch(  if( rect.width > width ) width = rect.width;  );//
+path();///auto path//
+generic(    );//// add to hieght
+set(  height += rect.height;  );//
+bend(  }  );//
+generic(    );//// set our rectangle to contain all children
+set(  m_rect.width = width + TABSTOP;  );//
+set(  m_rect.height = height;  );//
+generic(    );//// and return
+end(  return m_rect;  );//
+bend(  }  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );//// public Rectangle getRect( )
+generic(    );//// get the drawing area and bounding rectangle of this item
+generic(  public Rectangle getRect( )  );//
+generic(  {  );//
+end(  return m_rect;  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );//// public Rectangle getRect( )
+generic(    );//// get the drawing area and bounding rectangle of this item
+generic(  public Rectangle getTitleRect( )  );//
+generic(  {  );//
+end(  return super.getRect();  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );//// public boolean isExpanded( )
+generic(    );//// test if folder is expanded eg children visible
+generic(  public boolean isExpanded( )  );//
+generic(  {  );//
+end(  return m_expanded;  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public void expand( boolean expand )
+generic(    );//// set expanded of colapsed state for folder
+generic(  public void expand( boolean expand )  );//
+generic(  {  );//
+set(  m_expanded = expand;  );//
+generic(    );//// if we are closing up this folder
+generic(    );//// we need to close up all child folders too
+branch(  if( expand == false )  );//
+path();///auto path//
+generic(  {  );//
+set(  Enumeration en = elements();   );//
+generic(    );//// travel list of items
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+set(  Item element = (Item) en.nextElement();     );//
+branch(  if( element instanceof FolderItem )  );//
+path();///auto path//
+generic(  ((FolderItem)element).expand( false );  );//
+bend(  }  );//
+bend(  }  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public int getWidth()
+generic(    );//// get the current width of object
+generic(  public int getWidth()  );//
+generic(  {  );//
+end(  return m_rect.width;  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public int getHeight()
+generic(    );//// get the current height of object
+generic(  public int getHeight()  );//
+generic(  {  );//
+end(  return m_rect.height;  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public Item findItem( String title )
+generic(    );//// recursivly finds item given its title eg folder/child_folder/item
+generic(    );//// reutrns null if not found
+generic(  public Item findItem( String title )  );//
+generic(  {  );//
+end(  if( title == null ) return null;   );//// fail safe test
+set(  Enumeration en = elements();   );//
+generic(    );//// travel list of items
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+set(  Item element = (Item) en.nextElement();     );//
+branch(  if( title.equalsIgnoreCase( element.getTitle() ))  );//
+path();///auto path//
+end(  return element;  );//
+bend(  }  );//
+end(  return null;   );//// not found
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );//// public Item removeItem( Item item )
+generic(    );//// and removes the item and its children from the tree
+generic(    );//// reutrns null if not found
+generic(  public Item removeItem( Item item )  );//
+generic(  {  );//
+branch(  if( m_list.removeElement( item ) == true )  );//
+path();///auto path//
+bend(  {return item; }  );//
+end(  else{ return null; }  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public Item replaceItem( Item item, Item replace )
+generic(    );////  searches imediate children for item and replaces it with the one given
+generic(    );//// reutrns null if not found else the original replaced Item
+generic(  public Item replaceItem( Item item, Item replace )  );//
+generic(  {  );//
+generic(  int index;  );//
+branch(  if(( index = m_list.indexOf(item)) != -1 )  );//
+path();///auto path//
+generic(  {  );//
+generic(  m_list.setElementAt( replace, index );  );//
+end(  return item;    );//
+bend(  }  );//
+end(  else {return null; }   );//// not found
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );//// protected Item getPrev( int index, boolean expand )
+generic(    );//// get previous item given list index
+generic(    );//// proctected helper function for getPrev( Item )
+generic(  protected Item getPrev( int index, boolean expand )  );//
+generic(  {  );//
+generic(    );//// if first element then return this
+end(  if( index <= 0 ) return this;  );//
+generic(    );//// else find item from index
+branch(  if( index-1 >= 0 )  );//
+path();///auto path//
+generic(  {  );//
+generic(  Item item;  );//
+bend(  try{ item = (Item)m_list.elementAt( index-1 ); }  );//
+generic(    );//// catch any error
+set(  catch ( ArrayIndexOutOfBoundsException e ){ item = null; }  );//
+generic(    );//// if item is a  folder then get the last item of the folder
+branch(  if( item != null && item instanceof FolderItem )  );//
+path();///auto path//
+set(  item = ((FolderItem)item).getLastItem( expand );  );//
+end(  return item;   );//// and return
+bend(  }  );//
+end(  else{ return null; }   );//// error no such item
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );//// protected Item getNext( int index, boolean expand )
+generic(    );//// get next item given index
+generic(    );//// protected helper function for getNext( Item )
+generic(    );//// boolean expand - will expand folder and children to find last item
+generic(  protected Item getNext( int index, boolean expand )  );//
+generic(  {  );//
+branch(  if( expand ) expand( expand );  );//
+path();///auto path//
+generic(    );//// test current item is a folder
+generic(  Item currItem;  );//
+bend(  try{ currItem = (Item)m_list.elementAt( index ); }  );//
+generic(    );//// catch any error and return the
+set(  catch ( ArrayIndexOutOfBoundsException e ){ currItem = null; }  );//
+branch(  if( currItem instanceof FolderItem )  );//
+path();///auto path//
+generic(  {  );//
+generic(    );//// if so get the next top item
+set(  FolderItem fi = (FolderItem)currItem;  );//
+set(  Item next = fi.getNext( currItem, expand );  );//
+generic(    );//// if no top item fall through
+end(  if( next != currItem ) return next;  );//
+bend(  }  );//
+branch(  if( m_list.size() > index+1 )  );//
+path();///auto path//
+generic(  {  );//
+generic(  Item item;  );//
+bend(  try{ item = (Item)m_list.elementAt( index+1 ); }  );//
+generic(    );//// catch any error and return the
+set(  catch ( ArrayIndexOutOfBoundsException e ){ item = null; }  );//
+end(  return item;  );//
+end(  }  );//
+generic(    );//// found end of this list
+end(  else return null;  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public Item getLastItem( boolean expand )
+generic(    );//// return the last item in the list
+generic(    );//// returns this if no child items
+generic(    );//// boolean expand - will expand folder and children to find last item
+generic(  public Item getLastItem( boolean expand )  );//
+generic(  {  );//
+end(  if( (!isExpanded()  && !expand ) || isEmpty()) return this;  );//
+path(  else  );//
+generic(  {  );//
+branch(  if( expand ) expand( expand );  );//
+path();///auto path//
+set(  Item item = (Item) m_list.lastElement();   );//
+branch(  if( item instanceof FolderItem )  );//
+path();///auto path//
+end(  return ((FolderItem)item).getLastItem( expand );  );//
+path(  else return item;  );//
+bend(  }  );//
+bend(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public Item getFirstItem( boolean expand )
+generic(    );//// return the first Item in the list
+generic(    );//// returns this is no child items
+generic(    );//// boolean expand - will expand folder and children to find last item
+generic(  public Item getFirstItem( boolean expand )  );//
+generic(  {  );//
+end(  if( (!isExpanded() && !expand) || isEmpty()  ) return this;  );//
+path(  else  );//
+generic(  {  );//
+branch(  if( expand ) expand( expand );  );//
+path();///auto path//
+end(  return (Item) m_list.firstElement();   );//
+bend(  }  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public Item getNext( Item item, boolean expand )
+generic(    );//// get next availble item in tree structure
+generic(    );//// this will return the item if found
+generic(    );//// null if not found and the passed item
+generic(    );//// if found item but its at the end of the tree
+generic(    );//// boolean expand - will expand folder and children to find last item
+generic(  public Item getNext( Item item, boolean expand )  );//
+generic(  {  );//
+end(  if( item == this ) return getFirstItem( expand );  );//
+generic(    );//// if we arnt expanded then nothing to get
+end(  if( (!isExpanded() && !expand ) || isEmpty() ) return null;  );//
+set(  int item_index =0;  );//
+generic(    );//// is it part of local level list
+branch(  if( (item_index = m_list.indexOf( item )) != -1 )  );//
+path();///auto path//
+generic(  {  );//
+set(  Item next = getNext(item_index, expand);  );//
+generic(    );//// if error return found end of list
+branch(  if( next == null ) next = item;  );//
+path();///auto path//
+end(  return next;  );//
+bend(  }  );//
+path(  else   );//// search all child folders
+generic(  {  );//
+set(  Enumeration en = elements();   );//
+generic(    );//// travel list of items and ask each child
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+set(  Item element = (Item) en.nextElement();     );//
+branch(  if( element instanceof FolderItem )  );//
+path();///auto path//
+generic(  {  );//
+set(  FolderItem fi = (FolderItem)element;  );//
+set(  Item found = fi.getNext( item, expand );  );//
+branch(  if( found != null && expand ) expand( expand );  );//
+path();///auto path//
+generic(    );//// if found == item then return next in list
+branch(  if( found == item )  );//
+path();///auto path//
+generic(  {  );//
+branch(  if( en.hasMoreElements() )  );//
+path();///auto path//
+generic(  {  );//
+end(  return (Item)en.nextElement();  );//
+bend(  }  );//
+path(  else return item;  );//
+bend(  }  );//
+path(  else if( found != null ) return found;  );//
+bend(  }   );//// end if folder
+bend(  }   );//// end while items
+bend(  }  );//// end else search all children
+generic(    );//// reached end of list and exhausted all children
+end(  return null;  );//
+end(  }  );//
+generic(    );//////////////////////////////////////////////////////////
+generic(    );////  public Item getPrev( Item item, boolean expand )
+generic(    );//// get the previous item from the one given
+generic(    );//// this will return the item if found
+generic(    );//// null if not found and the passed item
+generic(    );//// if found item but its at the top of the tree
+generic(    );//// boolean expand - will expand folder and children to find last item
+generic(  public Item getPrev( Item item, boolean expand )  );//
+generic(  {  );//
+end(  if( item == this ) return item;  );//
+generic(    );//// if we arnt expanded then we need not look
+end(  if( (!isExpanded() && !expand) || isEmpty() ) return null;  );//
+generic(    );//// is it part of local level list
+set(  int item_index = m_list.indexOf( item );  );//
+generic(    );//// is it part of local level list
+branch(  if( item_index != -1 )  );//
+path();///auto path//
+generic(  {  );//
+end(  return getPrev( item_index, expand );  );//
+bend(  }  );//
+path(  else   );//// search all child folders
+generic(  {  );//
+set(  Enumeration en = elements();   );//
+generic(    );//// travel list of items and ask each child
+generic(  while( en.hasMoreElements() )  );//
+generic(  {  );//
+set(  Item element = (Item) en.nextElement();     );//
+branch(  if( element instanceof FolderItem )  );//
+path();///auto path//
+generic(  {  );//
+set(  FolderItem fi = (FolderItem)element;  );//
+set(  Item found = fi.getPrev( item, expand );  );//
+generic(    );//// find previous item in the list and select
+branch(  if( found == item )  );//
+path();///auto path//
+generic(  {  );//
+end(  return getPrev( m_list.indexOf( fi ), expand );  );//
+bend(  }  );//
+path(  else if( found != null )  );//
+generic(  {  );//
+branch(  if( expand ) expand( expand );  );//
+path();///auto path//
+end(  return found;  );//
+bend(  }  );//
+bend(  }  );//// end if folder
+end(  }  );//// end while children
+end(  }  );//// end else search children
+generic(    );//// reached end of list and exhausted all children
+end(  return null;  );//
+end(  }  );//
+generic(  /* unused constructors  );//
+generic(  public FolderItem( String title, Image icon )  );//
+generic(  {  );//
+generic(  super( title, icon );  );//
+set(  m_expanded = false;  );//
+set(  m_rect = new Rectangle();  );//
+set(  m_list = new Vector();  );//
+end(  }  );//
+generic(  public FolderItem( String title, Image icon, boolean expand )  );//
+generic(  {  );//
+generic(  super( title, icon );  );//
+set(  m_expanded = expand;  );//
+set(  m_rect = new Rectangle();  );//
+set(  m_list = new Vector();  );//
+end(  }  );//
+generic(  */  );//
+end(  }   );//// end folder item
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    FolderItem.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 173 159 592 423 1 75   345   63    java.key  0

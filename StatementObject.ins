@@ -1,0 +1,823 @@
+;  IRL FlowCode Version: Version 10.0
+;  c1995-2015: Visual Flow Coder by 2LResearch
+;
+;  File Name : StatementObject.ins
+;  File Date : 09:39:16 AM - 30:Jan:2023
+
+
+input(  /** Imports **/      );//// // <--- part of framework......
+generic(  import java.awt.*;  );//
+generic();//  import java.applet.*;  
+generic(  import java.util.*;);//
+end(  );// AUTO 
+
+input( public class StatementObject   {);// 
+branch();//
+path();//
+set(static Font F = null  ;);//
+set(Vector V;);//
+generic(  public String Statement;);//
+generic(  public String Comment;);//
+generic(  private Color CommentColor  ;);//
+set(private  int  w = 37 ;);//
+set(private  int  h = 15 ;);//
+set(private  int  Separation  ;);//
+set(private  int  margin = h/5 ;);//
+set(private Point P;);//
+set();//private double h_scale = 1.0;
+set(private int x1bound = 0;);//
+set(private int x2bound = 0;);//
+set(int  xmin2=0;);//
+set(int  xmax2 =0;);//
+set(boolean first_draw = true;);//
+set(private  Vector LPoints;);//
+set(int  ymid1 = 0;);//
+set(int  ymid2 = 0 ;);//
+set(int  Xo = 0;);//
+set(int  Yo = 0 ;);//
+generic(  public String Type ;);//
+generic(static    public int font_h = 10 ;);//  public int font_h = 6 ;
+set(public boolean show_comments =false;);//public boolean show_comments = true ;
+output(public  StatementObject Link;);//
+output(public  Vector  PLink;);//
+branch();//
+path();//
+set(int  x1 ;);//
+set(int  x2;);//
+path();//
+set(int  xmin ;);//
+set(int  xmax ;);//
+path();//
+set(int  y1;);//
+set(int  y2 ;);//
+path();//
+set(int  ymid ;);//int  ymid = y-(y2 - y1)/2 ;
+set(int  xmid ;);//int  ymid = y-(y2 - y1)/2 ;
+bend();//
+path();//
+
+input(StatementObject(  String flowcode  , Vector Vec ){);//parse the flow and then build then adjust the object properties
+set(V = Vec ;);//
+set(P = new Point( 300 , 150 ) ;);///z is zoom factor in % //
+set(PLink  = new Vector() ;);///z is zoom factor in % //
+generic( Type = "generic" ;);//
+generic( Statement = flowcode ;);//
+generic( Comment = " ... ";);//
+generic( Link = null ;);//
+set(CommentColor  = new Color( 150, 200, 150  ););//
+generic(StringTokenizer st = new StringTokenizer( flowcode , "(<> \t" ););//
+branch(try);//
+path( {  );//
+set(Type = st.nextToken( "( \t" ););//
+set(String  S  = st.nextToken( "" ););//
+generic( Statement =  S.substring( S.indexOf("(")+1 , S.indexOf(");/")  ) ;);//Get the main statement
+set(int  ctok = S.indexOf( ");/") ;);//
+branch(if(  ctok > 0 ));//
+path( { );//
+set(Comment = S.substring( ctok + 4 ).trim(););//
+bend( } );//
+path( }catch( NoSuchElementException e ){);//
+bend( } );//
+end(  } );//
+set();//
+path();//
+
+input(   public void calculate( Graphics g, int x, int y, int z){);//  public void _draw( Graphics g, int x, int y, int z){
+set();//Font CF = g.getFont() ;
+set();//String  LN = CF.getName();
+set(F = new Font(  "SansSerif",  Font.PLAIN , font_h ) ;);//F = new Font( LN ,  Font.ITALIC , font_h ) ;
+process(g.setFont( F  ););//
+branch(if( V != null ));//if( V != null  && PS.Type.equals("path") )
+path( { );//
+set(StatementObject S = null ;);//
+set(Point xyp = new Point( x , y ););//
+set(Xo = x;);//
+set(Yo = y;);//
+loop(for( int p = 0; p < V.size(); p++ ) {);//scan to end of vector .... we jump out when we see a 'floating' path
+set(S = (StatementObject)V.elementAt( p ););//
+process(xyp = S.calcobject( g, xyp.x, xyp.y, z) ;);//
+lend( } // end for );//
+set(xyp.x = x ; xyp.y = y ;);//
+loop(for( int p = 0; p < V.size(); p++ ) {);//scan to end of vector .... we jump out when we see a 'floating' path
+set(S = (StatementObject)V.elementAt( p ););//
+process(xyp = S.calcobject( g, xyp.x, xyp.y, z) ;);//
+lend( } // end for );//
+path( }else{ );//
+set();//return null;
+bend( } );//
+end(} );//  
+set();//
+path();//
+
+input(   public void transform(  int x, int y, int z ){);//  public void _draw( Graphics g, int x, int y, int z){
+set(int dx = x-Xo;  int dy = y-Yo;   int dz;);//
+set();//w = 37 ;
+set();//h = 10 ;
+set();//Separation  ;
+set();//margin = h/5 ;
+set(P.x += dx  ;   P.y += dy;);//
+set(x1bound += dx;);//
+set( x2bound += dx;);//
+set(xmin2 += dx;);//
+set(xmax2 +=dx;);//
+set(ymid1  += dy;);//
+set(ymid2 += dy;);//
+set(Xo  += dx;);//
+set(Yo  += dy;);//
+branch();//
+path();//
+set(x1 += dx;);//
+set( x2+= dx;);//
+path();//
+set( xmin+= dx;);//
+set( xmax+= dx;);//
+path();//
+set(y1  += dy;);//
+set(y2  += dy;);//
+path();//
+set( ymid  += dy;);//int  ymid = y-(y2 - y1)/2 ;
+set( xmid += dx;);//int  ymid = y-(y2 - y1)/2 ;
+bend();//
+branch(if(  LPoints != null ));//
+path( { );//
+set(Point P;);//
+loop(for( int i=0 ; i< LPoints.size() ; i++ ) {);//
+process(P = (Point) LPoints.elementAt( i ););//
+set(P.x += dx  ;   P.y += dy;);//
+lend( } // end for );//
+bend( } );//
+end(} );//  
+set();//
+path();//
+
+input(  private Point calcobject( Graphics g, int x, int y, int z){);//z is zoom factor in points
+set(FontMetrics FM;);//
+branch(if( F != null  ));//
+path( { );//
+process(g.setFont( F  ););//
+set(FM = g.getFontMetrics( F ););//
+path(}else{ );//
+set(FM = g.getFontMetrics(););//
+bend( } );//
+set(w = FM.stringWidth( Statement ););//
+set(h = font_h ;);//h = (int)( FM.getHeight( ) ) ;
+branch(if( Type.equals( "input" )  ));//
+path({ );// 
+set(h *=2;);//
+path(} else  {);//
+bend(});//
+set(Separation = h;);//
+branch();//
+path();//
+set(margin = h/5 ;);//
+set(x = x - w/2 ;);//
+path();//
+set( x1 = x-margin ;);//
+set( x2 = x + w+ margin;);//
+path();//
+set(y1 = y - (h+margin) ;);//
+set( y2 = y+margin;);//
+path();//
+set( ymid = y - h/2 ;);//int  ymid = y-(y2 - y1)/2 ;
+set(xmid = x + w/2;);//
+bend();//
+branch(if( Type.equals( "input" )  ));//
+path({ );// 
+process(calc_input( g, x, y, z) ;);//z is zoom factor in % 
+path(} else if( Type.equals( "set" )  ) {);//
+process(calc_set( g, x, y , z) ;);//z is zoom factor in % 
+path(} else if( Type.equals( "loop" )  ) {);//
+process(calc_loop( g, x, y , z) ;);//z is zoom factor in % 
+path(} else if( Type.equals( "branch" )  ) {);//
+process(calc_branch( g, x, y , z) ;);//z is zoom factor in % 
+bend();//
+branch();//
+path(} else if( Type.equals( "lend" )  ) {);//
+process(calc_lend( g, x, y , z) ;);//z is zoom factor in % 
+path(} else if( Type.equals( "end" )  ) {);//
+process(calc_end( g, x, y , z) ;);//z is zoom factor in % 
+path(} else if( Type.equals( "bend" )  ) {);//
+process(calc_bend( g, x, y , z) ;);//z is zoom factor in % 
+path(} else if( Type.equals( "path" )  ) {);//
+process(calc_path( g, x, y , z) ;);//z is zoom factor in % 
+path(}else{ );//
+process(calc_set( g, x, y , z) ;);//z is zoom factor in % 
+bend(} );// 
+end(return P; });//  
+
+input(  public Point draw( Graphics g, int x, int y, int z){);//z is zoom factor in % 
+process( transform( x   , y  , 0 ) ;);//  transform(  Xo - x , Yo - y, 0 ) ;
+branch(if( F != null  ));//
+path( { );//
+process(g.setFont( F  ););//
+bend( } );//
+branch(if( Type.equals( "input" )  ));//
+path({ );// 
+process(draw_input( g ) ;);///z is zoom factor in % //
+path(} else if( Type.equals( "set" )  ) {);//
+process(draw_set( g ) ;);///z is zoom factor in % //
+path(} else if( Type.equals( "loop" )  ) {);//
+process(draw_loop( g ) ;);///z is zoom factor in % //
+path(} else if( Type.equals( "branch" )  ) {);//
+process(draw_branch( g ) ;);///z is zoom factor in % //
+path();// auto path
+bend();//
+branch();//
+path(} else if( Type.equals( "lend" )  ) {);//
+process(draw_lend( g ) ;);///z is zoom factor in % //
+path(} else if( Type.equals( "end" )  ) {);//
+process(draw_end( g ) ;);///z is zoom factor in % //
+path(} else if( Type.equals( "bend" )  ) {);//
+process(draw_bend( g ) ;);///z is zoom factor in % //
+path(} else if( Type.equals( "path" )  ) {);//
+process(draw_path( g ) ;);///z is zoom factor in % //
+path(}else{ );//
+process(draw_set( g ) ;);///z is zoom factor in % //
+bend(} );// 
+branch(if( show_comments  ));//
+path( { );//
+set(Color startColor = g.getColor(););//
+process(g.setColor( CommentColor  ););//g.setColor( C.red );
+generic(  g.drawString( Comment, xmax + 2*margin  , y2  ););//  g.drawString( "  end()" , x  , y  );
+process(g.setColor( startColor ););// 
+path( }else{ );//
+bend( } );//
+end(return P; });//  
+path();//
+
+input(private int GetPathXmax( StatementObject PS ) {);//
+set(Point P = new Point( 0 , 0 ););//
+set(int Xlimit = PS.xmin;);//
+branch(if( V != null ));//if( V != null  && PS.Type.equals("path") )
+path( { );//
+set(StatementObject S = null ;);//
+set(int depth = 0;);//
+set(int start_seg = V.lastIndexOf( PS ););//
+loop(for( int p = start_seg ; p < V.size(); p++ ) {);//scan to end of vector .... we jump out when we see a 'floating' path
+set(S = (StatementObject)V.elementAt( p ););//
+branch(if( S.Type.equals("branch") ));//
+path( { );//
+set(depth++;);//
+path(} else if( S.Type.equals("bend")  ) {);//
+set(depth--;);//
+path(} else if( S.Type.equals("path")  ) {);//
+branch(if( depth == 0 && p> start_seg  ));//'floating'
+path( { );//
+end(return Xlimit ;);//return PS.xmax;
+bend( } );//
+path(} else if( S.Type.equals("lend")  ) {);//
+branch(if( Xlimit < S.x1bound   ));//NOTE:   X1 IS LARGER THAT X2 !! LEND BREAKS CONVENTION ... NEED TO FIX
+path( { );//
+set(Xlimit = S.x1bound ;);//
+bend( } );//
+bend( } );//
+branch(if( Xlimit < S.xmax  ));//
+path( { );//
+set(Xlimit = S.xmax;);//
+path( }else{ );//
+bend( } );//
+lend( } // end for );//
+path( }else{ );//
+set();//return null;
+bend( } );//
+end(return Xlimit;  });//
+
+input(private Point GetPathBounds( StatementObject PS ) {);//
+set(Point B = new Point( PS.xmin - h , PS.xmax + h ););//
+branch(if( V != null ));//if( V != null  && PS.Type.equals("path") )
+path( { );//
+set(StatementObject S = null ;);//
+set(int depth = 0;);//
+set(int start_seg = V.lastIndexOf( PS ););//
+loop(for( int p = start_seg ; p < V.size(); p++ ) {);//scan to end of vector .... we jump out when we see a 'floating' path
+set(S = (StatementObject)V.elementAt( p ););//
+branch(if( S.Type.equals("branch") ));//
+path( { );//
+set(depth++;);//
+path(} else if( S.Type.equals("bend")  ) {);//
+set(depth--;);//
+path(} else if( S.Type.equals("path")  ) {);//
+branch(if( depth == 0 && p> start_seg  ));//'floating'
+path( { );//
+end(return B ;);//return PS.xmax;
+bend( } );//
+path(} else if( S.Type.equals("lend")  ) {);//
+branch(if( B.x < S.x1bound   ));//
+path( { );//
+set(B.x = S.x1bound   ;);//
+bend( } );//
+branch(if( B.y > S.x2bound   ));//
+path({);//
+set(B.y = S.x2bound   ;);//
+bend(} );//
+bend( } );//
+branch(if( B.x < S.xmax  ));//
+path( { );//
+set(B.x = S.xmax;);//
+bend( } );//
+branch(if( B.y > S.xmin ));//
+path({);//
+set(B.y = S.xmin ;);//
+bend(} );//
+lend( } // end for );//
+path( }else{ );//
+set();//return null;
+bend( } );//
+end(return B ;  });//
+path();//
+
+input(private Point GetLoopBounds( StatementObject PS ) {);//P.x = x1  ;  P.y = X2
+set(int width = 0;);//int width = PS.w;
+set(Point B = new Point( PS.xmin - h , PS.xmax + h ););//
+branch(if( V != null ));//if( V != null  && PS.Type.equals("path") )
+path( { );//
+set(StatementObject S = null ;);//
+set(int depth = 0;);//
+set(int start_seg = V.lastIndexOf( PS ););//
+loop(for( int p = start_seg ; p < V.size(); p++ ) {);//scan to end of vector .... we jump out when we see a 'floating' path
+set(S = (StatementObject)V.elementAt( p ););//
+branch(if( S.Type.equals("loop") ));//
+path( { );//
+set(depth++;);//
+path(} else if( S.Type.equals("lend")  ) {);//
+set(depth--;);//
+branch(if( depth == 0  ));//'floating'
+path( { );//
+end(return B ;);//return 3*w;
+path(}else{ );//
+branch(if( B.x < S.x1bound   ));//
+path( { );//
+set(B.x = S.x1bound   ;);//
+bend( } );//
+branch(if( B.y > S.x2bound   ));//
+path({);//
+set(B.y = S.x2bound   ;);//
+bend(} );//
+bend( } );//
+bend( } );//
+branch(if( B.x < S.xmax  ));//
+path( { );//
+set(B.x = S.xmax;);//
+bend( } );//
+branch(if( B.y > S.xmin ));//
+path({);//
+set(B.y = S.xmin ;);//
+bend(} );//
+lend( } // end for );//
+path( }else{ );//
+set();//return null;
+bend( } );//
+end(return B ; });//
+path();//
+
+input(private int GetLoopWidth( StatementObject PS ) {);//
+set(int width = 0;);//int width = PS.w;
+set(int  Xmin = PS.x1;);//
+set(int  Xmax = PS.x2;);//
+set(width = PS.w  + 2*h ;);//width = Xmax - Xmin + 3*h ;
+branch(if( V != null ));//if( V != null  && PS.Type.equals("path") )
+path( { );//
+set(StatementObject S = null ;);//
+set(int depth = 0;);//
+set(int start_seg = V.lastIndexOf( PS ););//
+loop(for( int p = start_seg ; p < V.size(); p++ ) {);//scan to end of vector .... we jump out when we see a 'floating' path
+set(S = (StatementObject)V.elementAt( p ););//
+branch(if( S.Type.equals("loop") ));//
+path( { );//
+set(depth++;);//
+path(} else if( S.Type.equals("lend")  ) {);//
+set(depth--;);//
+branch(if( depth == 0  ));//'floating'
+path( { );//
+end(return width;);//return 3*w;
+bend( } );//
+bend( } );//
+branch(if( Xmax < S.xmax  ));//
+path( { );//
+set(Xmax = S.xmax;);//
+bend( } );//
+branch(if( Xmin > S.xmin ));//
+path({);//
+set(Xmin = S.xmin ;);//
+bend(} );//
+branch(if( width < S.w   ));//if( width < S.w + ( x2bound - x1bound  )  )
+path({);//
+set(width = S.w  ;);//width = S.w + ( x2bound - x1bound  ) ;
+bend(} );//
+set(width = Xmax - Xmin;);//width = Xmax - Xmin + 3*h ;
+lend( } // end for );//
+path( }else{ );//
+set();//return null;
+bend( } );//
+end(return width ; });//
+path();//
+
+input(private int GetPathWidth( StatementObject PS ) {);//
+set(int width = PS.w + 4*h ;);//int width = 0;
+branch(if( V != null ));//if( V != null  && PS.Type.equals("path") )
+path( { );//
+set(StatementObject S = null ;);//
+set(int depth = 0;);//
+set(int start_seg = V.lastIndexOf( PS ););//
+loop(for( int p = start_seg ; p < V.size(); p++ ) {);//scan to end of vector .... we jump out when we see a 'floating' path
+set(S = (StatementObject)V.elementAt( p ););//
+branch(if( S.Type.equals("branch") ));//
+path( { );//
+set(depth++;);//
+path(} else if( S.Type.equals("bend")  ) {);//
+branch(if( depth == 0 && p> start_seg  ));//'floating'
+path( { );//
+end(return width;);//return 3*w;
+bend( } );//
+set(depth--;);//
+path(} else if( S.Type.equals("path")  ) {);//
+branch(if( depth == 0 && p> start_seg  ));//'floating'
+path( { );//
+end(return width;);//return 3*w;
+bend( } );//
+path(} else if( S.Type.equals("lend")  ) {);//
+branch(if( width < S.x1bound - S.x2bound  ));//NOTE:   X1 IS LARGER THAT X2 !! LEND BREAKS CONVENTION ... NEED TO FIX
+path( { );//
+set(width = S.x1bound - S.x2bound ;);//
+bend( } );//
+bend( } );//
+branch(if( width < S.w  ));//
+path({);//
+set(width = S.w ;);//
+bend(} );//
+set();//width = Xmax - Xmin;
+lend( } // end for );//
+path( }else{ );//
+set();//return null;
+bend( } );//
+end(return width ; });//
+path();//
+
+input(  private void calc_input( Graphics g, int x, int y, int z){);///z is zoom factor in % //
+set();// y += Separation ;
+branch();//
+path();//
+set(y1 = y  ;);//
+set( y2 = y+margin + (h+margin););//
+path();//
+set( ymid = y2 - h/2 - margin ;);//int  ymid = y-(y2 - y1)/2 ;
+bend();//
+set(int  texth = 4 ;);//
+set(int  p = h/2 ;);//
+set( xmin = x1 - p*2 ;);//
+set( xmax = x2 + p*2 ;);//
+set(xmin2 = xmin + p/2 ;);//
+set(xmax2 = xmax - p/2;);//
+set();//
+set(P.x = xmid;);//  
+set(P.y = y2 + Separation ;);//  P.y = Bottom_y + margin;
+end(} );//  
+
+input(  private void draw_input( Graphics g ){);///z is zoom factor in % //
+generic(g.drawLine( x1 , y2 , x2 , y2 ););//  
+generic(g.drawLine( x1 , y1 , x2 , y1 ););//  
+generic(g.drawLine( x1, y1 , xmin , ymid  ););//  
+generic(g.drawLine( x1, y2 , xmin , ymid  ););//  
+generic(g.drawLine( x2 , y1 , xmax , ymid  ););//  
+generic(g.drawLine( x2 , y2 , xmax , ymid  ););//  
+generic(g.drawLine( x1, y1 , xmin2 , ymid  ););//  
+generic(g.drawLine( x1, y2 , xmin2 , ymid  ););//  
+generic(g.drawLine( x2 , y1 , xmax2 , ymid  ););//  
+generic(g.drawLine( x2 , y2 , xmax2 , ymid  ););//  
+generic();//  g.drawString( "input()" , x  , y  );
+generic(  g.drawString( Statement , x1+margin  , y1 + h - margin ););//  g.drawString( Comment , x1+margin  , y1 + h - margin );
+generic(g.drawLine( xmid , y2 , xmid , P.y - h/2  -  margin/2  ););//
+set();//Draw arrow head
+generic(g.drawLine( xmid - h/4 ,  P.y - h*3/4  -  margin/2 , xmid , P.y - h/2  -  margin/2  ););//
+generic(g.drawLine( xmid ,  P.y - h/2  -  margin/2 , xmid + h/4, P.y - h*3/4  -  margin/2  ););//g.drawLine( xmid ,  P.y - h/2  -  margin/2 , xmid + h/2, P.y - h  -  margin/2  );
+end(} );//  
+path();//
+
+input(  private void calc_loop( Graphics g, int x, int y, int z){);///z is zoom factor in % //
+set(int  p = h*2;);//
+set( xmin = x1 - p*2 ;);//
+set( xmax = x2 + p*2 ;);//
+generic();//  g.drawString( "input()" , x  , y  );
+set(int  Bottom_y = y2 + Separation/2 ;);//
+set(P.y = Bottom_y + Separation + margin;);//  
+set(P.x = xmid;);//  
+end(} );//  
+
+input(  private void draw_loop( Graphics g ){);///z is zoom factor in % //
+generic(g.drawLine( x1 , y2 , x2 , y2 ););//  
+generic(g.drawLine( x1 , y1 , x2 , y1 ););//  
+generic(g.drawLine( x1, y1 , xmin , ymid  ););//  
+generic(g.drawLine( x1, y2 , xmin , ymid  ););//  
+generic(g.drawLine( x2 , y1 , x2 , y2  ););//  
+generic();//  g.drawString( "input()" , x  , y  );
+generic(  g.drawString( Statement , x1+margin  , y2-margin  ););//  g.drawString( "  end()" , x1  , y  );
+generic(g.drawLine( xmid , y2 , xmid , P.y  - h - margin ););//
+end(} );//  
+path();//
+
+input(  private void calc_branch( Graphics g, int x, int y, int z){);///z is zoom factor in % //
+set(int  p = h*2;);//
+set( xmin = x1 - p*2 ;);//
+set( xmax = x2 + p*2 ;);//
+set(int  Bottom_y = y2 + Separation/2 ;);//
+set(P.y = Bottom_y + Separation + margin;);//  
+set(P.x = xmin;);//  
+generic();//g.drawLine( P.x , y2 , P.x , Bottom_y );
+end(} );//  
+set();//
+
+input(  private void draw_branch( Graphics g ){);///z is zoom factor in % //
+generic(g.drawLine( xmax , y2 , xmin , y2 ););//  
+generic(g.drawLine( xmin , y2 , x1 , y1  ););//  
+generic(g.drawLine( x1 , y1 , x2 , y1 ););//  
+generic(g.drawLine( x2, y1 , xmax , y2  ););//  
+generic();//  g.drawString( "input()" , x  , y  );
+generic(  g.drawString( Statement , x1 + margin  , y2-margin  ););//  g.drawString( "  end()" , x  , y  );
+end(} );//  
+set();//
+path();//
+
+input(  private void calc_path( Graphics g, int x, int y, int z){);//z is zoom factor in % 
+set(int  p = h;);//
+set( xmin = x1 - p ;);//
+set( xmax = x2 + p ;);//
+branch(if( Link != null && Link.Link != null  ));//
+path( { );//
+branch(if(  Link.PLink != null ));//see if path linked
+path( { );//
+branch(if(  Link.PLink.lastIndexOf( this ) != 0 ));//
+path( {);//SECONDARY PATHS
+branch(try );//
+path( {  );//
+process(StatementObject S0  = (StatementObject)  Link.PLink.elementAt( 0 ) ;);//
+process(StatementObject S1  = (StatementObject)  Link.PLink.elementAt(  Link.PLink.lastIndexOf( this ) -1 ) ;);//
+process(y1 = S0.y1;);//
+process(y2 = S0.y2;);//
+set(Point B = GetPathBounds(  this )  ;);//xmid =   GetPathXmax( S1 ) +  GetPathBounds( this ).x ;
+set(int W  = GetPathWidth(  this )  ;);//xmid =   GetPathXmax( S1 ) +  GetPathBounds( this ).x ;
+set(xmid =   GetPathXmax( S1 ) +  W ;);//xmid =   GetPathXmax( S1 ) +  GetPathBounds( this ).x ;
+set();//xmid =   GetPathXmax( S1 ) + GetPathWidth(  this ) / 2 ;
+branch(if( xmid < Link.xmax  ));//
+path( { );//
+set(xmid = Link.xmax ;);//
+bend( } );//
+set( x1 = xmid - w/2 - margin ;);//
+set( x2 = xmid + w/2 + margin;);//
+set();// x1 = S.xmax - margin ;
+set();// x2 = S.xmax  + w+ margin;
+path( }catch( EmptyStackException  e ){);//
+bend( } );//
+set(int dx = 2*(Link.xmid - xmid););//keep all paths past 0 to the left of banch
+branch(if( dx > 0  ));//
+path( { );//
+set(dx = 0;);//
+set(xmid+=dx ;);//SHIFT OVER
+set( x1 +=dx ;);//
+set( x2 +=dx;);//
+bend( } );//
+path( }else{);//IMMEDIATE PATH
+process(StatementObject S1  = (StatementObject)  Link.PLink.elementAt( 0 ) ;);//
+process(y1 = S1.y1;);//
+process(y2 = S1.y2;);//
+set(xmid =   Link.xmin - w/2;);//SHIFT OVER
+set( x1 = xmid - margin - w/2;);//
+set( x2 = xmid + w/2 + margin;);//
+bend( } );//
+path( }else{ );//
+bend( } );//
+set( xmin = x1 - p ;);//
+set( xmax = x2 + p ;);//
+generic(  );//g.drawLine( Link.xmin, Link.y2 , Link.xmin , y1 );
+path( }else{ );//
+bend( } );//
+set(P.y = y2 + 2*Separation + 2* margin;);//  
+set(P.x = xmid;);//  
+end(} );//  
+
+input(  private void draw_path( Graphics g ){);//z is zoom factor in % 
+set(int  p = h;);//
+branch(if( Link != null  ));//
+path( { );//
+generic(g.drawLine( Link.xmax , Link.y2 , xmid , Link.y2  ););//  
+generic(g.drawLine( xmid , Link.y2 , xmid , y1  ););//  
+generic(  );//g.drawLine( Link.xmin, Link.y2 , Link.xmin , y1 );
+path( }else{ );//
+bend( } );//
+generic(g.drawLine( xmin , y1 , x2 , y1 ););//  
+generic(g.drawLine( x2, y1 , xmax , y2  ););//  
+generic(g.drawLine( xmax, y2 , x1 , y2  ););//  
+generic(g.drawLine( x1 , y2 , xmin , y1 ););//  
+generic();//  g.drawString( "input()" , x  , y  );
+generic(  g.drawString( Statement , x1+margin  , y1+margin+ h  ););//  g.drawString( "  end()" , x  , y  );
+set(int     py = y2 + Separation + margin ;);//
+generic(g.drawLine( P.x  , y2 , P.x  ,  py  ););//g.drawLine( P.x  , y2 , P.x  , P.y - h - margin );
+set();//Draw arrow head
+generic(g.drawLine( P.x - h/4 ,  py - h*3/4 , P.x , py ););//
+generic(g.drawLine( P.x ,  py , P.x + h/4,  py - h*3/4 ););//g.drawLine( xmid ,  P.y - h/2  -  margin/2 , xmid + h/2, P.y - h  -  margin/2  );
+generic();//g.drawLine( P.x  , y2 , P.x  , Bottom_y );
+end(} );//  
+path();//
+
+input(  private void calc_bend( Graphics g, int x, int y, int z){);///z is zoom factor in % //
+set(Vector LinkPoints = new Vector(20););//
+set(LPoints = LinkPoints ;);//
+branch(if( Link != null  ));//
+path( { );//
+branch(if( Link.PLink != null  ));//
+path( { );//
+branch(if( V != null  ));//
+path( { );//
+set(StatementObject S = null ;);//
+set(StatementObject End ;);//
+set(int num_paths = Link.PLink.size(););//
+set(int Xlimit = 0;);//
+loop(for( int i = 0; i < num_paths ; i++ ) {);//for( int i = 0; i < num_paths -1 ; i++ ) {
+set(StatementObject Start = (StatementObject)Link.PLink.elementAt( i ););//
+branch(if( i < num_paths - 1  ));//Last path
+path( { );//
+set(End = (StatementObject)Link.PLink.elementAt( i + 1 ););//
+path( }else{ );//
+set(End = this;);//scan to this bend
+bend( } );//
+set(int start_seg = V.lastIndexOf( Start ););//
+set(int end_seg = V.lastIndexOf( End ););//
+loop(for( int p = start_seg ; p < end_seg ; p++ ) {);//stop at object just before we get to path / bend
+set(S = (StatementObject)V.elementAt( p ););//
+branch(if( y1 < S.y2  ));//
+path( { );//
+set(y1 = S.y2 + Separation  ;);//
+set(y2 = y1 + h + 2*margin ;);//
+path( }else{ );//
+bend( } );//
+branch(if( Xlimit < S.xmax  ));//
+path( { );//
+set(Xlimit = S.xmax;);//
+path( }else{ );//
+bend( } );//
+lend( } // end for );//
+branch(if( S != null  ));//
+path( { );//
+set(Point P = new Point(););//
+set(P.x = S.xmid;);//
+set(P.y = S.y2 + Separation/2 ;);//
+process(LinkPoints.addElement( P ););//
+bend( } );//
+lend( } // end for );//
+path( }else{ );//
+bend( } );//
+path( }else{ );//
+bend( } );//
+set(x = Link.xmid - w/2 ;);//SHIFT OVER
+set( x1 = Link.xmid - margin - w/2 ;);//
+set( x2 = Link.xmid  + w/2+ margin;);//
+set(xmid = Link.xmid ;);//
+generic(  );//g.drawLine( Link.xmin, Link.y2 , Link.xmin , y1 );
+set(Link.Link = this.Link;);//Back Link
+path( }else{ );//
+bend( } );//
+set(int  p = h*2;);//
+set( xmin = x1 - p*2 ;);//
+set( xmax = x2 + p*2 ;);//
+set(P.y = y2 + Separation*2 + margin;);//  
+set(P.x = xmid;);//  
+end(} );//
+
+input(private void draw_bend( Graphics g ){);//
+generic(g.drawLine( xmax , y1 , xmin , y1 ););//  
+generic(g.drawLine( xmin , y1 , x1 , y2  ););//  
+generic(g.drawLine( x1 , y2 , x2 , y2 ););//  
+generic(g.drawLine( x2, y2 , xmax , y1  ););//  
+branch(if( Link != null ));//
+path( { );//
+generic(g.drawLine( Link.xmin, y1 , xmid , y1 ););//  
+branch(if( Link.PLink != null  ));//
+path( { );//
+process(StatementObject S  = (StatementObject)  Link.PLink.elementAt( Link.PLink.size() - 1 ) ;);//
+generic(g.drawLine( xmax , y1 , S.xmid , y1  ););//  
+process(S  = (StatementObject)  Link.PLink.elementAt( 0 ) ;);//
+generic(g.drawLine( xmin , y1 , S.xmid , y1  ););//  
+generic(  );//g.drawLine( 0 , y1 , S.xmid , y1  );
+path( }else{ );//
+bend( } );//
+bend( } );//
+branch(if(  LPoints != null ));//
+path( { );//
+set(Point P;);//
+loop(for( int i=0 ; i< LPoints.size() ; i++ ) {);//
+process(P = (Point) LPoints.elementAt( i ););//
+generic(  g.drawLine( P.x , y1 , P.x , P.y ););//g.drawLine( 0, y1 , P.x , P.y );
+lend( } // end for );//
+bend( } );//
+generic();//  g.drawString( "input()" , x  , y  );
+generic(  g.drawString( Statement , x1+ margin  , y2 - margin  ););//  g.drawString( "  end()" , x  , y  );
+generic(g.drawLine( P.x  , y2 , P.x  , P.y - h - margin););//
+end(} );//  
+path();//
+
+input(  private void calc_lend( Graphics g, int x, int y, int z){);///z is zoom factor in % //
+set(int  p = h*2;);//
+set( xmin = x1 - p*2 ;);//
+set( xmax = x2 + p*2 ;);//
+branch(if( Link != null  ));//
+path( { );//
+set(int lw = GetLoopWidth( Link ););//x1bound = xloop ;
+set(Point B  = GetLoopBounds( Link ););//x1bound = xloop ;
+set(x1bound = B.x +  h ;);// x1bound = xmid + lw / 2 + h;
+set( x2bound = B.y - h ;);// x2bound = xmid - lw / 2;;
+path( }else{ );//
+bend( } );//
+set(int  Bottom_y = y2 + Separation/2 ;);//
+generic();//g.drawLine( xmid , y2 , xmid , Bottom_y );
+set(P.y = Bottom_y + Separation + margin;);//  
+set(P.x = xmid;);//  
+end(} );//  
+
+input(  private void draw_lend( Graphics g ){);///z is zoom factor in % //
+set(int  p = h*2;);//
+set( xmin = x1 - p*2 ;);//
+set( xmax = x2 + p*2 ;);//
+generic(g.drawLine( x1 , y2 , x2 , y2 ););//  
+generic(g.drawLine( x1 , y1 , x2 , y1 ););//  
+generic(g.drawLine( x2 , y1 , xmax , ymid  ););//  
+generic(g.drawLine( x2, y2 , xmax , ymid  ););//  
+generic(g.drawLine( x1 , y1 , x1 , y2  ););//  
+generic();//  g.drawString( "input()" , x  , y  );
+generic(  g.drawString( Statement , x1+margin  , y2-margin  ););//  g.drawString( "  end()" , x  , y  );
+branch(if( Link != null  ));//
+path( { );//
+generic(g.drawLine( xmax , ymid , x1bound  , ymid ););//  
+generic(g.drawLine( x1bound  , ymid , x1bound  , Link.ymid ););//  
+generic(g.drawLine( x1bound  , Link.ymid , Link.x2, Link.ymid ););//  
+generic(g.drawLine( x1 , ymid , x2bound  , ymid ););//  
+generic(g.drawLine( x2bound  , ymid , x2bound  , Link.ymid ););//  
+generic(g.drawLine( x2bound  , Link.ymid , Link.xmin , Link.ymid ););//  
+path( }else{ );//
+bend( } );//
+generic();//g.drawLine( xmid , y2 , xmid , Bottom_y );
+generic(g.drawLine( xmid , y2 , xmid , P.y - h - margin ););//
+end(} );//  
+path();//
+
+input(  private void calc_set( Graphics g, int x, int y, int z){);///z is zoom factor in % //
+set(int  p = h/2;);//
+set( xmin = x1 ;);//
+set( xmax = x2 ;);//
+set(P.y = y2 + Separation/2+ Separation + margin;);//  
+set(P.x = xmid;);//  
+set(P.y = y2 + Separation/2+ Separation + margin;);//  
+set(P.x = xmid;);//  
+end(} );//  
+set();//
+
+input(  private void draw_set( Graphics g ){);///z is zoom factor in % //
+generic(g.drawLine( xmid , y2 , xmid , y2 + Separation/2););//
+generic(g.drawLine( x1 , y2 , x2 , y2 ););//  
+generic(g.drawLine( x1 , y1 , x2 , y1 ););//  
+generic(g.drawLine( x1, y1 , x1, y2  ););//  
+generic(g.drawLine( x2 , y1 , x2 , y2  ););//  
+generic();//  g.drawString( "  set()" , x  , y  );
+generic(  g.drawString( Statement , x1+ margin  , y2-2*margin  ););//  g.drawString( "  end()" , x  , y  );
+generic(g.drawLine( xmid , y2 , xmid , y2 + Separation/2 ););//
+end(} );//  
+set();//
+path();//
+
+input(  private void calc_end( Graphics g, int x, int y, int z ){);///z is zoom factor in % //
+set(int  p = h/3;);//
+set( xmin = x1 - p;);//
+set( xmax = x2 + p;);//
+set(ymid1 = y1 + h/3 ;);//
+set(ymid2 = y2 - h/3 ;);//
+set(int  Bottom_y = y2 + Separation/2 ;);//
+set(P.y = Bottom_y + Separation*3;);//  
+set(P.x = xmid;);//  
+set();//
+end(} );//  
+set();//
+
+input(  private void draw_end( Graphics g  ){);///z is zoom factor in % //
+set();//
+generic(g.drawLine( x1 , y2 , x2 , y2 ););//  
+generic(g.drawLine( x1 , y1 , x2 , y1 ););//  
+generic(g.drawLine( x1, y1 , xmin , ymid1  ););//  
+generic(g.drawLine( xmax  ,  ymid1, xmax , ymid2  ););//  
+generic(g.drawLine( x1, y2 , xmin, ymid2  ););//  
+generic(g.drawLine( x2, y1 , xmax , ymid1  ););//  
+generic(g.drawLine( xmin  ,  ymid1, xmin , ymid2  ););//  
+generic(g.drawLine( x2, y2 , xmax, ymid2  ););//  
+generic(  );//g.drawLine( x2 , y1 , x2 , y2  );
+generic(  g.drawString( Statement , x1+margin  ,  y2-2*margin ););//  g.drawString( "  end()" , x  , y  );
+end(} );//  
+set();//
+bend();//
+end( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    StatementObject.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 1522 129 2048 1767 58 135   694   4294967164    java.key  0
