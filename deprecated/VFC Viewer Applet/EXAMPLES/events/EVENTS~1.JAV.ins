@@ -1,0 +1,100 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : EVENTS~1.JAV.ins
+;  File Date : 05:25:44 AM - 29:Aug:1999
+
+
+input( /**  C:\WINDOWS\PROFILES\LUIS\DESKTOP\FCVIEW~1\EXAMPLES\EVENTS\EVENTS~1.JAV  **/  );//  FILE:C:\WINDOWS\PROFILES\LUIS\DESKTOP\FCVIEW~1\EXAMPLES\EVENTS\EVENTS~1.JAV
+set( import java.awt.*; );// 
+set( import java.awt.event.*; );// 
+event( public class App { );// 
+branch();//
+path();//
+
+input( public void search() );// 
+generic();// /* do search operation ...*/
+set( { );// 
+set(   System.out.println("Searching..."); );// 
+end( } );// 
+
+input( public void sort() );// 
+generic();// /* do sort operation ...*/
+set( { );// 
+set(   System.out.println("Sorting...."); );// 
+end( } );// 
+
+input( static public void main(String args[]) );// 
+set( { );// 
+set(   App app =new App(); );// 
+set( GUI gui =new GUI(app); );// 
+end( } );// 
+bend();//
+end( }  );// 
+event(   class Command implements ActionListener { );// 
+set( static final int SEARCH =0; );// 
+set( static final int SORT =1; );// 
+set( int id; );// 
+set( App app; );// 
+branch();//
+path();//
+
+input( public Command(int id, App app) );// 
+set( { );// 
+set(   this.id =id; );// 
+set( this.app =app; );// 
+end( } );// 
+path();//
+
+input( public void actionPerformed(ActionEvent e) );// 
+set( { );// 
+branch(   switch(id) { );// 
+path( case SEARCH: );// 
+set(   System.out.println("Searching..."); );// 
+set( );// app.search(); 
+end( break; );// 
+path( case SORT: );// 
+set(   System.out.println("Sorting...."); );// 
+set( );// app.sort(); 
+end( break; );// 
+bend( } );// 
+end( } );// 
+bend( }  );// 
+end();//
+event(   class GUI { );// 
+branch();//
+path();//
+
+input( public GUI(App app) );// 
+branch( { );// 
+path();//
+set(   Frame f =new Frame(); );// 
+set( f.setLayout(new FlowLayout()); );// 
+set( Command searchCmd =new Command(Command.SEARCH, app); );// 
+set( Command sortCmd =new Command(Command.SORT, app); );// 
+path( Button b; );// 
+set( f.add(b = new Button("Search")); );// 
+set( b.addActionListener(searchCmd); );// 
+set( f.add(b = new Button("Sort")); );// 
+set( b.addActionListener(sortCmd); );// 
+path( List l; );// 
+set( f.add(l = new List()); );// 
+set( l.add("Alphabetical"); );// 
+set( l.add("Chronological"); );// 
+set( l.addActionListener(sortCmd); );// 
+path();//
+set( f.pack(); );// 
+set( f.show(); );// 
+bend();//
+end( } );// 
+bend( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    App.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 257 228 939 915 24 95   386   4294966525    java.key  0

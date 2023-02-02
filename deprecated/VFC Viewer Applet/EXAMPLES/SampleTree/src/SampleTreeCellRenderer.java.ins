@@ -1,0 +1,151 @@
+;-Document
+input( /**  C:\WINDOWS\Profiles\lui\Desktop\SampleTree\src\SampleTreeCellRenderer.java  **/  );//  FILE:C:\WINDOWS\Profiles\lui\Desktop\SampleTree\src\SampleTreeCellRenderer.java
+
+generic();// /* 
+generic();//  * @(#)SampleTreeCellRenderer.java	1.11 99/04/23 
+generic();//  * 
+generic();//  * Copyright (c) 1997-1999 by Sun Microsystems, Inc. All Rights Reserved. 
+generic();//  *  
+generic();//  * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use, 
+generic();//  * modify and redistribute this software in source and binary code form, 
+generic();//  * provided that i) this copyright notice and license appear on all copies of 
+generic();//  * the software; and ii) Licensee does not utilize the software in a manner 
+generic();//  * which is disparaging to Sun. 
+generic();//  *  
+generic();//  * This software is provided "AS IS," without a warranty of any kind. ALL 
+generic();//  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY 
+generic();//  * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR 
+generic();//  * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE 
+generic();//  * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING 
+generic();//  * OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS 
+generic();//  * LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, 
+generic();//  * INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER 
+generic();//  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF 
+generic();//  * OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE 
+generic();//  * POSSIBILITY OF SUCH DAMAGES. 
+generic();//  *  
+generic();//  * This software is not designed or intended for use in on-line control of 
+generic();//  * aircraft, air traffic, aircraft navigation or aircraft communications; or in 
+generic();//  * the design, construction, operation or maintenance of any nuclear 
+generic();//  * facility. Licensee represents and warrants that it will not use or 
+generic();//  * redistribute the Software for such purposes. 
+generic();//  */
+set( import javax.swing.Icon; );// 
+set( import javax.swing.ImageIcon; );// 
+set( import javax.swing.JLabel; );// 
+set( import javax.swing.JTree; );// 
+set( import javax.swing.tree.TreeCellRenderer; );// 
+set( import javax.swing.tree.DefaultMutableTreeNode; );// 
+set( import java.awt.Component; );// 
+set( import java.awt.Color; );// 
+set( import java.awt.Font; );// 
+set( import java.awt.Graphics; );// 
+event( public class SampleTreeCellRenderer extends JLabel implements TreeCellRenderer { );// 
+generic();// /** Font used if the string to be displayed isn't a font. */
+set( static protected Font defaultFont; );// 
+generic();// /** Icon to use when the item is collapsed. */
+set( static protected ImageIcon collapsedIcon; );// 
+generic();// /** Icon to use when the item is expanded. */
+set( static protected ImageIcon expandedIcon; );// 
+generic();// /** Color to use for the background when selected. */
+set( static protected final Color SelectedBackgroundColor =Color.yellow; );// 
+generic();// //new Color(0, 0, 128);
+branch( static { try { );// 
+set( defaultFont =new Font("SansSerif", 0, 12); );// 
+set( } );// <--- VFC CONVERSION EXCEPTION
+output(   catch (Exception e)/* EXCEPTION */ );// 
+set( { );// 
+end(  } );// 
+set();// 
+branch( try { );// 
+set( collapsedIcon =new ImageIcon("images/collapsed.gif"); );// 
+set( expandedIcon =new ImageIcon("images/expanded.gif"); );// 
+set( } );// <--- VFC CONVERSION EXCEPTION
+output(   catch (Exception e)/* EXCEPTION */ );// 
+set( { );// 
+set(   System.out.println("Couldn't load images: " + e); );// 
+end( } );// 
+set();// 
+generic();// /** Whether or not the item that was last configured is selected. */
+output( } protected boolean selected;/* EXCEPTION */ );// <--- VFC CONVERSION EXCEPTION
+generic();// /** 
+generic();//       * This is messaged from JTree whenever it needs to get the size 
+generic();//       * of the component or it wants to draw it. 
+generic();//       * This attempts to set the font based on value, which will be 
+generic();//       * a TreeNode. 
+generic();//       */
+set( public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) { Font font; );// 
+set( String stringValue =tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus); );// 
+generic();// /* Set the text. */
+set( setText(stringValue); );// 
+generic();// /* Tooltips used by the tree. */
+set( setToolTipText(stringValue); );// 
+generic();// /* Set the image. */
+branch( if(expanded) );// 
+set( setIcon(expandedIcon); );// 
+path( else );// 
+branch( if(!leaf) );// 
+set( setIcon(collapsedIcon); );// 
+path( else );// 
+set( setIcon(null); );// 
+bend();// 
+bend();// 
+generic();// /* Set the color and the font based on the SampleData userObject. */
+set( SampleData userObject =(SampleData)((DefaultMutableTreeNode)value) .getUserObject(); );// 
+branch( if(hasFocus) );// 
+set( setForeground(Color.cyan); );// 
+path( else );// 
+set( setForeground(userObject.getColor()); );// 
+bend();// 
+branch( if(userObject.getFont() == null) );// 
+set( setFont(defaultFont); );// 
+path( else );// 
+set( setFont(userObject.getFont()); );// 
+bend();// 
+generic();// /* Update the selected flag for the next paint. */
+set( this.selected =selected; );// 
+end( return this; );// 
+set();// 
+end( } );// 
+set();// 
+generic();// /** 
+generic();//       * paint is subclassed to draw the background correctly.  JLabel 
+generic();//       * currently does not allow backgrounds other than white, and it 
+generic();//       * will also fill behind the icon.  Something that isn't desirable. 
+generic();//       */
+input( public void paint(Graphics g) );// 
+set( { );// 
+set(   Color bColor; );// 
+set( Icon currentI =getIcon(); );// 
+branch( if(selected) );// 
+set( bColor =SelectedBackgroundColor; );// 
+path( else );// 
+branch( if(getParent() != null) );// 
+generic();// /* Pick background color up from parent (which will come from 
+generic();// 	       the JTree we're contained in). */
+set( bColor =getParent().getBackground(); );// 
+path( else );// 
+set( bColor =getBackground(); );// 
+bend();// 
+bend();// 
+set( g.setColor(bColor); );// 
+branch( if(currentI != null && getText() != null) );// 
+path( { );// 
+set(   int offset =(currentI.getIconWidth() + getIconTextGap()); );// 
+set( g.fillRect(offset, 0, getWidth() - 1 - offset, getHeight() - 1); );// 
+set( } );// 
+path(   else );// 
+set( g.fillRect(0, 0, getWidth()-1, getHeight()-1); );// 
+bend();// 
+set( super.paint(g); );// 
+end( } );// 
+set();// 
+set( } );// <--- VFC CONVERSION EXCEPTION
+output(   /* EXCEPTION */ );// 
+end();//
+;INSECTA EMBEDDED SESSION INFORMATION
+;  255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    SampleTreeCellRenderer.java   //   ;
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+;260 146 569 511 1 95   219   58    VJ6.key   0

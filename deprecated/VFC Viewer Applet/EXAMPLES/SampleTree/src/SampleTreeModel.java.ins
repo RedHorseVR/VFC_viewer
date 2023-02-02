@@ -1,0 +1,89 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : SampleTreeModel.java.ins
+;  File Date : 12:50:11 PM - 27:Aug:1999
+
+
+input( /**  C:\WINDOWS\Profiles\lui\Desktop\SampleTree\src\SampleTreeModel.java  **/  );//  FILE:C:\WINDOWS\Profiles\lui\Desktop\SampleTree\src\SampleTreeModel.java
+generic();// /* 
+generic();//  * @(#)SampleTreeModel.java 1.6 99/04/23 
+generic();//  * 
+generic();//  * Copyright (c) 1997-1999 by Sun Microsystems, Inc. All Rights Reserved. 
+generic();//  *  
+generic();//  * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use, 
+generic();//  * modify and redistribute this software in source and binary code form, 
+generic();//  * provided that i) this copyright notice and license appear on all copies of 
+generic();//  * the software; and ii) Licensee does not utilize the software in a manner 
+generic();//  * which is disparaging to Sun. 
+generic();//  *  
+generic();//  * This software is provided "AS IS," without a warranty of any kind. ALL 
+generic();//  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY 
+generic();//  * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR 
+generic();//  * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE 
+generic();//  * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING 
+generic();//  * OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS 
+generic();//  * LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, 
+generic();//  * INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER 
+generic();//  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF 
+generic();//  * OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE 
+generic();//  * POSSIBILITY OF SUCH DAMAGES. 
+generic();//  *  
+generic();//  * This software is not designed or intended for use in on-line control of 
+generic();//  * aircraft, air traffic, aircraft navigation or aircraft communications; or in 
+generic();//  * the design, construction, operation or maintenance of any nuclear 
+generic();//  * facility. Licensee represents and warrants that it will not use or 
+generic();//  * redistribute the Software for such purposes. 
+generic();//  */
+set( import javax.swing.tree.DefaultTreeModel; );// 
+set( import javax.swing.tree.TreeNode; );// 
+set( import javax.swing.tree.TreePath; );// 
+set( import javax.swing.tree.DefaultMutableTreeNode; );// 
+set( import java.awt.Color; );// 
+generic();// /** 
+generic();//   * SampleTreeModel extends JTreeModel to extends valueForPathChanged. 
+generic();//   * This method is called as a result of the user editing a value in 
+generic();//   * the tree.  If you allow editing in your tree, are using TreeNodes 
+generic();//   * and the user object of the TreeNodes is not a String, then you're going 
+generic();//   * to have to subclass JTreeModel as this example does. 
+generic();//   * 
+generic();//   * @version 1.6 04/23/99 
+generic();//   * @author Scott Violet 
+generic();//   */
+event( public class SampleTreeModel extends DefaultTreeModel { );// 
+generic();// /** 
+generic();//       * Creates a new instance of SampleTreeModel with newRoot set 
+generic();//       * to the root of this model. 
+generic();//       */
+
+input( public SampleTreeModel(TreeNode newRoot) );// 
+set( { );// 
+set(   super(newRoot); );// 
+end( } );// 
+generic();// /** 
+generic();//       * Subclassed to message setString() to the changed path item. 
+generic();//       */
+
+input( public void valueForPathChanged(TreePath path, Object newValue) );// 
+generic();// /* Update the user object. */
+set( { );// 
+set(   DefaultMutableTreeNode aNode =(DefaultMutableTreeNode)path.getLastPathComponent(); );// 
+set( SampleData sampleData =(SampleData)aNode.getUserObject(); );// 
+set( sampleData.setString((String)newValue); );// 
+generic();// /* UUUhhhhh, pretty colors. */
+set( sampleData.setColor(Color.green); );// 
+generic();// /* Since we've changed how the data is to be displayed, message 
+generic();//     nodeChanged. */
+set( nodeChanged(aNode); );// 
+end( } );// 
+end( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    SampleTreeModel.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 213 199 677 511 1 95   258   4294966618    jdk12~1.key  0

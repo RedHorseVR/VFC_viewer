@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>Hierarchical Directory</title>
+</head>
+<body>
+<h2>Hierarchical Directory</h2>
+<applet code="Hdir.class" width=200 height=200>
+<param name="debug" value="no">
+<param name="palette" value="#444444,#eeeeee,#e0c008,#888888">
+<param name="bg_color" value="0">
+<param name="marker_color" value="3">
+<param name="context_url" value="http://web.mit.edu/cvince/">
+<param name="n0" value="Puzzle.java,3,www/java/Puzzle/Puzzle.java,,no,">
+<param name="n1" value="index.html,1,www/java/Puzzle/index.html,,no,">
+<param name="n2" value="Puzzle,,www/java/Puzzle/,,no,n0,n1">
+<param name="n3" value="Hdir.java,3,www/java/Hdir/Hdir.java,,no,">
+<param name="n4" value="index.html,1,www/java/Hdir/index.html,,no,">
+<param name="n5" value="Hdir,,www/java/Hdir/,,yes,n3,n4">
+<param name="n6" value="java,2,www/java/,,yes,n5,n2">
+<param name="n7" value="index.html,1,www/index.html,,no,">
+<param name="n8" value="cvince.jpg,1,www/cvince.jpg,,no,">
+<param name="n9" value="www,2,www/,,yes,n8,n7,n6">
+<param name="n10" value="welcome,1,public/welcome,,no,">
+<param name="n11" value="public,,public/,,no,n10">
+<param name="top" value="n11,n9">
+</applet>
+<br>
+<small>
+&copy Copyright 1997-98, Christopher R. Vincent<br>
+All Rights Reserved.
+</small>
+<p>
+This applet allows convenient navigation of multilevel directory
+structures. Click on triangles to collapse or expand nodes that have
+subnodes.
+<p>
+<h3>Parameters</h3>
+<table>
+<tr>
+<td valign=top><b>debug</b>
+<td>Print debugging info?  Defaults to "no".
+<tr>
+<td valign=top><b>palette</b>
+<td> Define a color palette, referenced by palette index from 0 to
+length(palette)-1. Defaults to palette[0]=white, palette[1]=black.<br>
+Syntax: comma-separated list of hexadecimal color-values.<br>
+<em>color-values</em> are in the form "#rrggbb".
+<tr>
+<td valign=top><b>bg_color</b>
+<td>Background color palette index, defaults to 0."
+<tr>
+<td valign=top><b>marker_color</b>
+<td>Directory marker color palette index, defaults to 1."
+<tr>
+<td valign=top><b>context_url</b>
+<td>Node URLs are merged against this absolute URL.  If left undefined,
+all node URLs must be absolute.
+<tr>
+<td valign=top><b>font_size</b>
+<td>The size font used, defaults to 10.
+<tr>
+<td valign=top><b>x_space</b>
+<td>The amount of indentation space, defaults to 15.
+<tr>
+<td valign=top><b>y_space</b>
+<td>The amount of space skipped between lines, defaults to 15.
+<tr>
+<td valign=top><b>[node-id]</b>
+<td>Define node [node-id].<br>
+Syntax: "display-name,font-color,absolute-uri,target-frame,expand,nodes"<br>
+<em>display-name</em> string representation of the node.<br>
+<em>font-color</em> palette index for font color, empty defaults to 1.<br>
+<em>url</em> URL relative to context_url, empty for no hyperlink.<br>
+<em>target-frame</em> target frame, empty defaults to "_self".<br>
+<em>expand</em> "yes" or "no", denoting the initial display state.<br>
+<em>nodes</em> comma-separated list of node-ids.
+<tr>
+<td valign=top><b>top</b>
+<td>Define toplevel nodes.<br>
+Syntax: comma-separated list of node-ids.
+</table>
+<p>
+<h3>Code</h3> 
+<table>
+<tr>
+<td valign=top><a href="Hdir.class">Hdir.class</a>
+<td>Main applet class, parses parameters and displays nodes.
+<tr>
+<td valign=top><a href="Hdir$Node.class">Hdir$Node.class</a>
+<td>Data structure for node attributes and accumulation of subnodes.
+</table>
+
+<p>
+Back to 
+<a href="http://web.mit.edu/cvince/www/java/">index</a>.
+
+<p>
+<hr>
+<address>
+<a href= "mailto:cvince@mit.edu">cvince@mit.edu</a> <br>
+</address>
+<a href="http://mit.edu/cvince/">http://mit.edu/cvince/</a>
+
+</body>
+</html>

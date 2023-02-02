@@ -1,0 +1,110 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : ItemAction.java.ins
+;  File Date : 12:30:52 PM - 01:Sep:1999
+
+
+input( /**  C:\WINDOWS\Profiles\luis\Desktop\TreeTool\ItemAction.java  **/  );//  FILE:C:\WINDOWS\Profiles\luis\Desktop\TreeTool\ItemAction.java
+generic();// // // Author: C Dare-Edwards...
+generic();// // // ...
+generic();// // // cdare-edwards@mcsoftware.com.au...
+generic();// // // ...
+generic();// // //  Copyright Conrad Dare-Edwards...
+generic();// // //...
+generic();// // //  The copyright to the computer program (s) herein...
+generic();// // //  is the property of Conrad Dare-Edwards. The program (s)...
+generic();// // //  may be used and/or copied only with the written...
+generic();// // //  permission of Conrad Dare-Edwards or in accordance...
+generic();// // //  with the terms and conditions stipulated in the...
+generic();// // //  agreement/contract under which the program (s) have...
+generic();// // //  been supplied....
+set( import java.applet.*; );// 
+set( import java.net.*; );// 
+set( import java.awt.Event;);// 
+generic();// //  AUTO ...
+
+input( public class ItemAction extends java.lang.Object { );// 
+set( String m_status; );// 
+set( URL m_doc; );// 
+set( String m_docTarget; );// 
+set( Applet m_applet; );// 
+set( public static boolean m_showURL =true; );// 
+generic();// // ///////////////////////////////////////////////////////////////...
+generic();// // // initalisation...
+
+input( public ItemAction(Applet applet ) );// 
+set( { );// 
+set(   m_applet =applet; );// 
+end( } );// 
+generic();// // // set status string and add URL link to the end if present...
+
+input( public void setStatus( String status ) );// 
+generic();// // // copy status sting...
+set( { );// 
+branch(   if( status != null ) );// 
+path();//
+generic();// // /auto path//...
+set( m_status =new String( status ); );// 
+generic();// // // and add url if present...
+bend();// 
+branch( if( m_doc != null && m_showURL ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+branch(   if( m_status == null ) );// 
+path();//
+set( m_status =new String(); );// 
+path( else );// 
+set( m_status =m_status.concat(" - "); );// 
+bend();// 
+set( m_status =m_status.concat( m_doc.toString() ); );// 
+bend();// 
+end( } } );// 
+
+input( public void setDocument( URL doc, String target ) );// 
+set( { );// 
+set(   m_doc =doc; );// 
+set( m_docTarget =target; );// 
+set( setStatus( m_status ); );// 
+end( } );// 
+generic();// // ////////////////////////////////////////////////////////////////////...
+generic();// // // actavtion actions...
+
+input( public void showStatus( ) );// 
+set( { );// 
+branch(   if( m_status != null ) );// 
+path();//
+generic();// // /auto path//...
+set( m_applet.showStatus( m_status ); );// 
+bend();// 
+end( } );// 
+set(Event e = new Event( m_applet , TreeTool.TREETOOL_MOUSESELCTION   , new String("test") ););//Event e = new Event( m_applet , Event.MOUSE_DOWN , new String("test") );
+
+input(  public void actionMouseSelection( )  //Sends a MOUSE_DOWN to the applet);// public void showDocument( ) 
+set( { );// 
+set(e.arg = m_doc;);//
+process(m_applet.handleEvent( e ););//
+set( );//   System.out.println( m_docTarget + "   :  " + m_doc + "  <<showDocument action from ItemAction \n");
+branch( if( m_doc != null ) );// 
+path();//
+generic();// // /auto path//...
+set( { );// 
+set(   AppletContext ac =m_applet.getAppletContext(); );// 
+set(//  ac.showDocument( m_doc, m_docTarget ););// 
+bend();// 
+end( } } );// 
+generic();// //  FlowCode File: ItemAction.java.ins...
+generic();// //  Export  File: ItemAction.java...
+generic();// //  Export  Date: 02:51:25 AM - 30:Aug:1999...
+end( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 12632256 0 255 255 16776960 65280 16512
+;    ItemAction.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 619 385 851 687 78 115   394   4294965007    java.key  0

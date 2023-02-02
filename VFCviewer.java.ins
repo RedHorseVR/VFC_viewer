@@ -2,97 +2,100 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : VFCviewer.java.ins
-;  File Date : 04:45:17 PM - 30:Jan:2023
+;  File Date : 12:14:38 AM - 02:Feb:2023
 
 generic(    );/////// // HYPER LINK TO HTML_VFCviewer ---> // FILE: HTML_VFCview.ins......//////
 generic(    );////  AUTO ...
 end(  );// AUTO 
 
-input(  /** Imports **/      );//// // <--- part of framework......
-generic(  import java.awt.*;  );//
-generic(import javax.swing.JOptionPane;);//  import java.applet.*;
-generic(  import java.net.*;  );//
-generic(  /*------------*/  );//
+input(  /** Imports **/);//// // <--- part of framework......
+generic(  import java.awt.*;);//
+generic(//import javax.swing.JOptionPane;);//  import java.applet.*;
+generic(  import java.net.*;);//
+set( ////);//import javax.swing.JLabel; 
+set( ////);//import javax.swing.JPanel;
+generic(  /*------------*/);//
 end(  );// AUTO 
 
 input(  public class VFCviewer  extends Frame {);////   public class JavaApplet  extends Applet {      ////
 
-input(  /** class data **/      );//// // <--- used in framework......
-generic(  URL CodeBase;  );//
+input(  /** class data **/);//// // <--- used in framework......
+process(static VFCviewer  f ;);///////// //   create the object application FRAME  ......////////
+generic(static  FCview lnkView;);//
+generic(  URL CodeBase;);//
 generic(    );//// // Resource Res;......
 set(int oldx = 0 , oldy = 0;);//
 set(int dx = 0 , dy = 0 ;);//
-set(  int CrossSize =  200;  );//
-set(  int CrossXPos = 10;  );//
-set(  int CrossYPos = 10;  );//
+set(  int CrossSize =  200;);//
+set(  int CrossXPos = 200 ;);//
+set(  int CrossYPos = 10;);//
 set(  int ZoomScale = 10;);//
-output(  /**@shapeType AggregationLink*/  );//
-generic(  private FCview lnkView;);//
-generic(  /** end variables **/  );//
-generic(  /** methods **/      );//// // <--- used in framework......
+output(  /**@shapeType AggregationLink*/);//
+generic(  /** end variables **/);//
+generic(  /** methods **/);//// // <--- used in framework......
 generic(    );////  AUTO ...
 end(  );// AUTO 
 
 input(  boolean processPosition( Event e ){);//
 output();//System.out.println( e  );
-branch(  switch (e.id){  );//
-path(  case Event.MOUSE_DOWN:  );//
+branch(  switch (e.id){);//
+path(  case Event.MOUSE_DOWN:);//
 set(  CrossXPos = e.x;);//  CrossXPos+= dx;
 set(  CrossYPos = e.y;);//  CrossYPos +=  dy;
 branch(if(  oldx != CrossXPos || oldy != CrossYPos   ));//
-path( { );//
+path( {);//
 set(dx =   CrossXPos - oldx ;);//dx =  0 ;
 set( dy = CrossYPos - oldy;);//
 set(oldx = CrossXPos ;);//oldx = 0;
 set(oldy = CrossYPos ;);//oldy = 0;
-path( }else{ );//
-bend( } );//
+path( }else{);//
+bend( });//
 end(  return false ;);//
 path(  case 403:);//
 branch(if( e.key ==  1002 ));//PAGE UP
-path( { );//
+path( {);//
 output(System.out.println( "zoom in"  ););//
 generic(lnkView.Zoom++ ;);//// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );
-bend( } );//
+bend( });//
 branch(if( e.key ==  1003 ));//PAGE DOWN
-path( { );//
+path( {);//
 output(System.out.println( "zoom out"  ););//
 generic(lnkView.Zoom--  ;);//// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );
-bend( } );//
+bend( });//
 set(int MINZ = 1 , MAXZ = 50;);//
 branch(if( lnkView.Zoom >= MAXZ ));//if( Zoom >= 25  )
-path( { );//
+path( {);//
 set(lnkView.Zoom = MAXZ ;);//
 path(} else if( lnkView.Zoom < MINZ ) {);//
 set(lnkView.Zoom = MINZ ;);//
-bend( } );//
-process(  repaint();  );//
+bend( });//
+process(  repaint(););//
 end(  return false ;);//
-path(  case Event.MOUSE_DRAG:  );//
+path(  case Event.MOUSE_DRAG:);//
 set({);//
 set(  CrossXPos = e.x - dx;);//  CrossXPos+= dx;
 set(  CrossYPos = e.y  - dy;);//  CrossYPos +=  dy;
-process(  repaint();  );//
+process(  repaint(););//
 set(oldx = CrossXPos ;);//oldx = 0;
 set(oldy = CrossYPos ;);//oldy = 0;
 set(});//
-end(  return true;  );//
-bend(  }  );//
-end(  return false;}  );//
+end(  return true;);//
+bend(  });//
+end(  return false;});//
 
 input(  public  VFCviewer( String VFCfile ){);////  public void init(){////
 set();//  CodeBase = getCodeBase();
-branch(try );//
-path( {  );//
+branch(try);//
+path( {);//
 set( String  vfcname = VFCfile;);//String  vfcname = "test.ins";
 generic(lnkView = new FCview( vfcname  ););//// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );
 output(System.out.println( "---------------------DEBUG-1------------------------"  ););//
 generic(lnkView.Zoom--  ;);//// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );
-process(  repaint();  );//
+process(  repaint(););//
 path( }catch( Exception e ){);//
 process(System.out.println("Exception <ExportFileName><LineNumber>! " +   e.getMessage() + "\n"  ););//
-bend( } );//
-end(  }  );//
+bend( });//
+end(  });//
 generic(    );////  AUTO ...
 end(  );// AUTO 
 
@@ -102,55 +105,66 @@ set(String filename = args[0].replace( "vfc://", "" ););//
 set(filename = filename.replace( "\\", "/" ););//
 set(filename = filename.replace( "%5C", "/" ););//
 set(filename = filename.replace( "//", "/" ););//
-output(JOptionPane.showMessageDialog(null, filename, " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE ););//////
-set(  VFCviewer  f = new VFCviewer(  filename ););/////// //   create the object application ......//////
+output(////);//JOptionPane.showMessageDialog(null, filename, " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE );
+set(java.awt.List l1 = lnkView.ObjList = new java.awt.List( 1 ););//List l1 = new List(5);    
+process(  f = new VFCviewer(  filename ););///////// //   create the object application FRAME  ......////////
+generic();// // creating the list of 5 rows    //
+generic( // adding the list to frame   //);//lnkView.ObjList = l1;
+set(l1.setBounds(20, 35, 175, 500 ););// ////
+set();//lnkView.ObjList.add("Item 1");
+set(f.add(lnkView.ObjList ););// f.add( ObjList );
+set();//
 generic(f.setSize( 1000, 1000););// ////
-generic(f.setVisible(true););// ////
-generic(f.setLayout(new FlowLayout()););// ////
-generic(  //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj , "Main Window" ) ;...   // //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;......  );////setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;
+set(f.setLocation(300, 200););//
+generic(f.setTitle("VFCviewer by RedHorseVR.com (copyright 1999,2023)  - " + filename ););//
+set(f.setLayout(null););// ////
+set(f.setVisible(true););// ////
+set();//panel.setLocation(300, 200);
+set();//
+generic( ////);//f.setLayout(new FlowLayout());
+generic(  //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj , "Main Window" ) ;...   // //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;......);////setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;
 output(////);//JOptionPane.showMessageDialog(null, "Use PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright http://redhorsevr.com/ 1999~2023) ","VFC Viewer by RHVR (v1.0)",  JOptionPane.WARNING_MESSAGE );
-end(  }  );//
-generic(    );////  AUTO ...
+end(  });//
 end(  );// AUTO 
 
-input(  public void paint(Graphics g){  );//
+input(  public void paint(Graphics g){);//
 generic();//  drawCrossHair( g, CrossXPos, CrossYPos, CrossSize );  
 generic();//  g.drawString( "Hello new world ..." , 20 , 20 );  
 process(// lnkView.zoom( g , 1 ););//lnkView.zoom( g , ZoomScale );
 process(lnkView.draw(g , CrossXPos + 20, CrossYPos + 20 , 25););//
-end(  }  );//
+end(  });//
 generic(    );////  AUTO ...
 end(  );// AUTO 
 
-input(  public boolean handleEvent(Event e){  );//
+input(  public boolean handleEvent(Event e){);//
 branch(  if( processPosition( e ) ));//
 path();//
-generic(  {  );//
-end(  return true;  );//
-path(}else{ );//
-branch(  switch (e.id){  );//
-path(  case Event.ACTION_EVENT:  );//
-branch(  if( "OK".equals(e.arg) || "CLOSE".equals(e.arg)  )  );//
+generic(  {);//
+end(  return true;);//
+path(}else{);//
+branch(  switch (e.id){);//
+path(  case Event.ACTION_EVENT:);//
+branch(  if( "OK".equals(e.arg) || "CLOSE".equals(e.arg)  ));//
 path();//
-generic(  {  );//
-generic(  System.exit(0);      );//// //  THIS LOGIC CALL CAUSES A SECURITY EXCEPTION WHEN USED IN APPLET MODE......
-end(  return true;  );//
-bend(  }  );//
-end(  break;  );//
-path(  case Event.WINDOW_DESTROY:  );//
-generic(  System.exit(0);      );//// //   THIS FAILS TO FIRE IN APPLICATION MODE......
-end(  return true;  );//
-bend(  }  );//
-bend(  }  );//
-end(  return false; }  );//
-end(  }       /** end of class definition **/      );//// //  <------------ end of class definition......
+generic(  {);//
+generic(  System.exit(0););//// //  THIS LOGIC CALL CAUSES A SECURITY EXCEPTION WHEN USED IN APPLET MODE......
+end(  return true;);//
+bend(  });//
+end(  break;);//
+path(  case Event.WINDOW_DESTROY:);//
+generic(  System.exit(0););//// //   THIS FAILS TO FIRE IN APPLICATION MODE......
+end(  return true;);//
+bend(  });//
+bend(  });//
+end(  return false; });//
+end(  }       /** end of class definition **/);//// //  <------------ end of class definition......
 end();//
 
 
 
 ;INSECTA EMBEDDED SESSION INFORMATION
-; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 8388608
+; 16777215 16777215 255 4278255615 16711680 65535 255 0 255 255 16777215 65280 8388608
 ;    VFCviewer.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 232 181 1757 1246 90 169   634   4294963730    java.key  0
+; 462 196 1322 1568 96 179   659   4294963046    java.key  0

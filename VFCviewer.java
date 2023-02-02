@@ -3,22 +3,25 @@
 
 /** Imports **/
 	import java.awt.*;
-	import javax.swing.JOptionPane;
+	//import javax.swing.JOptionPane;
 	import java.net.*;
+	////
+	////
 	/*------------*/
 	
 public class VFCviewer  extends Frame {
 /** class data **/
+	static VFCviewer  f ;
+	static  FCview lnkView;
 	URL CodeBase;
 	
 	int oldx = 0 , oldy = 0;
 	int dx = 0 , dy = 0 ;
 	int CrossSize =  200;
-	int CrossXPos = 10;
+	int CrossXPos = 200 ;
 	int CrossYPos = 10;
 	int ZoomScale = 10;
 	/**@shapeType AggregationLink*/
-	private FCview lnkView;
 	/** end variables **/
 	/** methods **/
 	
@@ -90,15 +93,26 @@ public static void main(String[] args){
 	filename = filename.replace( "\\", "/" );
 	filename = filename.replace( "%5C", "/" );
 	filename = filename.replace( "//", "/" );
-	JOptionPane.showMessageDialog(null, filename, " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE );
-	VFCviewer  f = new VFCviewer(  filename );
+	////
+	java.awt.List l1 = lnkView.ObjList = new java.awt.List( 1 );
+	f = new VFCviewer(  filename );
+	
+	// adding the list to frame   //
+	l1.setBounds(20, 35, 175, 500 );
+	
+	f.add(lnkView.ObjList );
+	
 	f.setSize( 1000, 1000);
+	f.setLocation(300, 200);
+	f.setTitle("VFCviewer by RedHorseVR.com (copyright 1999,2023)  - " + filename );
+	f.setLayout(null);
 	f.setVisible(true);
-	f.setLayout(new FlowLayout());
+	
+	
+	////
 	//setup frame using MAIN controls // Obj.Res.initMAINframe( Obj , "Main Window" ) ;...   // //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;......
 	////
 	}
-
 
 public void paint(Graphics g){
 	
@@ -131,5 +145,5 @@ public boolean handleEvent(Event e){
 	return false; }
 }       /** end of class definition **/
 
-//  Export  Date: 04:45:17 PM - 30:Jan:2023...
+//  Export  Date: 12:14:38 AM - 02:Feb:2023...
 

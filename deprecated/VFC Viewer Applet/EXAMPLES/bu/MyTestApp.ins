@@ -1,0 +1,241 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : MyTestApp.ins
+;  File Date : 01:53:16 AM - 26:Aug:1999
+
+
+input(/** recipe log **/);//<--- part of framework
+process(/**<TIME_STAMP> added Cross Hairs segments using: 'CrossHair.sg'  **/);//
+process(/** <TIME_STAMP>  added a creation call class Dialog1 using frame: 'Call Dialog.fm' and button event name Dialog **/);//
+process(/** <TIME_STAMP> LANGUAGE: Java ;   started Applet / Application  MyTestApp.class   using frame: 'Basic Applet.fm'   **/);//
+end();//
+
+input(/** Imports **/);//<--- part of framework
+generic(import java.awt.*;);//  
+generic(import java.applet.*;);//  
+generic(  import java.net.*;  );//
+set(import Dialog1; );//
+end(/*------------*/);//
+
+input(public class MyTestApp  extends Applet {);//  <----- start of class definition  has drawing vars for lines
+
+input(/** class data **/);//<--- used in framework
+generic(  URL CodeBase;  );//
+generic(int KeyHit = 'X';);//// // Resource Res;......
+set(int oldx = 0 , oldy = 0;);//
+set(int dx = 0 , dy = 0 ;);//
+set(  int CrossSize =  200;  );//
+set(  int CrossXPos = 10;  );//
+set(  int CrossYPos = 10;  );//
+output(  /**@shapeType AggregationLink*/  );//
+generic(  private FCview lnkView;);//
+generic(  /** end variables **/  );//
+generic(  /** methods **/      );//// // <--- used in framework......
+set(Resource Res;);//
+end(/** end variables **/ );//
+
+input(/** events **/);//<--- used in framework
+end();//
+event(public boolean keyDown( Event e , int key ) {);//
+set(KeyHit = key;);//
+set(int  DELTA=70;);//
+branch(switch( key  ){);//
+path( case 1000 :);//home
+process(lnkView.Zoom=15;);//lnkView.zoom( g , ZoomScale );
+set(CrossXPos = 0 ;);//oldx = 0;
+set(CrossYPos = 0 ;);//oldy = 0;
+process(  repaint();  );//
+process();//  repaint();  
+end(break; );//
+path( case 'Z' :);//
+set(case 1002 :);//PageUP
+process(lnkView.Zoom+=5;);//lnkView.zoom( g , ZoomScale );
+process(  repaint();  );//
+end(break; );//
+path( case 'z' :);//
+set(case 1003 :);//PageDOWN
+process(lnkView.Zoom-=5;);//lnkView.zoom( g , ZoomScale );
+process(  repaint();  );//
+end(break; );//
+path( case 1004:);// UP :
+set(  CrossYPos -=DELTA;);////  CrossYPos +=  dy;////
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+end(break; );//
+path( case 1005 :);// DOWN :
+set(  CrossYPos +=DELTA;);////  CrossYPos +=  dy;////
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+end(break; );//
+path( case 1006:);// LEFT :
+set(  CrossXPos -=DELTA ;);////  CrossXPos+= dx;////
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+end(break; );//
+path( case 1007:);// RIGHT :
+set(  CrossXPos +=DELTA ;);////  CrossXPos+= dx;////
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+end(break; );//
+path( default: );//
+process(  repaint();  );//
+end(return false; );//
+bend( } );//
+end(return true;  });//
+event(boolean process_IDD_DIALOG1( Event ev){);//
+branch(if( "Dialog".equals(ev.arg) ));//
+path({ );// 
+generic(Dialog1  DlgObj = new Dialog1(););//
+set(DlgObj.frame = Res.initIDD_DIALOG1( DlgObj ););//<--- uses the DIALOG Resource
+end(return true; );//
+bend(} );// 
+end(return false;});//
+end();//
+
+input(public void init(){);//  
+set(  CodeBase = getCodeBase();  );//
+set(Res  = new Resource( this , CodeBase ););//
+branch(try );//
+path( {  );//
+set(String  vfcname =getParameter("flowfile"););// 
+generic(lnkView = new FCview( getDocumentBase() , vfcname  ););//// // Res  = new Resource( this , CodeBase );......
+process(  repaint();  );//
+path( }catch( Exception e ){);//
+process(System.out.println("Exception <LineNumber>! " +   e.getMessage() + "\n"  ););//
+bend( } );//
+end(  }  );//
+
+input(public static void main(String args[])  {);//  
+generic(MyTestApp  Obj = new MyTestApp(););//  create the object application 
+set(//  load the resources ignoring MAIN);//Obj.Res = new Resource( Obj , getCodeBase() );
+set();//Obj.CodeBase = Obj.getCodeBase();
+set(Obj.Res  = new Resource( ););//Obj.Res  = new Resource( Obj , Obj.getCodeBase()  );
+process(Obj.Res.initMAINframe( Obj , "Main Window" ) ;);//setup frame using MAIN controls
+branch(try );//
+path( {  );//
+branch(try );//
+path( {  );//
+generic(Obj.lnkView = new FCview( Obj.getCodeBase() , "test.ins" ););//// // Res  = new Resource( this , CodeBase );......
+path( }catch( Exception e ){);//
+process(System.out.println("Exception <LineNumber>! " +   e.getMessage() + "\n"  ););//
+bend( } );//
+path( }catch( Exception   e ){);//
+process(System.out.println("Hit e:" ););//
+bend( } );//
+end(} );//  
+
+input(  public void paint(Graphics g){  );//
+process(lnkView.draw(g , CrossXPos + 20, CrossYPos + 20 , 25););//
+generic();//  g.drawString( "KeyHit Code =" + KeyHit , 350 , 80 );
+generic();//  g.drawString( "Zoom Font Points =" + lnkView.Zoom , 350  , 100  );
+end(  }  );//
+
+input(  boolean processPosition( Event e ){);//
+set(int DZ = 3;);//
+branch(if( "Tree View".equals(e.arg) ));//
+path({ );// 
+generic(Dialog1  DlgObj = new Dialog1(););//
+set(DlgObj.frame = Res.initIDD_DIALOG1( DlgObj ););//<--- uses the DIALOG Resource
+path(} else if( "Home".equals( e.arg ) ) {);//
+process(lnkView.Zoom=10;);//lnkView.zoom( g , ZoomScale );
+set(CrossXPos = 200 ;);//oldx = 0;
+set(CrossYPos = 0 ;);//oldy = 0;
+process(  repaint();  );//
+process(  repaint();  );//
+path(} else if( "Zoom In".equals( e.arg ) ) {);//
+branch(if(  lnkView.Zoom > 5 ));//
+path( { );//
+process(lnkView.Zoom+=DZ ;);//lnkView.zoom( g , ZoomScale );
+path( }else{ );//
+process(lnkView.Zoom+=1 ;);//lnkView.zoom( g , ZoomScale );
+bend( } );//
+process(  repaint();  );//
+path(} else if( "Zoom Out".equals( e.arg ) ) {);//
+branch(if(  lnkView.Zoom > 5 ));//
+path( { );//
+process(lnkView.Zoom-=DZ;);//lnkView.zoom( g , ZoomScale );
+path( }else{ );//
+process(lnkView.Zoom-=1 ;);//lnkView.zoom( g , ZoomScale );
+bend( } );//
+process(  repaint();  );//
+path(}else{ );//
+branch(  switch (e.id){  );//
+path(  case Event.MOUSE_DOWN:  );//
+set(  CrossXPos = e.x;);//  CrossXPos+= dx;
+set(  CrossYPos = e.y;);//  CrossYPos +=  dy;
+branch(if(  oldx != CrossXPos || oldy != CrossYPos   ));//
+path( { );//
+set(dx =   CrossXPos - oldx ;);//dx =  0 ;
+set( dy = CrossYPos - oldy;);//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+path( }else{ );//
+bend( } );//
+path(  case Event.MOUSE_DRAG:  );//
+set({);//
+set(  CrossXPos = e.x - dx;);//  CrossXPos+= dx;
+set(  CrossYPos = e.y  - dy;);//  CrossYPos +=  dy;
+process(  repaint();  );//
+set(oldx = CrossXPos ;);//oldx = 0;
+set(oldy = CrossYPos ;);//oldy = 0;
+set(});//
+path(default:   );//
+end(return false; );//
+bend(  }  );//
+bend(} );// 
+end(  return true ;});//
+
+input(  public boolean handleEvent(Event e){  );//
+branch(  if( processPosition( e ) ));//
+path();//
+generic(  {  );//
+end(  return true;  );//
+path(}else{ );//
+branch(  switch (e.id){  );//
+path(  case Event.ACTION_EVENT:  );//
+branch(  if(  "X".equals(e.arg) ||  "OK".equals(e.arg) || "CLOSE".equals(e.arg)  ));//
+path();//
+generic(  {  );//
+generic(  System.exit(0);      );//// //  THIS LOGIC CALL CAUSES A SECURITY EXCEPTION WHEN USED IN APPLET MODE......
+end(  return true;  );//
+bend(  }  );//
+end(  break;  );//
+path(  case Event.WINDOW_DESTROY:  );//
+generic(  System.exit(0);      );//// //   THIS FAILS TO FIRE IN APPLICATION MODE......
+end(  return true;  );//
+path(default:   );//
+bend(  }  );//
+bend(  }  );//
+end(  return super.handleEvent( e ) ; });//  return false; }  
+
+input(public boolean action( Event e , Object what ) {);//
+process(System.out.println("Hello world!" +  what.toString() + " \n"););//
+branch(  if(  "true".equals( what.toString() )  ));//
+path(  {  );//
+set(lnkView.DrawComments = true ;);//lnkView.DrawComments =((Checkbox) what).getState();
+process(  repaint();  );//
+end(  return true;  );//
+bend(  }  );//
+branch(  if(  "false".equals( what.toString() )  ));//
+path(  {  );//
+set(lnkView.DrawComments = false ;);//lnkView.DrawComments =((Checkbox) what).getState();
+process(  repaint();  );//
+end(  return true;  );//
+bend(  }  );//
+end(return false;  });//  return false; }  
+
+input(}       /** end of class definition **/);// <------------ end of class definition
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 0 13158600 0 0 13158600 65280 16777215 0 0 0 0 0 33023
+;    MyTestApp.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 542 242 947 621 209 99   433   4294963620    java.key  0

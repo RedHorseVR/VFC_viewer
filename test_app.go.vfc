@@ -1,0 +1,156 @@
+;  IRL FlowCode Version: Version 10.0
+;  c1995-2015: Visual Flow Coder by 2LResearch
+;
+;  File Name : app.go.vfc
+;  File Date : 12:01:13 PM - 01:Feb:2023
+
+event(package LivePubKickFuncEvent);//
+set();//
+event(import ();//
+set("context");//
+set("encoding/base64");//
+set("encoding/json");//
+set("errors");//
+set("fmt");//
+set("time");//
+set();//
+process("cloud.google.com/go/functions/metadata");//
+process("github.com/go-resty/resty/v2");//
+set("github.com/sirupsen/logrus");//
+set());//
+set();//
+set();// const SourceFIlesPath = "/workspace/serverless_function_source_code"
+set();//
+event(type AppConfig struct {);//
+set(OriginHost string);//
+end(});//
+set();//
+event(type PubsubMessage struct {);//
+set(Data string `json:"data,omitempty"`);//
+end(});//
+set();//
+event(type KickLivePublisher struct {);//
+set(KickTime       int64  `json:"kickTime"`);//
+set(StreamKey      string `json:"streamKey"`);//
+set(EdgeConnId     string `json:"edgeConnId"`);//
+set(InIpAddr       string `json:"inIpAddr"`);//
+set(ClusterId      string `json:"clusterId,omitempty"`);//
+set(ClusterSubHost string `json:"clusterSubHost,omitempty"`);//
+end(});//
+set();//
+event(type ResError struct {);//
+set(Type     string   `json:"type"`);//
+set(Messages []string `json:"messages"`);//
+end(});//
+event(type ResErrorRes struct {);//
+set(Error ResError `json:"error"`);//
+end(});//
+set();//
+
+input(func LivePubKickFunc(ctx context.Context, MsgData PubsubMessage, appConfig AppConfig) error {);//
+set();//
+set();// Log.Debugf("ENV: %+v", os.Environ())
+set();//
+set(Log.SetLevel(logrus.DebugLevel));//
+set(Log.SetFormatter(&logrus.JSONFormatter{}));//
+set();//
+set(eventMetadata, err := metadata.FromContext(ctx));//
+branch(if err != nil {);//
+path();//
+set(return fmt.Errorf("metadata.FromContext: %v", err));//
+bend( });//
+set();//
+set(expirationTime := eventMetadata.Timestamp.Add(10 * time.Minute));//
+set();//
+branch(if time.Now().After(expirationTime) {);//
+path();//
+set(Log.Debugf("Fatal: event timeout: halting retries for expired event '%q'", eventMetadata.EventID));//
+set(return nil);//
+bend( });//
+set();//
+set();// Log.Debugf("eventMetadata.Timestamp: %+v", eventMetadata.Timestamp)
+set();// Log.Debugf("expirationTime: %+v", expirationTime)
+set();// Log.Debugf("eventMetadata: %+v", eventMetadata)
+set();// Log.Debugf("MsgData.Data: %s", MsgData.Data)
+set();//
+set(kickPubDataStr, err := base64.StdEncoding.DecodeString(MsgData.Data));//
+branch(if err != nil {);//
+path();//
+set(fmt.Printf("MsgData.Data: %+v\n", MsgData.Data));//
+set(return err);//
+bend( });//
+set();// Log.Debugf("kickPubDataStr: %s", kickPubDataStr)
+set();//
+set(var kickPubData KickLivePublisher);//
+set(err = json.Unmarshal(kickPubDataStr, &kickPubData));//
+branch(if err != nil {);//
+path();//
+set(Log.Debugf("kickPubDataStr: %+v", kickPubDataStr));//
+set(return err);//
+bend( });//
+set();// Log.Debugf("kickPubData: %+v", kickPubData)
+set();//
+set(postUrl := fmt.Sprintf("https:);//
+set();// Log.Debugf("postUrl: %s", postUrl)
+set();//
+set(kickPubData.ClusterSubHost = "");//
+set(var resErrorRes ResErrorRes);//
+set(client := resty.New());//
+set();//
+set(client.SetTimeout(10 * time.Second));//
+set();//
+set(resp, err := client.R().);//
+set(SetBody(kickPubData).);//
+set(SetResult(&resErrorRes).);//
+set(SetError(&resErrorRes).);//
+set(Post(postUrl));//
+branch(if err != nil {);//
+path();//
+set(return err);//
+bend( });//
+set();//
+branch(if resp.StatusCode() >= 200 && resp.StatusCode() < 300 && resErrorRes.Error.Type == "" {);//
+path();//
+set(return nil);//
+bend( });//
+set();//
+branch(if resErrorRes.Error.Type == "requestError" {);//
+path();//
+set(return errors.New(resErrorRes.Error.Messages[0]));//
+path(} else if resErrorRes.Error.Type == "streamKeyNotFound" || resErrorRes.Error.Type == "connIdNotFound" || resErrorRes.Error.Type == "connIdMismatch" {);//
+set(Log.Infof("%s, notFound %s", kickPubData.EdgeConnId, resErrorRes.Error.Type));//
+set(return nil);//
+bend( });//
+set();//
+set();// Log.Debugf("StatusCode: %+v", resp.StatusCode())
+set();// Log.Debugf("resp.Body: %s", resp.Body())
+set();// Log.Debugf("resErrorRes: %+v", resErrorRes)
+set();//
+set(Log.Debugf("resp: %+v", resp));//
+set(return errors.New(resp.Status()));//
+end( });//
+set();//
+
+input(func LivePubKickFuncDev(Prodctx context.Context, MsgData PubsubMessage) error {);//
+set(err := LivePubKickFunc(Prodctx, MsgData, AppConfig{OriginHost: "origin.maxxsportsdev.io"}));//
+set(return err);//
+end( });//
+
+input(func LivePubKickFuncStage(Prodctx context.Context, MsgData PubsubMessage) error {);//
+set(err := LivePubKickFunc(Prodctx, MsgData, AppConfig{OriginHost: "origin.maxxsportsdev.io"}));//
+set(return err);//
+end( });//
+
+input(func LivePubKickFuncProd(Prodctx context.Context, MsgData PubsubMessage) error {);//
+set(err := LivePubKickFunc(Prodctx, MsgData, AppConfig{OriginHost: "origin.maxx.video"}));//
+set(return err);//
+end( });//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 8421504 0 255 255 65280 65535 2359332
+;       //   ;
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 1836 236 1006 1450 43 150   419   4294965353    GO.key  0

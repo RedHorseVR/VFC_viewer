@@ -1,0 +1,68 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : test.ins
+;  File Date : 04:01:21 PM - 03:Sep:1999
+
+set(PRAGMA LIST(Off););//PRAGMA LIST(On);
+generic(WITH Ada.Text_IO; USE Ada.Text_IO;);//
+
+input(PROCEDURE Factorial IS);//
+branch(IF );//
+path();//
+output(BEGIN);//
+loop(FOR I IN 2 .. 8 LOOP);//
+generic(Put("Factorial of "););//Put("Fatorial de ");
+generic(Put( Integer'IMAGE(I) ););//
+generic(Put(" = "););//Put(" e' ");
+generic(Put_Line( Integer'IMAGE( Factorial(I) ) ););//
+lend(END LOOP;);//
+loop(FOR I IN 2 .. 8 LOOP);//
+generic(Put("Factorial of "););//Put("Fatorial de ");
+generic(Put( Integer'IMAGE(I) ););//
+generic(Put(" = "););//Put(" e' ");
+generic(Put_Line( Integer'IMAGE( Factorial(I) ) ););//
+lend(END LOOP;);//
+end(END Factorial;);//
+path();//
+event(FUNCTION Factorial(N : Integer) RETURN Integer IS);//
+output(BEGIN);//
+branch(IF N <= 1 THEN);//
+path();// auto path
+end(RETURN 1;);//
+path(ELSE);//
+end(RETURN N * Factorial(N - 1););//
+bend(END IF;);//
+branch(EXCEPTION);//
+path(WHEN Numeric_Error =>);//
+generic(Put(" !"););//
+end(return -1;);//
+bend();//
+end(END Factorial;);//
+bend();//
+end();//
+set( = FUNCTION Factorial(N : Integer) RETURN Integer IS);//
+
+input(FUNCTION Factorial(N : Integer) RETURN Integer IS);//
+output(BEGIN);//
+branch(IF N <= 1 THEN);//
+path();// auto path
+end(RETURN 1;);//
+path(ELSE);//
+end(RETURN N * Factorial(N - 1););//
+bend(END IF;);//
+branch(EXCEPTION);//
+path(WHEN Numeric_Error =>);//
+generic(Put(" !"););//
+end(return -1;);//
+bend();//
+end(END Factorial;);//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 0 13158600 0 0 13158600 6579300 0 16777215 0 0 0 0 65535
+;    TEST.ADA   --   .
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 379 225 941 876 37 80   264   4294967155    ada.key  0

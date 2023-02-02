@@ -1,0 +1,360 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : TreeApplet.java.ins
+;  File Date : 04:25:27 AM - 29:Aug:1999
+
+generic(  /*  );//
+generic(  * Avin's jcx.TreePanel Demo Applet  );//
+generic(  * Copyright  1995, 1996, 1997 Raja Sundarigari. All Rights Reserved.  );//
+generic(  * Raja Sundarigari  );//
+generic(  */  );//
+generic(  import  jcx.*;  );//
+generic(  import  java.awt.*;  );//
+generic(  import  java.applet.Applet;  );//
+generic(  import  java.net.URL;  );//
+generic(  import  java.net.MalformedURLException;  );//
+generic(  /**  );//
+generic(  * TreeApplet Class  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  * Demonstrates the usage of jcx.TreePanel  and jcx.TreeNode classes  );//
+generic(  */  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public class TreeApplet extends java.applet.Applet implements Runnable{  );//
+generic(  public Thread treeThread;  );//
+generic(  public TreePanel treePane;  );//
+generic(  public TreeControls controls;  );//
+generic(  public TreeNode root;  );//
+generic(  public URL[] imgUrls;  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public void paint(Graphics g){  );//
+generic();//  drawCrossHair( g, CrossXPos, CrossYPos, CrossSize );  
+generic(  g.drawString( "Hello new world ..." , 20 , 20 );  );//
+end(  }  );//
+
+input(  public void init () {  );//
+set(  String width  = getParameter("width");  );//
+set(  int w = (width == null) ? 400 : Integer.valueOf(width).intValue();  );//
+set(  String height  = getParameter("height");  );//
+set(  int h = (height == null) ? 500 : Integer.valueOf(height).intValue();  );//
+generic(  resize (w,h);  );//
+set(  String fontsize  = getParameter("fontsize");  );//
+set(  int fs = (fontsize == null) ? 15 : Integer.valueOf(fontsize).intValue();  );//
+generic(    );//// // face...
+set(  String fontface  = getParameter("fontface");  );//
+branch(  if (fontface==null) fontface = "Areal";  );//
+path();//
+generic(    );//// /auto path//...
+set(  String urlfontface  = getParameter("urlfontface");  );//
+branch(  if (urlfontface==null) urlfontface = "Areal";  );//
+path();//
+generic(    );//// /auto path//...
+generic(    );//// // style...
+set(  String fontstyle  = getParameter("fontstyle");  );//
+generic(  int fstyle;  );//
+branch(  if (fontstyle==null)  fstyle = Font.PLAIN;  );//
+path(  else if (fontstyle.equals("plain")) fstyle = Font.PLAIN;  );//
+path(  else if (fontstyle.equals("bold")) fstyle = Font.BOLD;  );//
+path(  else if (fontstyle.equals("italic")) fstyle = Font.ITALIC;  );//
+path(  else  fstyle = Font.PLAIN;  );//
+set(  String urlfontstyle  = getParameter("urlfontstyle");  );//
+generic(  int urlfstyle;  );//
+branch(  if (urlfontstyle==null)  urlfstyle = Font.ITALIC;  );//
+path(  else if (urlfontstyle.equals("plain")) urlfstyle = Font.PLAIN;  );//
+path(  else if (urlfontstyle.equals("bold")) urlfstyle = Font.BOLD;  );//
+path(  else if (urlfontstyle.equals("italic")) urlfstyle = Font.ITALIC;  );//
+path(  else urlfstyle = Font.ITALIC;  );//
+set(  Font f  = new Font (fontface, fstyle, fs);  );//
+set(  Font uf = new Font (urlfontface, urlfstyle, fs);  );//
+generic(  setLayout(new BorderLayout());  );//
+generic(  setBackground (Color.lightGray);  );//
+branch(  try {  );//
+path();//
+set(  imgUrls = new URL [10];  );//
+set(  imgUrls [0] = new URL (getDocumentBase(),  "iconpics/ylnode.gif");  );//
+set(  imgUrls [1] = new URL (getDocumentBase(),  "iconpics/grnode.gif");  );//
+set(  imgUrls [2] = new URL (getDocumentBase(),  "iconpics/phone.gif");  );//
+set(  imgUrls [3] = new URL (getDocumentBase(),  "iconpics/ppen.gif");  );//
+set(  imgUrls [4] = new URL (getDocumentBase(),  "iconpics/dblptr.gif");  );//
+set(  imgUrls [5] = new URL (getDocumentBase(),  "iconpics/file.gif");  );//
+set(  imgUrls [6] = new URL (getDocumentBase(),  "iconpics/excl.gif");  );//
+set(  imgUrls [7] = new URL (getDocumentBase(),  "iconpics/yes.gif");  );//
+set(  imgUrls [8] = new URL (getDocumentBase(),  "iconpics/no.gif");  );//
+set(  imgUrls [9] = new URL (getDocumentBase(),  "iconpics/url.gif");  );//
+bend(  }  );//
+path(  catch (MalformedURLException e) {  );//
+generic(    );//// // do error recovery ......
+bend(  }  );//
+set(  add ("Center", treePane = new TreePanel());  );//
+generic(  treePane.showPreIcons (true);  );//
+generic(  treePane.setFont (f);  );//
+generic(  treePane.setUrlFont (uf);  );//
+set(  root = treePane.getRoot ();  );//
+generic(  root.setIconURL (imgUrls [0]);  );//
+generic(  root.setName  ("Inputs"););//
+generic(  root.select();  );//
+branch(  try {  );//
+path();//
+generic(  root.addChild (  );//
+generic(  new TreeNode(null, "Ibbotson Home Page", new URL("http://www.ibbotson.com"), null, imgUrls [9]));  );//
+generic(  root.addChild (  );//
+generic(  new TreeNode(null, "Netscape Home Page", new URL("http://www.netscape.com"), null, imgUrls [9]));  );//
+generic(  root.addChild (  );//
+generic(  new TreeNode(null,  "Software Home Page", null , null, imgUrls [9])););//
+bend(  }  );//
+path(  catch (MalformedURLException e) {  );//
+generic(    );//// // do error recovery ......
+bend(  }  );//
+set(  TreeNode t0 = root.addChild (new TreeNode(null, "Child with two Icon states", imgUrls [7], imgUrls [6]));  );//
+generic(  t0.setCloseIconURL (imgUrls [8]);  );//
+set(  TreeNode t00 = t0.addChild (new TreeNode(null, "Expand me to See the scroll bars", null, null));  );//
+loop(  for (int i=0; i<50; i++)  );//
+lend(  t00.addChild (new TreeNode(null, "Child with file icon "+Integer.toString(i), imgUrls [5], imgUrls [5]));  );//
+generic(  t00.collapse();  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre Yes + Pen icon", imgUrls [3], imgUrls [7]));  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre No + Phone icon", imgUrls [2], imgUrls [8]));  );//
+set(  TreeNode t1 = root.addChild (new TreeNode(null, "Child with grey icon", imgUrls [1], null));  );//
+set(  TreeNode t10 = t1.addChild (new TreeNode(null, "Child with yellow icon", imgUrls [0], null));  );//
+generic(  t10.addChild (new TreeNode(null, "Child No icon", null, null));  );//
+set(  TreeNode x = t10.addChild (new TreeNode(null, "x", imgUrls [0], null));  );//
+set(  TreeNode y = x.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+set(  TreeNode z = y.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+generic(  z.addChild (new TreeNode(null, "Child with a pre Yes +file icon", imgUrls [5], imgUrls [7]));  );//
+generic(  t1.addChild (new TreeNode(null, "Child 2 With Pre No + Exclamation icon", imgUrls [6], imgUrls [8]));  );//
+generic(  root.addChild (new TreeNode(null, "Child withFile icon", imgUrls [5], null));  );//
+set(  add ("South", controls = new TreeControls(this));  );//
+set(  }  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public void start () {  );//
+set(  treeThread = new Thread(this);  );//
+generic(  treeThread.start();  );//
+end(  }  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public void stop () {  );//
+generic(  showStatus ("Stop called");  );//
+set(  treeThread = null;  );//
+end(  }  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public void run () {  );//
+generic(  showStatus ("Run called");  );//
+end(  }  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public static void main (String args[]) {  );//
+set(  TreeFrame f = new TreeFrame("Tree Test");  );//
+set(  f.inApplet = false;  );//
+end(  }  );//
+generic(  public String[][] getParameterInfo()  );//
+generic(  {      );//// // name, type, desc, default...
+set(  String[][] info = {  );//
+bend(  {"fontstyle",     "stringset Plain,Italic,Bold","Style of the font for regular nodes", "Italic"},  );//
+bend(  {"urlfontstyle", "stringset Plain,Italic,Bold","Style of the font for URL nodes",     "Plain"},  );//
+generic(  {"fontface",    "string","Face of the font for regular nodes",  "Arial"},  );//
+generic(  {"urlfontface", "string","Face of the font for URL nodes",      "Arial"},  );//
+generic(  {"fontsize",    "string","Size of both Regular and URL Fonts",  "15"},  );//
+generic(  {"width",    "number","applet width",                        "400"},  );//
+generic(  {"height",       "number","applet height",                       "500"},  );//
+end(  };  );//
+end(  return info;  );//
+end(  }  );//
+generic(  public String getAppletInfo()  );//
+generic(  {  );//
+set(  String info = new String("TreeApplet\nVersion 1.0\nCopyright (C) 1996 Raja Sundarigari");  );//
+end(  return(info);  );//
+end(  }  );//
+generic(    );//// //{{DECLARE_CONTROLS...
+generic(    );//// //}}...
+end(  }  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  class TreeControls extends Panel{  );//
+generic(  Button addb;  );//
+generic(  Button delb;  );//
+generic(  Button siblb;  );//
+generic(  Button showdoc;  );//
+generic(  Choice iconChoice;  );//
+generic(  Choice preIconChoice;  );//
+generic(  TextField namet;  );//
+generic(  TextField urlnamet;  );//
+generic(  public TreeApplet app;  );//
+set(  Label  l1;);//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public TreeControls (TreeApplet a) {  );//
+set(  app = a;  );//
+generic(  setLayout(new GridLayout(0, 1));  );//
+set(  l1 = new Label("Avin Software (http://homepage.interaccess.com/~avin/)", Label.CENTER););//
+generic(  l1.setFont (new Font("Arial", Font.BOLD, 13));  );//
+set(  Panel p0 = new ThreedPanel();  );//
+generic(  p0.add (l1);  );//
+generic(  add (p0);  );//
+set(  Panel p1 = new ThreedPanel();  );//
+generic(  p1.setLayout(new GridLayout(0,4));  );//
+generic(  p1.add (new Label("PreIcon>>"));  );//
+set(  p1.add (preIconChoice = new Choice());  );//
+generic(  p1.add (new Label("Icon>>"));  );//
+set(  p1.add (iconChoice = new Choice());  );//
+generic(  add (p1);  );//
+set(  Panel p2 = new ThreedPanel();  );//
+generic(  p2.setLayout(new GridLayout(0,4));  );//
+generic(  p2.add (new Label("NodeName>>"));  );//
+set(  p2.add (namet    = new TextField (15));  );//
+generic(  p2.add (new Label("Type a URL>>"));  );//
+set(  p2.add (urlnamet = new TextField (15));  );//
+generic(  urlnamet.setText("http://");  );//
+generic(  add (p2);  );//
+set(  Panel p3 = new ThreedPanel();  );//
+generic(  p3.setLayout(new GridLayout(0,4));  );//
+set(  p3.add (addb    = new Button("addChild()"));  );//
+set(  p3.add (siblb   = new Button("insertSibling()"));  );//
+set(  p3.add (delb    = new Button("remove()"));  );//
+set(  p3.add (showdoc = new Button("showDocument()"));  );//
+generic(  add (p3);  );//
+generic(  namet.setText("name goes here!");  );//
+generic(  iconChoice.addItem("none");  );//
+generic(  iconChoice.addItem("Yellow Node");  );//
+generic(  iconChoice.addItem("GreyNode");  );//
+generic(  iconChoice.addItem("Phone");  );//
+generic(  iconChoice.addItem("Pen");  );//
+generic(  iconChoice.addItem("Pointer");  );//
+generic(  iconChoice.addItem("File");  );//
+generic(  iconChoice.addItem("Exclamation");  );//
+generic(  iconChoice.addItem("Yes");  );//
+generic(  iconChoice.addItem("No");  );//
+generic(  iconChoice.addItem("Url");  );//
+generic(  preIconChoice.addItem("none");  );//
+generic(  preIconChoice.addItem("Yellow Node");  );//
+generic(  preIconChoice.addItem("GreyNode");  );//
+generic(  preIconChoice.addItem("Phone");  );//
+generic(  preIconChoice.addItem("Pen");  );//
+generic(  preIconChoice.addItem("Pointer");  );//
+generic(  preIconChoice.addItem("File");  );//
+generic(  preIconChoice.addItem("Exclamation");  );//
+generic(  preIconChoice.addItem("Yes");  );//
+generic(  preIconChoice.addItem("No");  );//
+generic(  preIconChoice.addItem("Url");  );//
+end(  }  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public boolean action (Event ev, Object arg) {  );//
+branch(  if (ev.target instanceof Button) {  );//
+path();//
+generic(    );//// /auto path//...
+set(  String nodename = namet.getText();  );//
+set(  String nodeurlname = urlnamet.getText();  );//
+generic(  URL nodeurl;  );//
+branch(  try {  );//
+path();//
+set(  nodeurl = new URL(nodeurlname);  );//
+set(  }  );//
+path(  catch (MalformedURLException e) {  );//
+set(  nodeurl = null;  );//
+bend(  }  );//
+set(  int index = iconChoice.getSelectedIndex();  );//
+set(  int preindex = preIconChoice.getSelectedIndex();  );//
+branch(  if ((String)arg =="addChild()") {  );//
+path();//
+generic(    );//// /auto path//...
+end(  if (nodename.length() == 0) return true;  );//
+generic(  app.treePane.getSelection().addChild (new TreeNode(null, nodename, nodeurl,  );//
+generic(  index>0 ? app.imgUrls[index-1] : null,  );//
+generic(  preindex>0 ? app.imgUrls[preindex-1] : null));  );//
+set(  }  );//
+path(  else if ((String)arg =="insertSibling()") {  );//
+end(  if (nodename.length() == 0) return true;  );//
+generic(  app.treePane.getSelection().insertSibling (  );//
+generic(  new TreeNode (null, nodename, nodeurl, index>0 ? app.imgUrls[index-1] : null,  );//
+generic(  preindex>0 ? app.imgUrls[preindex-1] : null));  );//
+set(  });//
+path(  else if ((String)arg =="remove()") {  );//
+generic(  System.out.println("Remove called +++"););//
+output(  System.out.println( "-->>> name : " + app.treePane.getSelection().name() ););//
+output(l1.setText( app.treePane.getSelection().name() ););//
+generic(  app.treePane.getSelection().remove ();  );//
+end(  }  );//
+path(  else if ((String)arg =="showDocument()") {  );//
+generic(  System.out.println("showDocument() called"+app.treePane.getSelection().getUrl());  );//
+generic(  app.getAppletContext().showDocument(app.treePane.getSelection().getUrl());  );//
+bend(  }  );//
+bend(  }  );//
+generic(  repaint ();  );//
+generic(  app.treePane.repaint ();  );//
+end(  return true;  );//
+end(  }  );//
+end(  }  );//
+generic(  /*  );//
+generic(  * TreeFrame Class  );//
+generic(  * --- only if you need to run this as a standalone application  );//
+generic(  * --- (as opposed to Applet)  );//
+generic(  */  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  class TreeFrame extends Frame{  );//
+generic(  public boolean inApplet;  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public TreeFrame (String name) {  );//
+generic(  super (name);  );//
+set(  inApplet = true;  );//
+set(  TreeApplet app = new TreeApplet();  );//
+generic(  app.init();  );//
+generic(  app.start();  );//
+generic(  add("Center", app);  );//
+generic(    );//// //{{INIT_CONTROLS...
+generic(  setLayout(null);  );//
+generic(  addNotify();  );//
+generic(  resize( 100,   300););//  resize(insets().left + insets().right + 430,insets().top + insets().bottom + 270);  
+generic(  setTitle("Untitled");  );//
+generic(    );//// //}}...
+generic(    );//// //{{INIT_MENUS...
+generic(    );//// //}}...
+end(  }  );//
+generic(    );////  AUTO ...
+end(  );// AUTO 
+
+input(  public boolean handleEvent (Event event) {  );//
+branch(  if (event.id == Event.WINDOW_DESTROY) {  );//
+path();//
+generic(    );//// /auto path//...
+branch(  if (inApplet) dispose();  );//
+path(  else  System.exit(0);  );//
+bend();//
+bend(  }  );//
+end(  return super.handleEvent(event);  );//
+end(  }  );//
+generic(    );//// //{{DECLARE_CONTROLS...
+generic(    );//// //}}...
+generic(    );//// //{{DECLARE_MENUS...
+generic(    );//// //}}...
+end(  }  );//
+generic(    );////  FlowCode File: TreeApplet.java.ins...
+generic(    );////  Export  File: TreeApplet.java...
+generic(    );////  Export  Date: 09:39:28 AM - 27:Aug:1999...
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+;    TreeApplet.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 561 218 718 821 122 145   848   4294962763    java.key  0

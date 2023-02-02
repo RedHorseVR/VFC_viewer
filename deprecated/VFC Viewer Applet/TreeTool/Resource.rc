@@ -1,0 +1,117 @@
+//Microsoft App Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "c:\msdev\include\afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOG DISCARDABLE  300, 252, 173, 161
+STYLE DS_ABSALIGN | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CLIPCHILDREN | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "VFC Tree"
+MENU IDR_MENU1
+CLASS "TEXTINCLUDE"
+FONT 9, "Americana BT"
+BEGIN
+    PUSHBUTTON      "X",IDC_CLOSEDLG,0,14,13,10
+END
+
+MAIN DIALOG DISCARDABLE  50, 100, 459, 304
+STYLE DS_ABSALIGN | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CLIPCHILDREN | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "MAIN"
+MENU IDR_MENU1
+CLASS "TEXTINCLUDE"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Zoom In",IDOK,305,0,39,15
+    CONTROL         "Comments",IDC_COMMENTS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,125,0,50,8
+    COMBOBOX        IDC_COMBO2,5,230,40,30,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Zoom Out",IDOK2,345,0,39,15
+    DEFPUSHBUTTON   "Home",IDOK3,265,0,39,15
+    CONTROL         "User1",IDC_USER1,"TreeTool",NOT WS_VISIBLE,5,0,115,225
+    LISTBOX         IDC_LIST1,5,245,115,57,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Show Object Browser",IDC_SHOW,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,180,0,85,8
+END
+
+#ifdef APSTUDIO_INVOKED
+//////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""c:\\msdev\\include\\afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "File"
+    BEGIN
+        MENUITEM "Open...",                     ID_FILE_OPEN
+        MENUITEM "Close...",                    ID_FILE_CLOSE
+        MENUITEM "Test1",                       ID_FILE_TEST1
+        MENUITEM "Test2",                       ID_FILE_TEST2
+        MENUITEM "Test3",                       ID_FILE_TEST3
+        MENUITEM "Test4",                       ID_FILE_TEST4
+    END
+    POPUP "Run ..."
+    BEGIN
+        MENUITEM "test",                        ID_RUN_TEST
+        POPUP "no pop"
+        BEGIN
+            MENUITEM "test",                        ID_NOPOP_TEST
+        END
+    END
+END
+
+
+#ifndef APSTUDIO_INVOKED
+////////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

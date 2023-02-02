@@ -7,6 +7,8 @@
 	
 public class FCview extends Frame {
 		
+		static public java.awt.List  ObjList;
+		
 		Color SelectedObjectColor  = new Color(  255  , 0 , 0 ) ;
 		Color CommentObjectColor  = new Color(  100 , 100 , 100 ) ;
 		boolean first_draw = true;
@@ -31,10 +33,15 @@ public class FCview extends Frame {
 		while( ( c = st.read() ) != -1 ) {
 			if(  c == '\n' )
 			{
-				System.out.println( buff );
+				System.out.println( ':' + buff );
 				if(  !buff.startsWith(";") &&  !buff.startsWith("\r")  )
 				{
 					SO.addElement( track_stack_links(  (SO1=new StatementObject( buff , SO )) )  ) ;
+					////
+					if( SO1.Type.equals("input") || SO1.Type.equals("event")  )
+					{
+						ObjList.add( SO1.Statement  );
+						}
 					if( SO.size() == 1  )
 					{
 						Head = SO1;
@@ -86,6 +93,7 @@ public class FCview extends Frame {
 		}
 	
 	FCview (  String filename ) throws IOException {
+		Frame f = this;
 		
 		InputStream is =null;
 		VFCfile = filename;
@@ -96,6 +104,7 @@ public class FCview extends Frame {
 		SO = new Vector( 200 );
 		
 		load( VFCfile );
+		
 		
 		
 		
@@ -164,13 +173,13 @@ public class FCview extends Frame {
 	
 	public void draw( Graphics g, int x, int y, int z){
 		
-		System.out.println( "draw ... DEBUG-------------------------"  );
+		
 		StatementObject S ;
 		if( first_draw  )
 		{
-			System.out.println( "\t---------------------DEBUG-------------------------"  );
+			
 			S  = (StatementObject)  SO.elementAt( 0 ) ;
-			System.out.println( "\t statment object draw ... DEBUG-------------------------"  );
+			
 			first_draw = false;
 			S.calculate( g, x, y, z );
 			}
@@ -196,7 +205,7 @@ public class FCview extends Frame {
 			} // end for
 		
 		
-		System.out.println( "exit draw ... DEBUG-------------------------"  );
+		
 		}
 	
 	public void zoom( Graphics g , int x , int y ){
@@ -219,5 +228,5 @@ public class FCview extends Frame {
 		
 	}
 
-//  Export  Date: 09:35:53 AM - 30:Jan:2023...
+//  Export  Date: 12:15:10 AM - 02:Feb:2023...
 

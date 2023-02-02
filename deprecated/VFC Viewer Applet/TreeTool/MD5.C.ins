@@ -1,0 +1,360 @@
+;-Document
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : MD5.C.ins
+;  File Date : 01:11:45 AM - 13:Aug:1999
+
+
+input();//Description:
+generic();// /* 
+generic();//  MD5C.C - RSA Data Security, Inc., MD5 message-digest algorithm 
+generic();// 
+generic();//  Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
+generic();//  rights reserved.
+generic();//   
+generic();//  License to copy and use this software is granted provided that it
+generic();//  is identified as the "RSA Data Security, Inc. MD5 Message-Digest
+generic();//  Algorithm" in all material mentioning or referencing this software
+generic();//  or this function.
+generic();//  
+generic();//  License is also granted to make and use derivative works provided
+generic();//  that such works are identified as "derived from the RSA Data
+generic();//  Security, Inc. MD5 Message-Digest Algorithm" in all material
+generic();//  mentioning or referencing the derived work.
+generic();//    
+generic();//  RSA Data Security, Inc. makes no representations concerning either
+generic();//  the merchantability of this software or the suitability of this
+generic();//  software for any particular purpose. It is provided "as is"
+generic();//  without express or implied warranty of any kind.  
+generic();//   
+generic();//  These notices must be retained in any copies of any part of this
+generic();//  documentation and/or software.
+generic();// */
+
+input(/* includes */ );//
+set( #include "global.h" );//
+set( #include "md5.h" );//
+
+input(/* defines */ );//
+generic();// /* Constants for MD5Transform routine. */
+set( #define S11 7 );// 
+set( #define S12 12 );// 
+set( #define S13 17 );// 
+set( #define S14 22 );// 
+set( #define S21 5 );// 
+set( #define S22 9 );// 
+set( #define S23 14 );// 
+set( #define S24 20 );// 
+set( #define S31 4 );// 
+set( #define S32 11 );// 
+set( #define S33 16 );// 
+set( #define S34 23 );// 
+set( #define S41 6 );// 
+set( #define S42 10 );// 
+set( #define S43 15 );// 
+set( #define S44 21 );// 
+
+input(/* prototypes */ );//
+set( static void MD5Transform PROTO_LIST ((UINT4 [4], unsigned char [64])); );// 
+set( static void Encode PROTO_LIST ((unsigned char *, UINT4 *, unsigned int)); );// 
+set( static void Decode PROTO_LIST ((UINT4 *, unsigned char *, unsigned int)); );// 
+set( static void MD5_memcpy PROTO_LIST ((POINTER, POINTER, unsigned int)); );// 
+set( static void MD5_memset PROTO_LIST ((POINTER, int, unsigned int)); );// 
+event( static unsigned char PADDING[64] = );// 
+set( { );// 
+set(   );// 
+set( 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, );// 
+set( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, );// 
+set( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );// 
+set( }; );// 
+generic();// /* F, G, H and I are basic MD5 functions.
+generic();// */
+set( #define F(x, y, z) (((x) & (y)) | ((~x) & (z))) );// 
+set( #define G(x, y, z) (((x) & (z)) | ((y) & (~z))) );// 
+set( #define H(x, y, z) ((x) ^ (y) ^ (z)) );// 
+set( #define I(x, y, z) ((y) ^ ((x) | (~z))) );// 
+generic();// /* ROTATE_LEFT rotates x left n bits.
+generic();// */
+set( #define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32-(n)))) );// 
+generic();// /* FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.
+generic();// Rotation is separate from addition to prevent recomputation.
+generic();// */
+set( #define FF(a, b, c, d, x, s, ac) { \);// 
+
+input( (a)+= F ((b), (c), (d)) + (x) + (UINT4)(ac); \ (a) = ROTATE_LEFT ((a), (s)); \ (a) += (b); \ } #define GG(a, b, c, d, x, s, ac) );// 
+set( { );// 
+set(   \ (a) +=G ((b), (c), (d)) + (x) + (UINT4)(ac); );// 
+set( \ (a) =ROTATE_LEFT ((a), (s)); );// 
+set( \ (a) +=(b); );// 
+end( \ } );// 
+set( #define HH(a, b, c, d, x, s, ac) { \ );// 
+
+input( (a)+= H ((b), (c), (d)) + (x) + (UINT4)(ac); \ (a) = ROTATE_LEFT ((a), (s)); \ (a) += (b); \ } #define II(a, b, c, d, x, s, ac) );// 
+set( { );// 
+set(   \ (a) +=I ((b), (c), (d)) + (x) + (UINT4)(ac); );// 
+set( \ (a) =ROTATE_LEFT ((a), (s)); );// 
+set( \ (a) +=(b); );// 
+end( \ } );// 
+generic();// /* MD5 initialization. Begins an MD5 operation, writing a new context.
+generic();// */
+
+input( void MD5Init (context)MD5_CTX *context; /* context */ );// 
+set( { );// 
+set(   context->count[0] =context->count[1] =0; );// 
+generic();// /* Load magic initialization constants.
+generic();//  */
+set( context->state[0] =0x67452301; );// 
+set( context->state[1] =0xefcdab89; );// 
+set( context->state[2] =0x98badcfe; );// 
+set( context->state[3] =0x10325476; );// 
+end( } );// 
+generic();// /* MD5 block update operation. Continues an MD5 message-digest
+generic();// operation, processing another message block, and updating the
+generic();// context.
+generic();// */
+
+input( void MD5Update (context, input, inputLen)MD5_CTX *context; /* context */ unsigned char *input; /* input block */ unsigned int inputLen; /* length of input block */ );// 
+set( { );// 
+set(   unsigned int i, index, partLen; );// 
+generic();// /* Compute number of bytes mod 64 */
+set( index =(unsigned int)((context->count[0] >> 3) & 0x3F); );// 
+generic();// /* Update number of bits */
+branch( if ((context->count[0] += ((UINT4)inputLen << 3)) < ((UINT4)inputLen << 3)) );// 
+path();///auto path//
+set( context->count[1]++; );// 
+bend();// 
+set( context->count[1] +=((UINT4)inputLen >> 29); );// 
+set( partLen =64 - index; );// 
+generic();// /* Transform as many times as possible.
+generic();//  */
+branch( if (inputLen >= partLen) );// 
+path( { );// 
+set(   MD5_memcpy ((POINTER)&context->buffer[index], (POINTER)input, partLen); );// 
+set( MD5Transform (context->state, context->buffer); );// 
+loop( for (i = partLen; i + 63 < inputLen; i += 64) MD5Transform (context->state, &input[i])  );// 
+lend( );// auto 
+set( ; );// 
+set( index =0; );// 
+set( } );// 
+path(   else );// 
+set( i =0; );// 
+bend();// 
+generic();// /* Buffer remaining input */
+set( MD5_memcpy ((POINTER)&context->buffer[index], (POINTER)&input[i], inputLen-i); );// 
+end( } );// 
+generic();// /* MD5 finalization. Ends an MD5 message-digest operation, writing the
+generic();// the message digest and zeroizing the context.
+generic();// */
+
+input( void MD5Final (digest, context)unsigned char digest[16]; /* message digest */ MD5_CTX *context; /* context */ );// 
+set( { );// 
+set(   unsigned char bits[8]; );// 
+set( unsigned int index, padLen; );// 
+generic();// /* Save number of bits */
+set( Encode (bits, context->count, 8); );// 
+generic();// /* Pad out to 56 mod 64.
+generic();//  */
+set( index =(unsigned int)((context->count[0] >> 3) & 0x3f); );// 
+output( padLen =(index < 56) ? (56 - index) :);//
+generic();// /* Append length (before padding) */
+generic();// /* Store state in digest */
+generic();// /* Zeroize sensitive information. */
+generic();// /* MD5 basic transformation. Transforms state based on block.
+generic();// */
+set( (120 - index); MD5Update (context, PADDING, padLen); MD5Update (context, bits, 8); Encode (digest, context->state, 16); MD5_memset ((POINTER)context, 0, sizeof (*context)); } static void );// <--- WARNING: BROKEN LINE 
+set( MD5Transform (state, block) UINT4 state[4]; unsigned char block[64]; { UINT4 a =state[0], b =state[1], c =state[2], d =state[3], x[16]; );// 
+output( /* WARNING: BROKEN LINE(S) ABOVE */ );// 
+set( Decode (x, block, 64); );// 
+branch();// /* Round 1 */
+path();//
+set( FF (a, b, c, d, x[ 0], S11, 0xd76aa478); );// 
+generic();// /* 1 */
+set( FF (d, a, b, c, x[ 1], S12, 0xe8c7b756); );// 
+generic();// /* 2 */
+set( FF (c, d, a, b, x[ 2], S13, 0x242070db); );// 
+generic();// /* 3 */
+set( FF (b, c, d, a, x[ 3], S14, 0xc1bdceee); );// 
+generic();// /* 4 */
+set( FF (a, b, c, d, x[ 4], S11, 0xf57c0faf); );// 
+generic();// /* 5 */
+set( FF (d, a, b, c, x[ 5], S12, 0x4787c62a); );// 
+generic();// /* 6 */
+set( FF (c, d, a, b, x[ 6], S13, 0xa8304613); );// 
+generic();// /* 7 */
+set( FF (b, c, d, a, x[ 7], S14, 0xfd469501); );// 
+path();// /* 8 */
+set( FF (a, b, c, d, x[ 8], S11, 0x698098d8); );// 
+generic();// /* 9 */
+set( FF (d, a, b, c, x[ 9], S12, 0x8b44f7af); );// 
+generic();// /* 10 */
+set( FF (c, d, a, b, x[10], S13, 0xffff5bb1); );// 
+generic();// /* 11 */
+set( FF (b, c, d, a, x[11], S14, 0x895cd7be); );// 
+generic();// /* 12 */
+set( FF (a, b, c, d, x[12], S11, 0x6b901122); );// 
+generic();// /* 13 */
+set( FF (d, a, b, c, x[13], S12, 0xfd987193); );// 
+generic();// /* 14 */
+set( FF (c, d, a, b, x[14], S13, 0xa679438e); );// 
+generic();// /* 15 */
+set( FF (b, c, d, a, x[15], S14, 0x49b40821); );// 
+path();// /* 16 */
+generic();// /* Round 2 */
+set( GG (a, b, c, d, x[ 1], S21, 0xf61e2562); );// 
+generic();// /* 17 */
+set( GG (d, a, b, c, x[ 6], S22, 0xc040b340); );// 
+generic();// /* 18 */
+set( GG (c, d, a, b, x[11], S23, 0x265e5a51); );// 
+generic();// /* 19 */
+set( GG (b, c, d, a, x[ 0], S24, 0xe9b6c7aa); );// 
+generic();// /* 20 */
+set( GG (a, b, c, d, x[ 5], S21, 0xd62f105d); );// 
+generic();// /* 21 */
+set( GG (d, a, b, c, x[10], S22, 0x2441453); );// 
+generic();// /* 22 */
+set( GG (c, d, a, b, x[15], S23, 0xd8a1e681); );// 
+generic();// /* 23 */
+set( GG (b, c, d, a, x[ 4], S24, 0xe7d3fbc8); );// 
+path();// /* 24 */
+set( GG (a, b, c, d, x[ 9], S21, 0x21e1cde6); );// 
+generic();// /* 25 */
+set( GG (d, a, b, c, x[14], S22, 0xc33707d6); );// 
+generic();// /* 26 */
+set( GG (c, d, a, b, x[ 3], S23, 0xf4d50d87); );// 
+generic();// /* 27 */
+set( GG (b, c, d, a, x[ 8], S24, 0x455a14ed); );// 
+generic();// /* 28 */
+set( GG (a, b, c, d, x[13], S21, 0xa9e3e905); );// 
+generic();// /* 29 */
+set( GG (d, a, b, c, x[ 2], S22, 0xfcefa3f8); );// 
+generic();// /* 30 */
+set( GG (c, d, a, b, x[ 7], S23, 0x676f02d9); );// 
+generic();// /* 31 */
+set( GG (b, c, d, a, x[12], S24, 0x8d2a4c8a); );// 
+path();// /* 32 */
+generic();// /* Round 3 */
+set( HH (a, b, c, d, x[ 5], S31, 0xfffa3942); );// 
+generic();// /* 33 */
+set( HH (d, a, b, c, x[ 8], S32, 0x8771f681); );// 
+generic();// /* 34 */
+set( HH (c, d, a, b, x[11], S33, 0x6d9d6122); );// 
+generic();// /* 35 */
+set( HH (b, c, d, a, x[14], S34, 0xfde5380c); );// 
+set();// /* 36 */
+set( HH (a, b, c, d, x[ 1], S31, 0xa4beea44); );// 
+generic();// /* 37 */
+set( HH (d, a, b, c, x[ 4], S32, 0x4bdecfa9); );// 
+generic();// /* 38 */
+set( HH (c, d, a, b, x[ 7], S33, 0xf6bb4b60); );// 
+generic();// /* 39 */
+set( HH (b, c, d, a, x[10], S34, 0xbebfbc70); );// 
+path();// /* 40 */
+set( HH (a, b, c, d, x[13], S31, 0x289b7ec6); );// 
+generic();// /* 41 */
+set( HH (d, a, b, c, x[ 0], S32, 0xeaa127fa); );// 
+generic();// /* 42 */
+set( HH (c, d, a, b, x[ 3], S33, 0xd4ef3085); );// 
+generic();// /* 43 */
+set( HH (b, c, d, a, x[ 6], S34, 0x4881d05); );// 
+generic();// /* 44 */
+set( HH (a, b, c, d, x[ 9], S31, 0xd9d4d039); );// 
+generic();// /* 45 */
+set( HH (d, a, b, c, x[12], S32, 0xe6db99e5); );// 
+generic();// /* 46 */
+set( HH (c, d, a, b, x[15], S33, 0x1fa27cf8); );// 
+generic();// /* 47 */
+set( HH (b, c, d, a, x[ 2], S34, 0xc4ac5665); );// 
+path();// /* 48 */
+generic();// /* Round 4 */
+set( II (a, b, c, d, x[ 0], S41, 0xf4292244); );// 
+generic();// /* 49 */
+set( II (d, a, b, c, x[ 7], S42, 0x432aff97); );// 
+generic();// /* 50 */
+set( II (c, d, a, b, x[14], S43, 0xab9423a7); );// 
+generic();// /* 51 */
+set( II (b, c, d, a, x[ 5], S44, 0xfc93a039); );// 
+generic();// /* 52 */
+set( II (a, b, c, d, x[12], S41, 0x655b59c3); );// 
+generic();// /* 53 */
+set( II (d, a, b, c, x[ 3], S42, 0x8f0ccc92); );// 
+generic();// /* 54 */
+set( II (c, d, a, b, x[10], S43, 0xffeff47d); );// 
+generic();// /* 55 */
+set( II (b, c, d, a, x[ 1], S44, 0x85845dd1); );// 
+path();// /* 56 */
+set( II (a, b, c, d, x[ 8], S41, 0x6fa87e4f); );// 
+generic();// /* 57 */
+set( II (d, a, b, c, x[15], S42, 0xfe2ce6e0); );// 
+generic();// /* 58 */
+set( II (c, d, a, b, x[ 6], S43, 0xa3014314); );// 
+generic();// /* 59 */
+set( II (b, c, d, a, x[13], S44, 0x4e0811a1); );// 
+generic();// /* 60 */
+set( II (a, b, c, d, x[ 4], S41, 0xf7537e82); );// 
+generic();// /* 61 */
+set( II (d, a, b, c, x[11], S42, 0xbd3af235); );// 
+generic();// /* 62 */
+set( II (c, d, a, b, x[ 2], S43, 0x2ad7d2bb); );// 
+generic();// /* 63 */
+set( II (b, c, d, a, x[ 9], S44, 0xeb86d391); );// 
+generic();// /* 64 */
+bend();//
+set( state[0] +=a; );// 
+set( state[1] +=b; );// 
+set( state[2] +=c; );// 
+set( state[3] +=d; );// 
+generic();// /* Zeroize sensitive information. */
+set( MD5_memset ((POINTER)x, 0, sizeof (x)); );// 
+end( } );// 
+generic();// /* Encodes input (UINT4) into output (unsigned char). Assumes len is
+generic();// a multiple of 4.
+generic();// */
+
+input( static void Encode (output, input, len)unsigned char *output; UINT4 *input; unsigned int len; );// 
+set( { );// 
+set(   unsigned int i, j; );// 
+loop( for (i = 0, j = 0; j < len; i++, j += 4) { );// 
+set( output[j] =(unsigned char)(input[i] & 0xff); );// 
+set( output[j+1] =(unsigned char)((input[i] >> 8) & 0xff); );// 
+set( output[j+2] =(unsigned char)((input[i] >> 16) & 0xff); );// 
+set( output[j+3] =(unsigned char)((input[i] >> 24) & 0xff); );// 
+lend( } );// 
+end( } );// 
+generic();// /* Decodes input (unsigned char) into output (UINT4). Assumes len is
+generic();// a multiple of 4.
+generic();// */
+
+input( static void Decode (output, input, len)UINT4 *output; unsigned char *input; unsigned int len; );// 
+set( { );// 
+set(   unsigned int i, j; );// 
+loop( for (i = 0, j = 0; j < len; i++, j += 4) output[i] =((UINT4)input[j])  );// 
+lend( | (((UINT4)input[j+1]) << 8) | (((UINT4)input[j+2]) << 16) | (((UINT4)input[j+3]) << 24); );// 
+end( } );// 
+generic();// /* Note: Replace "for loop" with standard memcpy if possible.
+generic();// */
+
+input( static void MD5_memcpy (output, input, len)POINTER output; POINTER input; unsigned int len; );// 
+set( { );// 
+set(   unsigned int i; );// 
+loop( for (i = 0; i < len; i++) output[i] =input[i];  );// 
+lend( );// auto 
+end( } );// 
+generic();// /* Note: Replace "for loop" with standard memset if possible.
+generic();// */
+
+input( static void MD5_memset (output, value, len)POINTER output; int value; unsigned int len; );// 
+set( { );// 
+set(   unsigned int i; );// 
+set( [i] =(char)value; );// 
+end( } );// 
+end();//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 8388608
+;    MD5.C   /*   */
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 230 161 640 617 1 75   144   48    VC6.key  0

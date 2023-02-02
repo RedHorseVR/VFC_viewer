@@ -1,0 +1,37 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : scraps.ins
+;  File Date : 03:32:13 PM - 21:Aug:1999
+
+branch(try );//
+path( {  );//
+process(System.out.println( " loading :" + VFCfile + " ...\n" ););//
+set( is =new URL(  DocBase , VFCfile ).openStream(););//  is =new URL( "." , VFCfile ).openStream();
+path( }catch( Exception e ){);//
+process(System.out.println("!!!!!!!!1   !"););//
+bend( } );//
+branch(try );//
+path( {  );//
+set( StreamTokenizer st =new StreamTokenizer(is); );// 
+set( st.eolIsSignificant(true); );// 
+set( );// st.commentChar('#'); 
+loop(while (  st.ttype != StreamTokenizer.TT_EOL  ) {);//
+branch( switch (st.nextToken()) { );// 
+path( case StreamTokenizer.TT_EOL: );// 
+set();// 
+set(SO.addElement( track_stack_links(  new StatementObject( "loop( Branch );/... commentary " ) )  ) ;);//
+bend( } );// 
+lend( } // end while );//
+path( }catch( Exception e ){);//
+process(System.out.println("!!!!!!!! 2   !"););//
+bend( } );//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 255 0 255 255 65535 65280 9633792
+;       <><>   
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 57 57 640 355 1 100   100   50    default.key  0

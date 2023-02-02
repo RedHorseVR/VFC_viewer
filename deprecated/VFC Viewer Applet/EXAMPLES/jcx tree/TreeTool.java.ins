@@ -1,0 +1,111 @@
+;  IRL FlowCode Version: Beta Version 3.6 - October 1997
+;  c1995-1998: Visual FlowCoder and FlowCode is a tradename of FlowLynx / Ublige 
+;
+;  File Name : TreeTool.java.ins
+;  File Date : 03:40:25 PM - 27:Aug:1999
+
+generic(  import  jcx.*;  );//
+generic(  import  java.awt.*;  );//
+generic(  import  java.applet.Applet;  );//
+generic(  import  java.net.URL;  );//
+generic(  import  java.net.MalformedURLException;  );//
+end(  );// AUTO 
+
+input(  public class TreeTool extends java.applet.Applet implements Runnable{);//
+generic(  public Thread treeThread;  );//
+generic(  public TreePanel treePane;  );//
+generic(  public TreeNode root;  );//
+generic(  public URL[] imgUrls;  );//
+end(  );// AUTO 
+
+input(  public void init () {  );//
+set(  String width  = getParameter("width");  );//
+set(  int w = (width == null) ? 400 : Integer.valueOf(width).intValue();  );//
+set(  String height  = getParameter("height");  );//
+set(  int h = (height == null) ? 500 : Integer.valueOf(height).intValue();  );//
+generic();//  resize (w,h);  
+generic(  setLayout(new BorderLayout());  );//
+generic(  setBackground (Color.lightGray);  );//
+branch(  try {  );//
+path();//
+set(  imgUrls = new URL [10];  );//
+set(  imgUrls [0] = new URL (getDocumentBase(),  "iconpics/ylnode.gif");  );//
+set(  imgUrls [1] = new URL (getDocumentBase(),  "iconpics/grnode.gif");  );//
+set(  imgUrls [2] = new URL (getDocumentBase(),  "iconpics/phone.gif");  );//
+set(  imgUrls [3] = new URL (getDocumentBase(),  "iconpics/ppen.gif");  );//
+set(  imgUrls [4] = new URL (getDocumentBase(),  "iconpics/dblptr.gif");  );//
+set(  imgUrls [5] = new URL (getDocumentBase(),  "iconpics/file.gif");  );//
+set(  imgUrls [6] = new URL (getDocumentBase(),  "iconpics/excl.gif");  );//
+set(  imgUrls [7] = new URL (getDocumentBase(),  "iconpics/yes.gif");  );//
+set(  imgUrls [8] = new URL (getDocumentBase(),  "iconpics/no.gif");  );//
+set(  imgUrls [9] = new URL (getDocumentBase(),  "iconpics/url.gif");  );//
+set(  }  );//
+path(  catch (MalformedURLException e) {  );//
+generic(    );//// // do error recovery ......
+bend(  }  );//
+set();//ScrollPane Scontainer = new ScrollPane( ScrollPane.SCROLLBARS_ALWAYS);
+set();//add( Scontainer );
+process(setLayout( null ););//
+process(  add ( treePane = new TreePanel()););//Scontainer.add ( treePane = new TreePanel());
+generic(// reshape( 0 , 0, w , h );treePane.reshape( w*3/4 , 0, w/4  , h ););//treePane.reshape( 0 , 0, w/4  , h );
+generic(treePane.reshape( 0 , 0, w  , h ););//treePane.size( 0 , 0, w/2  , h );
+generic(  treePane.showPreIcons ( false ););//  treePane.showPreIcons (true);  
+generic();//  treePane.SCROLLBARS_ALWAYS = true;
+generic();//  treePane.setFont (f);  
+generic();//  treePane.setUrlFont (uf);  
+generic();//  treePane.addNotify();
+set(  root = treePane.getRoot ();  );//
+generic(  root.setIconURL (imgUrls [0]);  );//
+generic(  root.setName  ("Inputs"););//
+generic(  root.select();  );//
+set(  TreeNode t0 = root.addChild (new TreeNode(null, "Child with two Icon states", imgUrls [7], imgUrls [6]));  );//
+generic(  t0.setCloseIconURL (imgUrls [8]);  );//
+set(  TreeNode t00 = t0.addChild (new TreeNode(null, "Expand me to See the scroll bars", null, null));  );//
+loop(  for (int i=0; i<50; i++)  );//
+lend(  t00.addChild (new TreeNode(null, "Child with file icon "+Integer.toString(i), imgUrls [5], imgUrls [5]));  );//
+generic(  t00.collapse();  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre Yes + Pen icon", imgUrls [3], imgUrls [7]));  );//
+generic(  t0.addChild (new TreeNode(null, "Child with Pre No + Phone icon", imgUrls [2], imgUrls [8]));  );//
+set(  TreeNode t1 = root.addChild (new TreeNode(null, "Child with grey icon", imgUrls [1], null));  );//
+set(  TreeNode t10 = t1.addChild (new TreeNode(null, "Child with yellow icon", imgUrls [0], null));  );//
+generic(  t10.addChild (new TreeNode(null, "Child No icon", null, null));  );//
+set(  TreeNode x = t10.addChild (new TreeNode(null, "x", imgUrls [0], null));  );//
+set(  TreeNode y = x.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+set(  TreeNode z = y.addChild (new TreeNode(null, "Child with Double Pointer icon", imgUrls [4], null));  );//
+generic(  z.addChild (new TreeNode(null, "Child with a pre Yes +file icon", imgUrls [5], imgUrls [7]));  );//
+generic(  t1.addChild (new TreeNode(null, "Child 2 With Pre No + Exclamation icon", imgUrls [6], imgUrls [8]));  );//
+generic(  root.addChild (new TreeNode(null, "Child withFile icon", imgUrls [5], null));  );//
+set();//  add ("South", controls = new TreeControls(this));  
+end(  }  );//
+
+input(  public boolean action (Event ev, Object arg) {  );//
+branch(  if (ev.target instanceof Button) {  );//
+path();//
+bend(  }  );//
+generic(  repaint ();  );//
+generic(treePane.repaint (););//
+end(  return true;  });//
+
+input(  public void start () {  );//
+set(  treeThread = new Thread(this);  );//
+generic(  treeThread.start();  );//
+end(  }  );//
+
+input(  public void stop () {  );//
+generic(  showStatus ("Stop called");  );//
+set(  treeThread = null;  );//
+end(  }  );//
+
+input(  public void run () {  );//
+generic(  showStatus ("Run called");  );//
+end(  }  );//
+end(  }  );//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 128
+;    TreeTool.java   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 737 456 722 694 270 135   289   4294965888    java.key  0

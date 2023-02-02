@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : FCview.java.ins
-;  File Date : 11:58:15 AM - 30:Jan:2023
+;  File Date : 12:15:10 AM - 02:Feb:2023
 
 
 input(  /** Imports **/      );//// // <--- part of framework......
@@ -16,6 +16,8 @@ end(  );// AUTO
 input(  public class FCview extends Frame {);//  public class FCview extends Applet {
 branch();//
 path();//
+set(static public java.awt.List  ObjList;);//List l1 = new List(5);    
+set();//
 generic(  Color SelectedObjectColor  = new Color(  255  , 0 , 0 ) ;);//
 generic(  Color CommentObjectColor  = new Color(  100 , 100 , 100 ) ;);//
 set(boolean first_draw = true;);//
@@ -41,10 +43,15 @@ output();//System.out.println( "Hello --- getting lines "  );
 loop(while( ( c = st.read() ) != -1 ) {);//GetLines( st ) ;
 branch(if(  c == '\n' ));// 
 path({);// 
-output(System.out.println( buff ););//////
+output(System.out.println( ':' + buff ););//////
 branch(if(  !buff.startsWith(";") &&  !buff.startsWith("\r")  ));//
 path( { );//
 set(SO.addElement( track_stack_links(  (SO1=new StatementObject( buff , SO )) )  ) ;);//
+output(////);//System.out.println( '\t' + SO1.Statement + "======" + SO1.Type );
+branch(if( SO1.Type.equals("input") || SO1.Type.equals("event")  ));//
+path( { );//
+set(ObjList.add( SO1.Statement  ););//lnkView.ObjList.add("FC Item 1");
+bend( } );//
 branch(if( SO.size() == 1  ));//
 path( { );//
 set(Head = SO1;);//
@@ -97,7 +104,8 @@ end( } );//
 path();//
 
 input(FCview (  String filename ) throws IOException {);//FCview ( URL docbase , String filename ) throws IOException {
-set();//DocBase = docbase ;
+set(Frame f = this;);//DocBase = docbase ;
+set();//
 set(   InputStream is =null; );// 
 set(VFCfile = filename;);//
 set(logicalS = new Stack( ) ;);// Use to track logical nesting 
@@ -107,6 +115,7 @@ output();//System.out.println( VFCfile );
 set(SO = new Vector( 200 ););//
 set();//SO.addElement( track_stack_links(  new StatementObject( "input( ! );/... commentary " ) )  ) ;
 process(load( VFCfile ););//load( "test.ins" );
+set();//ObjList.add("FC Item 1");
 output();//System.out.println( "\tpost load ------DEBUG-------------------------"  );
 set();//SO.addElement( track_stack_links(  new StatementObject( "end( ! );/... commentary " ) )  ) ;
 set();//int     i=10;
@@ -177,13 +186,13 @@ path();//
 
 input(   public void draw( Graphics g, int x, int y, int z){);//  public void _draw( Graphics g, int x, int y, int z){
 set();//FontMetrics FM = g.getFontMetrics();
-output(System.out.println( "draw ... DEBUG-------------------------"  ););//
+output();//System.out.println( "draw ... DEBUG-------------------------"  );
 set(StatementObject S ;);//
 branch(if( first_draw  ));// 
 path( {);//Calc only on first run to avoid bad display
-output(System.out.println( "\t---------------------DEBUG-------------------------"  ););//
+output();//System.out.println( "\t---------------------DEBUG-------------------------"  );
 process(S  = (StatementObject)  SO.elementAt( 0 ) ;);//
-output(System.out.println( "\t statment object draw ... DEBUG-------------------------"  ););//
+output();//System.out.println( "\t statment object draw ... DEBUG-------------------------"  );
 set(first_draw = false;);//
 process(S.calculate( g, x, y, z ););//
 bend(} );//
@@ -208,7 +217,7 @@ process(S.draw( g, x ,  y , z) ;);//p = S.draw( g, p.x , p.y  , z) ;
 bend( } );//
 lend( } // end for );//
 set();//SO1.show_comments = true;
-output(System.out.println( "exit draw ... DEBUG-------------------------"  ););//
+output();//System.out.println( "exit draw ... DEBUG-------------------------"  );
 end(} );//  
 path();//
 
@@ -240,4 +249,4 @@ end();//
 ;    FCview.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 3926 329 2088 1402 12 169   4294956159   4294966267    java.key  0
+; 1912 443 1490 1318 107 169   4294963781   4294966594    java.key  0
