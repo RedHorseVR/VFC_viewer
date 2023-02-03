@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : VFCviewer.java.ins
-;  File Date : 12:56:09 AM - 02:Feb:2023
+;  File Date : 10:33:15 PM - 02:Feb:2023
 
 generic(    );/////// // HYPER LINK TO HTML_VFCviewer ---> // FILE: HTML_VFCview.ins......//////
 generic(    );////  AUTO ...
@@ -12,8 +12,10 @@ input(  /** Imports **/      );//// // <--- part of framework......
 generic(  import java.awt.*;  );//
 generic(//import javax.swing.JOptionPane;);//  import java.applet.*;
 generic(  import java.net.*;  );//
-set( ////);//import javax.swing.JLabel; 
 set( ////);//import javax.swing.JPanel;
+set(import java.util.Scanner; );// ////
+set(import java.util.regex.Matcher; );// ////
+set(import java.util.regex.Pattern;);// ////
 generic(  /*------------*/  );//
 end(  );// AUTO 
 
@@ -21,63 +23,112 @@ input(  public class VFCviewer  extends Frame {);////   public class JavaApplet 
 
 input(  /** class data **/      );//// // <--- used in framework......
 process(static VFCviewer  f ;);///////// //   create the object application FRAME  ......////////
-generic(static  FCview lnkView;);//
+generic(static  FCview FCV;);//
 generic(  URL CodeBase;  );//
 generic(    );//// // Resource Res;......
-set(int oldx = 0 , oldy = 0;);//
 set(int dx = 0 , dy = 0 ;);//
-set(  int CrossSize =  200;  );//
-set(  int CrossXPos = 200 ;);//
-set(  int CrossYPos = 10;  );//
 set(  int ZoomScale = 10;);//
+set(  int CrossSize =  200;  );//
+set();//
+set(  int X = 500;);//
+set(  int Y = 50;);//
+set(  int CrossXPos = X ;);//
+set(  int CrossYPos = Y ;);//
+set(int oldx = CrossXPos , oldy = CrossYPos ;);//
+set();//
+set(Graphics G = null ;);//
 output(  /**@shapeType AggregationLink*/  );//
 generic(  /** end variables **/  );//
 generic(  /** methods **/      );//// // <--- used in framework......
 generic(    );////  AUTO ...
 end(  );// AUTO 
 
+input(void setPosition( int x , int y ){);//
+set(  X = x ;);//
+set(  Y = y ;);//
+set(  CrossXPos = X ;);//
+set(  CrossYPos = Y ;);//
+set(oldx = CrossXPos;);//
+set(oldy = CrossYPos ;);//
+end(  } );//
+
 input(  boolean processPosition( Event e ){);//
 output();//System.out.println( e  );
 branch(  switch (e.id){  );//
 path(  case Event.MOUSE_DOWN:  );//
+set();///*
 set(  CrossXPos = e.x;);//  CrossXPos+= dx;
 set(  CrossYPos = e.y;);//  CrossYPos +=  dy;
+set();//*/ 
+output(System.out.println( "Mouse Down at: -------------------> " + e.x + " - " +  e.y ););//
+output(System.out.println( "Head at --------------------> " + FCV.Head.Xo + " - " + FCV.Head.Yo  ););//
 branch(if(  oldx != CrossXPos || oldy != CrossYPos   ));//
 path( { );//
+set();///*
 set(dx =   CrossXPos - oldx ;);//dx =  0 ;
 set( dy = CrossYPos - oldy;);//
 set(oldx = CrossXPos ;);//oldx = 0;
 set(oldy = CrossYPos ;);//oldy = 0;
+set();//*/ 
 path( }else{ );//
 bend( } );//
+process();//  repaint();
 end(  return false ;);//
-path(  case 403:);//
+path(case  701 :);//LIST SELECTION EVENT
+generic(String L = "" + e.target ;);//
+output();//System.out.println(  L  );
+generic(Pattern p1 = Pattern.compile( "^.*="  ););// 
+generic(Pattern p2 = Pattern.compile( "]$"  ););// 
+generic(Matcher m1 = p1.matcher(  L ););// 
+generic(String result = m1.replaceFirst( "" ););// 
+generic(Matcher m2 = p2.matcher(  result  ););// 
+generic(result = m2.replaceFirst( "" ););// getListSelection string
+process(Point pos = FCV.getObjectStatementXY(  result  ) ;);////  public void _draw( Graphics g, int x, int y, int z){//
+output();//System.out.println(  "\n\t>>>" + result +" at " + pos.x + " - " + pos.y +"\n"  );
+output();//System.out.println( "Cross Pos ----> " + CrossXPos + " :  " + CrossYPos  );
+output();//System.out.println( "Head at --------------------> " + FCV.Head.Xo + " : " + FCV.Head.Yo  );
+set();//CrossYPos -= (pos.y - FCV.Head.Yo);
+set(int dY = 50 - pos.y ;);//int dY =0  ;
+process(setPosition( X , Y + dY ) ;);//
+set( );//oldy = CrossYPos ;
+set();//  CrossYPos = e.y  - dy;
+set();//dx = 0;
+set();//dy = 0;
+process(  repaint();  );//
+set();// FCV.Head.Yo = 100 ;
+end(return true; );//
+path(  case 403:);//KEYED EVENT
 branch(if( e.key ==  1002 ));//PAGE UP
 path( { );//
 output(System.out.println( "zoom in"  ););//
-generic(lnkView.Zoom++ ;);//// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );
+generic(FCV.Zoom++ ;);///// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );//
 bend( } );//
 branch(if( e.key ==  1003 ));//PAGE DOWN
 path( { );//
 output(System.out.println( "zoom out"  ););//
-generic(lnkView.Zoom--  ;);//// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );
+generic(FCV.Zoom--  ;);/////// // Res  = new Resource( this , CodeBase );......FCV = new FCview( getDocumentBase() , vfcname  );FCV = new FCview( getCodeBase() , vfcname  );//
 bend( } );//
 set(int MINZ = 1 , MAXZ = 50;);//
-branch(if( lnkView.Zoom >= MAXZ ));//if( Zoom >= 25  )
+branch(if( FCV.Zoom >= MAXZ ));///if( Zoom >= 25  )//
 path( { );//
-set(lnkView.Zoom = MAXZ ;);//
-path(} else if( lnkView.Zoom < MINZ ) {);//
-set(lnkView.Zoom = MINZ ;);//
+set(FCV.Zoom = MAXZ ;);//
+path(} else if( FCV.Zoom < MINZ ) {);//
+set(FCV.Zoom = MINZ ;);//
 bend( } );//
+process();//FCV.draw( G , 500, 200, FCV.Zoom );
 process(  repaint();  );//
-end(  return false ;);//
+end(  return true;);//
 path(  case Event.MOUSE_DRAG:  );//
 set({);//
 set(  CrossXPos = e.x - dx;);//  CrossXPos+= dx;
 set(  CrossYPos = e.y  - dy;);//  CrossYPos +=  dy;
+set(X = CrossXPos ;);//
+set(Y = CrossYPos ;);//
 process(  repaint();  );//
 set(oldx = CrossXPos ;);//oldx = 0;
 set(oldy = CrossYPos ;);//oldy = 0;
+process( );//Point p = FCV.getObjectStatementXY(  "sub" ) ;
+output();//System.out.println(  "\n\t\t\tsub *** at " + p.x + " - " + p.y +"\n"  );
 set(});//
 end(  return true;  );//
 bend(  }  );//
@@ -88,9 +139,9 @@ set();//  CodeBase = getCodeBase();
 branch(try );//
 path( {  );//
 set( String  vfcname = VFCfile;);//String  vfcname = "test.ins";
-generic(lnkView = new FCview( vfcname  ););//// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );
+generic(FCV = new FCview( vfcname  ););/////// // Res  = new Resource( this , CodeBase );......FCV = new FCview( getDocumentBase() , vfcname  );FCV = new FCview( getCodeBase() , vfcname  );//
 output();//System.out.println( "---------------------DEBUG-1------------------------"  );
-generic(lnkView.Zoom--  ;);//// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );
+generic(FCV.Zoom--  ;);////// // Res  = new Resource( this , CodeBase );......FCV = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );//
 process(  repaint();  );//
 path( }catch( Exception e ){);//
 process(System.out.println("Exception <ExportFileName><LineNumber>! " +   e.getMessage() + "\n"  ););//
@@ -106,13 +157,13 @@ set(filename = filename.replace( "\\", "/" ););//
 set(filename = filename.replace( "%5C", "/" ););//
 set(filename = filename.replace( "//", "/" ););//
 output(////);//JOptionPane.showMessageDialog(null, filename, " by RHVR (version 1.0)", JOptionPane.WARNING_MESSAGE );
-set(java.awt.List l1 = lnkView.ObjList = new java.awt.List( 1 ););//List l1 = new List(5);    
+set(java.awt.List l1 = FCV.ObjList = new java.awt.List( 1 ););///List l1 = new List(5);    //
 process(  f = new VFCviewer(  filename ););///////// //   create the object application FRAME  ......////////
 generic();// // creating the list of 5 rows    //
-generic( // adding the list to frame   //);//lnkView.ObjList = l1;
+generic( // adding the list to frame   //);///FCV.ObjList = l1;//
 set(l1.setBounds(20, 35, 175, 500 ););// ////
-set();//lnkView.ObjList.add("Item 1");
-set(f.add(lnkView.ObjList ););// f.add( ObjList );
+set();///FCV.ObjList.add("Item 1");//
+set(f.add(FCV.ObjList ););/// f.add( ObjList );//
 set();//
 generic(f.setSize( 1000, 1000););// ////
 set(f.setLocation(300, 200););//
@@ -120,9 +171,9 @@ generic(f.setTitle("VFCviewer by RedHorseVR.com (copyright 1999,2023)  - " + fil
 set(f.setLayout(null);     );// ////
 set(f.setVisible(true);    );// ////
 set();//panel.setLocation(300, 200);
+generic(FCV.Zoom--  ;);/////// // Res  = new Resource( this , CodeBase );......FCV = new FCview( getDocumentBase() , vfcname  );FCV = new FCview( getCodeBase() , vfcname  );//
 set();//
 generic( ////);//f.setLayout(new FlowLayout());
-generic(  //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj , "Main Window" ) ;...   // //setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;......  );////setup frame using MAIN controls // Obj.Res.initMAINframe( Obj ,  ) ;
 output(System.out.println( "---------------------------------------------------"  ););//
 output(System.out.println( "---------------------------------------------------"  ););//
 output(System.out.println( "------------VFC Viewer by RHVR (v1.0)--------------\n"  ););//
@@ -134,15 +185,18 @@ end(  }  );//
 end(  );// AUTO 
 
 input(  public void paint(Graphics g){  );//
+set(G = g;);//
 generic();//  drawCrossHair( g, CrossXPos, CrossYPos, CrossSize );  
 generic();//  g.drawString( "Hello new world ..." , 20 , 20 );  
-process(// lnkView.zoom( g , 1 ););//lnkView.zoom( g , ZoomScale );
-process(lnkView.draw(g , CrossXPos + 20, CrossYPos + 20 , 25););//
+process(// FCV.zoom( g , 1 ););///lnkView.zoom( g , ZoomScale );//
+process(FCV.draw(g , X , Y,  FCV.Zoom ););//FCV.draw(g , CrossXPos , CrossYPos  , 25);
 end(  }  );//
 generic(    );////  AUTO ...
 end(  );// AUTO 
 
 input(  public boolean handleEvent(Event e){  );//
+output();//System.out.println( "EVENT:" + e ) ;
+set();//
 branch(  if( processPosition( e ) ));//
 path();//
 generic(  {  );//
@@ -173,4 +227,4 @@ end();//
 ;    VFCviewer.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 809 195 1322 1568 81 179   803   4294963989    java.key  0
+; 4294964542 456 2310 1242 78 128   30   4294965352    java.key  0

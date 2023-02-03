@@ -171,6 +171,24 @@ public class FCview extends Frame {
 		
 		return P; }
 	
+	public Point getObjectStatementXY( String ObjectStatement ){
+		Point XY = new Point( 0 , 0 );
+		
+		StatementObject S ;
+		System.out.println( "Head at --------------------> " + Head.Xo + " - " + Head.Yo  );
+		for( int i =0 ; i< SO.size()  ; i++ ) {
+			S  = (StatementObject)  SO.elementAt( i ) ;
+			if( S.Statement.equals( ObjectStatement)  )
+			{
+				XY.x = S.x1;
+				XY.y= S.y1;
+				return XY;
+				}
+			} // end for
+		
+		return XY;
+		
+		}
 	public void draw( Graphics g, int x, int y, int z){
 		
 		
@@ -228,5 +246,5 @@ public class FCview extends Frame {
 		
 	}
 
-//  Export  Date: 12:15:10 AM - 02:Feb:2023...
+//  Export  Date: 05:51:26 PM - 02:Feb:2023...
 

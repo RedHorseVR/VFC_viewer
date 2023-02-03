@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : FCview.java.ins
-;  File Date : 12:15:10 AM - 02:Feb:2023
+;  File Date : 05:51:26 PM - 02:Feb:2023
 
 
 input(  /** Imports **/      );//// // <--- part of framework......
@@ -184,6 +184,24 @@ lend( } // end for );//
 end(return P; });//  
 path();//
 
+input(   public Point getObjectStatementXY( String ObjectStatement ){);//  public void _draw( Graphics g, int x, int y, int z){
+set(Point XY = new Point( 0 , 0 ););//
+output();//System.out.println( "draw ... DEBUG-------------------------"  );
+set(StatementObject S ;);//
+output(System.out.println( "Head at --------------------> " + Head.Xo + " - " + Head.Yo  ););//
+loop(for( int i =0 ; i< SO.size()  ; i++ ) {);//
+process(S  = (StatementObject)  SO.elementAt( i ) ;);//
+branch(if( S.Statement.equals( ObjectStatement)  ));// 
+path( { );//
+set(XY.x = S.x1;);//SO1.show_comments = true;
+set(XY.y= S.y1;);//SO1.show_comments = true;
+end(return XY;);//SO1.show_comments = true;
+bend( } );//
+lend( } // end for );//
+set(return XY;);//SO1.show_comments = true;
+output();//System.out.println( "exit draw ... DEBUG-------------------------"  );
+end(} );//  
+
 input(   public void draw( Graphics g, int x, int y, int z){);//  public void _draw( Graphics g, int x, int y, int z){
 set();//FontMetrics FM = g.getFontMetrics();
 output();//System.out.println( "draw ... DEBUG-------------------------"  );
@@ -245,8 +263,8 @@ end();//
 
 
 ;INSECTA EMBEDDED SESSION INFORMATION
-; 16777215 16777215 255 4278255615 16711680 16711680 255 16777215 255 255 16777215 65280 0
+; 16777215 16777215 255 4278255615 16711680 33023 255 16777215 255 255 16777215 65280 0
 ;    FCview.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 1912 443 1490 1318 107 169   4294963781   4294966594    java.key  0
+; 1163 195 2482 1423 177 169   4294956286   4294966746    java.key  0
