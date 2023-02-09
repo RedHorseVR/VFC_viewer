@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : VFCviewer.java.ins
-;  File Date : 10:33:15 PM - 02:Feb:2023
+;  File Date : 01:43:43 AM - 03:Feb:2023
 
 generic(    );/////// // HYPER LINK TO HTML_VFCviewer ---> // FILE: HTML_VFCview.ins......//////
 generic(    );////  AUTO ...
@@ -72,7 +72,7 @@ set(oldy = CrossYPos ;);//oldy = 0;
 set();//*/ 
 path( }else{ );//
 bend( } );//
-process();//  repaint();
+process(  repaint(););//
 end(  return false ;);//
 path(case  701 :);//LIST SELECTION EVENT
 generic(String L = "" + e.target ;);//
@@ -89,8 +89,8 @@ output();//System.out.println( "Cross Pos ----> " + CrossXPos + " :  " + CrossYP
 output();//System.out.println( "Head at --------------------> " + FCV.Head.Xo + " : " + FCV.Head.Yo  );
 set();//CrossYPos -= (pos.y - FCV.Head.Yo);
 set(int dY = 50 - pos.y ;);//int dY =0  ;
+set();// X = 500 ;
 process(setPosition( X , Y + dY ) ;);//
-set( );//oldy = CrossYPos ;
 set();//  CrossYPos = e.y  - dy;
 set();//dx = 0;
 set();//dy = 0;
@@ -227,4 +227,4 @@ end();//
 ;    VFCviewer.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 4294964542 456 2310 1242 78 128   30   4294965352    java.key  0
+; 4294965118 287 1933 1275 131 128   596   4294965444    java.key  0

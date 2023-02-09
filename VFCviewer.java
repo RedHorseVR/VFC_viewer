@@ -61,7 +61,7 @@ boolean processPosition( Event e ){
 			
 		}else{
 			}
-		
+		repaint();
 		return false ;
 	case  701 :
 		String L = "" + e.target ;
@@ -78,8 +78,8 @@ boolean processPosition( Event e ){
 		
 		
 		int dY = 50 - pos.y ;
-		setPosition( X , Y + dY ) ;
 		
+		setPosition( X , Y + dY ) ;
 		
 		
 		
@@ -204,5 +204,5 @@ public boolean handleEvent(Event e){
 	return false; }
 }       /** end of class definition **/
 
-//  Export  Date: 10:33:15 PM - 02:Feb:2023...
+//  Export  Date: 01:43:43 AM - 03:Feb:2023...
 
