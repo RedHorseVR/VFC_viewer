@@ -21,7 +21,7 @@ public class FCview extends Frame {
 		Stack logicalS;
 		URL DocBase = null;
 		private String LastType = null ;
-		public int Zoom = 10;
+		public int Zoom = 15;
 		public int currentObject =1;
 		public boolean DrawComments = true ;
 	
@@ -247,5 +247,5 @@ public class FCview extends Frame {
 		
 	}
 
-//  Export  Date: 03:28:54 PM - 15:Feb:2023...
+//  Export  Date: 12:06:45 PM - 16:Feb:2023...
 

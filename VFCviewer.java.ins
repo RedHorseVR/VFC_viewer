@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : VFCviewer.java.ins
-;  File Date : 01:00:31 AM - 16:Feb:2023
+;  File Date : 12:02:37 PM - 16:Feb:2023
 
 generic(    );/////// // HYPER LINK TO HTML_VFCviewer ---> // FILE: HTML_VFCview.ins......//////
 generic(    );////  AUTO ...
@@ -100,13 +100,13 @@ end(return true; });//
 path(  case 403:);//KEYED EVENT
 branch(if( e.key ==  1002 ));//PAGE UP
 path( { );//
-output(System.out.println( "zoom in"  ););//
 generic(FCV.Zoom++ ;);///// // Res  = new Resource( this , CodeBase );......lnkView = new FCview( getDocumentBase() , vfcname  );lnkView = new FCview( getCodeBase() , vfcname  );//
+output(System.out.println( "zoom in to " + FCV.Zoom  ););//
 bend( } );//
 branch(if( e.key ==  1003 ));//PAGE DOWN
 path( { );//
-output(System.out.println( "zoom out"  ););//
 generic(FCV.Zoom--  ;);/////// // Res  = new Resource( this , CodeBase );......FCV = new FCview( getDocumentBase() , vfcname  );FCV = new FCview( getCodeBase() , vfcname  );//
+output(System.out.println( "zoom out to " + FCV.Zoom   ););//
 bend( } );//
 set(int MINZ = 1 , MAXZ = 50;);//
 branch(if( FCV.Zoom >= MAXZ ));///if( Zoom >= 25  )//
@@ -232,4 +232,4 @@ end();//
 ;    VFCviewer.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 4294965058 671 1691 1250 128 128   837   4294964366    java.key  0
+; 4294965058 671 1691 1250 128 128   103   4294965306    java.key  0

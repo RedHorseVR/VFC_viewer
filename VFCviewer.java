@@ -89,13 +89,13 @@ boolean processPosition( Event e ){
 	case 403:
 		if( e.key ==  1002 )
 		{
-			System.out.println( "zoom in"  );
 			FCV.Zoom++ ;
+			System.out.println( "zoom in to " + FCV.Zoom  );
 			}
 		if( e.key ==  1003 )
 		{
-			System.out.println( "zoom out"  );
 			FCV.Zoom--  ;
+			System.out.println( "zoom out to " + FCV.Zoom   );
 			}
 		int MINZ = 1 , MAXZ = 50;
 		if( FCV.Zoom >= MAXZ )
@@ -209,5 +209,5 @@ public boolean handleEvent(Event e){
 	return false; }
 }       /** end of class definition **/
 
-//  Export  Date: 04:04:37 PM - 15:Feb:2023...
+//  Export  Date: 12:02:37 PM - 16:Feb:2023...
 
