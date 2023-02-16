@@ -9,6 +9,7 @@
 	import java.util.Scanner;
 	import java.util.regex.Matcher;
 	import java.util.regex.Pattern;
+	import java.io.File ;
 	/*------------*/
 	
 public class VFCviewer  extends Frame {
@@ -18,7 +19,7 @@ public class VFCviewer  extends Frame {
 	URL CodeBase;
 	
 	int dx = 0 , dy = 0 ;
-	int ZoomScale = 10;
+	
 	int CrossSize =  200;
 	
 	int X = 500;
@@ -63,7 +64,7 @@ boolean processPosition( Event e ){
 			}
 		repaint();
 		return false ;
-	case  701 :
+	case  701 : {
 		String L = "" + e.target ;
 		
 		Pattern p1 = Pattern.compile( "^.*="  );
@@ -76,7 +77,6 @@ boolean processPosition( Event e ){
 		
 		
 		
-		
 		int dY = 50 - pos.y ;
 		
 		setPosition( X , Y + dY ) ;
@@ -85,7 +85,7 @@ boolean processPosition( Event e ){
 		
 		repaint();
 		
-		return true;
+		return true; }
 	case 403:
 		if( e.key ==  1002 )
 		{
@@ -104,6 +104,9 @@ boolean processPosition( Event e ){
 		} else if( FCV.Zoom < MINZ ) {
 			FCV.Zoom = MINZ ;
 			}
+		StatementObject S  = (StatementObject)   FCV.SO.elementAt(  FCV.currentObject - 1  ) ;
+		
+		
 		
 		repaint();
 		return true;
@@ -154,19 +157,22 @@ public static void main(String[] args){
 	
 	f.setSize( 1000, 1000);
 	f.setLocation(300, 200);
-	f.setTitle("VFCviewer by RedHorseVR.com (copyright 1999,2023)  - " + filename );
+	f.setTitle("VFCviewer by RedHorseVR.com and MaxxImmersive.com  (copyright 1999,2023)  - " + filename );
 	f.setLayout(null);
 	f.setVisible(true);
 	
 	FCV.Zoom--  ;
 	
 	////
-	System.out.println( "---------------------------------------------------"  );
-	System.out.println( "---------------------------------------------------"  );
-	System.out.println( "------------VFC Viewer by RHVR (v1.0)--------------\n"  );
-	System.out.println( "NOTE: \nUse PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright http://redhorsevr.com/ 1999~2023) \n" );
-	System.out.println( "---------------------------------------------------"  );
-	System.out.println( "---------------------------------------------------"  );
+	System.out.println( "---------------------------------------------------------------------------------------------------"  );
+	System.out.println( "-----VFC Viewer based on Java code base by RHVR (v1.0)- updated by MaxxImmersive.com (v1.1x) ------"  );
+	System.out.println( "---------------------------------------------------------------------------------------------------"  );
+	System.out.println( "NOTE: \nUse PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright by redhorsevr.com 1999 and updates by maxximmersive.com 2023) \n" );
+	File fil = new File( filename );
+	filename = "vfc://" + fil.getAbsolutePath() ;
+	System.out.println( "VIEWING FILE: "  + filename );
+	System.out.println( "---------------------------------------------------------------------------------------------------"  );
+	System.out.println( "---------------------------------------------------------------------------------------------------"  );
 	////
 	}
 
@@ -174,7 +180,6 @@ public void paint(Graphics g){
 	G = g;
 	
 	
-	// FCV.zoom( g , 1 );
 	FCV.draw(g , X , Y,  FCV.Zoom );
 	}
 
@@ -204,5 +209,5 @@ public boolean handleEvent(Event e){
 	return false; }
 }       /** end of class definition **/
 
-//  Export  Date: 01:43:43 AM - 03:Feb:2023...
+//  Export  Date: 04:04:37 PM - 15:Feb:2023...
 

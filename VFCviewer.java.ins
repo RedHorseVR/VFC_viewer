@@ -2,7 +2,7 @@
 ;  c1995-2015: Visual Flow Coder by 2LResearch
 ;
 ;  File Name : VFCviewer.java.ins
-;  File Date : 01:43:43 AM - 03:Feb:2023
+;  File Date : 01:00:31 AM - 16:Feb:2023
 
 generic(    );/////// // HYPER LINK TO HTML_VFCviewer ---> // FILE: HTML_VFCview.ins......//////
 generic(    );////  AUTO ...
@@ -16,6 +16,7 @@ set( ////);//import javax.swing.JPanel;
 set(import java.util.Scanner; );// ////
 set(import java.util.regex.Matcher; );// ////
 set(import java.util.regex.Pattern;);// ////
+set(import java.io.File ;);// 
 generic(  /*------------*/  );//
 end(  );// AUTO 
 
@@ -27,7 +28,7 @@ generic(static  FCview FCV;);//
 generic(  URL CodeBase;  );//
 generic(    );//// // Resource Res;......
 set(int dx = 0 , dy = 0 ;);//
-set(  int ZoomScale = 10;);//
+set();//  int ZoomScale = 10;
 set(  int CrossSize =  200;  );//
 set();//
 set(  int X = 500;);//
@@ -74,7 +75,7 @@ path( }else{ );//
 bend( } );//
 process(  repaint(););//
 end(  return false ;);//
-path(case  701 :);//LIST SELECTION EVENT
+path(case  701 : {);//LIST SELECTION EVENT
 generic(String L = "" + e.target ;);//
 output();//System.out.println(  L  );
 generic(Pattern p1 = Pattern.compile( "^.*="  ););// 
@@ -86,7 +87,6 @@ generic(result = m2.replaceFirst( "" ););// getListSelection string
 process(Point pos = FCV.getObjectStatementXY(  result  ) ;);////  public void _draw( Graphics g, int x, int y, int z){//
 output();//System.out.println(  "\n\t>>>" + result +" at " + pos.x + " - " + pos.y +"\n"  );
 output();//System.out.println( "Cross Pos ----> " + CrossXPos + " :  " + CrossYPos  );
-output();//System.out.println( "Head at --------------------> " + FCV.Head.Xo + " : " + FCV.Head.Yo  );
 set();//CrossYPos -= (pos.y - FCV.Head.Yo);
 set(int dY = 50 - pos.y ;);//int dY =0  ;
 set();// X = 500 ;
@@ -96,7 +96,7 @@ set();//dx = 0;
 set();//dy = 0;
 process(  repaint();  );//
 set();// FCV.Head.Yo = 100 ;
-end(return true; );//
+end(return true; });//
 path(  case 403:);//KEYED EVENT
 branch(if( e.key ==  1002 ));//PAGE UP
 path( { );//
@@ -115,7 +115,10 @@ set(FCV.Zoom = MAXZ ;);//
 path(} else if( FCV.Zoom < MINZ ) {);//
 set(FCV.Zoom = MINZ ;);//
 bend( } );//
-process();//FCV.draw( G , 500, 200, FCV.Zoom );
+process(StatementObject S  = (StatementObject)   FCV.SO.elementAt(  FCV.currentObject - 1  ) ;);//
+set();//Point p = FCV.getObjectStatementXY(  S.Statement ) ;
+process();//setPosition( X, p.y ) ;
+output();//System.out.println( "Current --------------------> " + S.Statement  );
 process(  repaint();  );//
 end(  return true;);//
 path(  case Event.MOUSE_DRAG:  );//
@@ -167,19 +170,22 @@ set(f.add(FCV.ObjList ););/// f.add( ObjList );//
 set();//
 generic(f.setSize( 1000, 1000););// ////
 set(f.setLocation(300, 200););//
-generic(f.setTitle("VFCviewer by RedHorseVR.com (copyright 1999,2023)  - " + filename ););//
+generic(f.setTitle("VFCviewer by RedHorseVR.com and MaxxImmersive.com  (copyright 1999,2023)  - " + filename ););//
 set(f.setLayout(null);     );// ////
 set(f.setVisible(true);    );// ////
 set();//panel.setLocation(300, 200);
 generic(FCV.Zoom--  ;);/////// // Res  = new Resource( this , CodeBase );......FCV = new FCview( getDocumentBase() , vfcname  );FCV = new FCview( getCodeBase() , vfcname  );//
 set();//
 generic( ////);//f.setLayout(new FlowLayout());
-output(System.out.println( "---------------------------------------------------"  ););//
-output(System.out.println( "---------------------------------------------------"  ););//
-output(System.out.println( "------------VFC Viewer by RHVR (v1.0)--------------\n"  ););//
-output(System.out.println( "NOTE: \nUse PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright http://redhorsevr.com/ 1999~2023) \n" ););//
-output(System.out.println( "---------------------------------------------------"  ););//
-output(System.out.println( "---------------------------------------------------"  ););//
+output(System.out.println( "---------------------------------------------------------------------------------------------------"  ););//
+output(System.out.println( "-----VFC Viewer based on Java code base by RHVR (v1.0)- updated by MaxxImmersive.com (v1.1x) ------"  ););//
+output(System.out.println( "---------------------------------------------------------------------------------------------------"  ););//
+output(System.out.println( "NOTE: \nUse PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright by redhorsevr.com 1999 and updates by maxximmersive.com 2023) \n" ););//
+set(File fil = new File( filename ););// 
+output(filename = "vfc://" + fil.getAbsolutePath() ;);// 
+output(System.out.println( "VIEWING FILE: "  + filename ););//
+output(System.out.println( "---------------------------------------------------------------------------------------------------"  ););//
+output(System.out.println( "---------------------------------------------------------------------------------------------------"  ););//
 output(////);//JOptionPane.showMessageDialog(null, "Use PageUP/Down to Zoom and Mouse Drag to move.\n(Copyright http://redhorsevr.com/ 1999~2023) ","VFC Viewer by RHVR (v1.0)",  JOptionPane.WARNING_MESSAGE );
 end(  }  );//
 end(  );// AUTO 
@@ -188,7 +194,6 @@ input(  public void paint(Graphics g){  );//
 set(G = g;);//
 generic();//  drawCrossHair( g, CrossXPos, CrossYPos, CrossSize );  
 generic();//  g.drawString( "Hello new world ..." , 20 , 20 );  
-process(// FCV.zoom( g , 1 ););///lnkView.zoom( g , ZoomScale );//
 process(FCV.draw(g , X , Y,  FCV.Zoom ););//FCV.draw(g , CrossXPos , CrossYPos  , 25);
 end(  }  );//
 generic(    );////  AUTO ...
@@ -227,4 +232,4 @@ end();//
 ;    VFCviewer.java   //   ...
 ; notepad.exe
 ;INSECTA EMBEDDED ALTSESSION INFORMATION
-; 4294965118 287 1933 1275 131 128   596   4294965444    java.key  0
+; 4294965058 671 1691 1250 128 128   837   4294964366    java.key  0
