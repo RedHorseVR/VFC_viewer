@@ -74,12 +74,13 @@ boolean processPosition( Event e ){
 		Matcher m2 = p2.matcher(  result  );
 		result = m2.replaceFirst( "" );
 		Point pos = FCV.getObjectStatementXY(  result  ) ;
-		
+		System.out.println(  "\n\t>>>Object:" + result +" at " + pos.x + " - " + pos.y +"\n"  );
 		
 		
 		int dY = 50 - pos.y ;
+		int dX = 450 - pos.x ;
 		
-		setPosition( X , Y + dY ) ;
+		setPosition( X +dX, Y + dY ) ;
 		
 		
 		
@@ -209,5 +210,5 @@ public boolean handleEvent(Event e){
 	return false; }
 }       /** end of class definition **/
 
-//  Export  Date: 12:02:37 PM - 16:Feb:2023...
+//  Export  Date: 03:24:33 PM - 04:Mar:2023...
 

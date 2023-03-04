@@ -1,0 +1,31 @@
+;  IRL FlowCode Version: Version 10.0
+;  c1995-2015: Visual Flow Coder by 2LResearch
+;
+;  File Name : test.ins
+;  File Date : 10:28:05 PM - 02:Feb:2023
+
+
+input(: MAIN);//: MAIN 
+event(sub);//asdfdasfas
+loop(5 0 DO );//
+lend( LOOP );//
+process( INCLUDE FORTHLIB );//
+end( END );//
+
+input(Sub 1);//
+end(return );//
+
+input(Sub 2);//
+end(return );//
+
+input(Sub 3);//
+end(return );//
+
+
+
+;INSECTA EMBEDDED SESSION INFORMATION
+; 255 16777215 65280 16777088 16711680 255 255 0 255 255 65535 65280 9633792
+;    \   //   ...
+; notepad.exe
+;INSECTA EMBEDDED ALTSESSION INFORMATION
+; 4294965215 311 1295 1025 3 160   782   4294967251    default.key  0
