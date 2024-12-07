@@ -1,11 +1,19 @@
-e:
-
-cd E:\Users\luisr\OneDrive\Desktop\VFC_flow_code_viewer
-
-
-"C:\Program Files\Java\jdk-16\bin\java" VFCviewer test.ins
 
 
 
+
+ECHO off 
+ECHO ... PAGE UP / DOWN TO ZOOM 
+ECHO ... MOUSE DRAG TO MOVE  ...  DOUBLECLICK TO JUMP
+ECHO ... JUST HAVE javaw IN THE PATH FOR THIS TO WORK
+
+
+
+
+
+start javaw VFCviewer StatementObject.java.vfc
+
+
+pause
 
 
